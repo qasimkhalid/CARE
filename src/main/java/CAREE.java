@@ -38,7 +38,7 @@ public class CAREE {
 
         try{
 
-            /*Configure log4j logger for the csparql engine
+            /*Configure log4j logger for csparql engine
             */
             PropertyConfigurator.configure("log4j_configuration/csparql_readyToGoPack_log4j.properties");
 
