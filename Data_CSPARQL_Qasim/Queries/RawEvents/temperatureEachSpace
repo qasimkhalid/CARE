@@ -1,0 +1,11 @@
+CONSTRUCT {
+?tempID :hasTemp ?value1.
+?tempID :atTime ?time1.
+}
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/TemperatureEvents/> [RANGE 2s TUMBLING]
+FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+WHERE {
+?event1 ?tempID ?value1.
+?tempID a sbevac:TemperatureSensor.
+BIND (f:timestamp(?event1,?tempID,?value1) AS ?time1)
+}

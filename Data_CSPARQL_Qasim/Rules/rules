@@ -1,0 +1,92 @@
+[AllPersonsLocation:
+    (?person sbevac:isLocatedIn ?section)
+    (?person  rdf:type  foaf:Person)
+    ->
+    print(?person, is located in, ?section)
+]
+
+[PersonAccompanyingByWhom:
+    (?person1 sbevac:isLocatedIn ?section1)
+    (?person2 sbevac:isLocatedIn ?section2)
+    (?person1  rdf:type  foaf:Person)
+    (?person2  rdf:type  foaf:Person)
+    (?section1  rdf:type  seas:BuildingSpace)
+    (?section2  rdf:type  seas:BuildingSpace)
+    notEqual(?person1,?person2)
+    equal(?section1,?section2)
+    ->
+    (?person1 sbevac:isAccompanying ?person2)
+]
+
+[SpaceAvailability:
+	(?section1 sbevac:hasIncident ?fire)
+	(?section2  rdf:type seas:BuildingSpace)
+	notEqual(?section1,?section2)
+   	->
+   	(?section1 sbevac:isAvailable "False"^^xsd:boolean)
+   	(?section2 sbevac:isAvailable "True"^^xsd:boolean)
+]
+
+[RouteAvailability:
+    (?section1 sbevac:isAvailable "False"^^xsd:boolean)
+    (?section1 rdf:type seas:BuildingSpace)
+
+	(?route1 sbevac:hasPath ?path1)
+	(?route1  rdf:type sbevac:Route)
+    listNotContains(?path1,?section1)
+
+    (?route2 sbevac:hasPath ?path2)
+    (?route2  rdf:type sbevac:Route)
+    listContains(?path2,?section1)
+
+   	->
+   	(?route1 sbevac:isAvailable "True"^^xsd:boolean)
+   	(?route2 sbevac:isAvailable "False"^^xsd:boolean)
+]
+
+[AccessibilityCheck_WheelChair_Stairs:
+	(?person sbevac:hasDisability ?anytype)
+	(?anytype rdf:type sbevac:Wheelchair)
+
+	(?stairs sbevac:isLocatedIn ?section1)
+	(?stairs  rdf:type  seas:Stairs)
+	(?section1 rdf:type seas:BuildingSpace)
+   	->
+   	(?section1 sbevac:isNotAccessibleTo ?person)
+]
+
+[AccessibilityCheck_WheelChairElevator:
+	(?person sbevac:hasDisability ?anytype)
+	(?anytype rdf:type sbevac:Wheelchair)
+
+	(?elevator sbevac:isLocatedIn ?section1)
+	(?elevator  rdf:type  seas:Elevator)
+	(?section1 rdf:type seas:BuildingSpace)
+   	->
+   	(?section1 sbevac:isNotAccessibleTo ?person)
+]
+
+[NeedsSupervision_DuringEvacuation:
+	(?person1 sbevac:hasDisability :VisuallyImpairment)
+	(?person1 rdf:type foaf:Person)
+   	->
+   	(?person1 sbevac:needsSupervision "True"^^xsd:boolean)
+]
+
+[NeedsSupervision_DuringEvacuation1:
+	(?person1 sbevac:hasFamiliarityWithBuilding "False"^^xsd:boolean)
+	(?person1 rdf:type foaf:Person)
+   	->
+   	(?person1 sbevac:needsSupervision "True"^^xsd:boolean)
+]
+
+
+
+
+
+
+
+
+
+
+

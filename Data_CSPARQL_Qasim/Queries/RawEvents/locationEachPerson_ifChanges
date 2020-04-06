@@ -1,0 +1,28 @@
+CONSTRUCT {
+?person1 :movedTo ?section2 .
+?person1 :atTime ?time2 .
+}
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/> [RANGE 2s STEP 1s]
+FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+WHERE {
+?event1 loc:PersonID ?personID1.
+?person1 :hasID ?personID1 .
+BIND (f:timestamp(?event1,loc:PersonID,?personID1) AS ?time1)
+
+
+?event2 loc:PersonID ?personID2.
+BIND (f:timestamp(?event2,loc:PersonID,?personID2) AS ?time2)
+
+
+?event1 loc:SensorID ?sensor1.
+?event2 loc:SensorID ?sensor2.
+
+?sensor1 :installedIn ?section1.
+?sensor2 :installedIn ?section2.
+
+FILTER (?event1 != ?event2)
+FILTER (?section1 != ?section2)
+FILTER (?time2 > ?time1)
+FILTER (?personID1 = ?personID2)
+}
+ORDER BY ?person1
