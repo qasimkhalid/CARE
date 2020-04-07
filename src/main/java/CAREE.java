@@ -1,14 +1,16 @@
-//CAREE: Context-AwaRe Emergency Evacuation
+/*
+CAREE: Context-AwaRe Emergency Evacuation Software
+*/
 
 
 
 package main.java;
-//import com.hp.hpl.jena.ontology.OntModel;
-//import com.hp.hpl.jena.ontology.OntModelSpec;
-//import com.hp.hpl.jena.rdf.model.InfModel;
-//import com.hp.hpl.jena.rdf.model.ModelFactory;
-//import com.hp.hpl.jena.reasoner.Reasoner;
-//import com.hp.hpl.jena.reasoner.ReasonerRegistry;
+import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.InfModel;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.reasoner.Reasoner;
+import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 import com.hp.hpl.jena.util.FileManager;
 import eu.larkc.csparql.core.engine.RDFStreamFormatter;
 import main.java.qasim.data.Output;
