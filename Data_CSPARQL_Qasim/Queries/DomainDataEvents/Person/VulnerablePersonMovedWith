@@ -1,0 +1,31 @@
+CONSTRUCT {
+?person1 :movedWith ?person2 .
+?person1 :movedTo ?section2 .
+?person1 :movedFrom ?section1 .
+?person2 :movedTo ?section2 .
+?person2 :movedFrom ?section1 .
+}
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/LocationUpdate/> [RANGE 3s STEP 1s]
+FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+WHERE {
+
+?person1 a :Person .
+FILTER ( (EXISTS {?person1 a :Dependent})   ||  (EXISTS {?person1 a :Visual})   ||   (NOT EXISTS {?person1 :familiarityWithBuilding "true"^^xsd:boolean }) )
+?person1 :locatedIn ?section1 .
+?person1 :locatedIn ?section2 .
+BIND (f:timestamp(?person1,:locatedIn,?section1) AS ?time1)
+BIND (f:timestamp(?person1,:locatedIn,?section2) AS ?time2)
+FILTER (?time2 > ?time1)
+
+?person2 a :Person .
+FILTER ( EXISTS {?person2 :familiarityWithBuilding "true"^^xsd:boolean } )
+?person2 :locatedIn ?section1 .
+?person2 :locatedIn ?section2 .
+BIND (f:timestamp(?person2,:locatedIn,?section1) AS ?time3)
+BIND (f:timestamp(?person2,:locatedIn,?section2) AS ?time4)
+FILTER (?time4 > ?time3)
+
+FILTER (?section1 != ?section2)
+FILTER (?person1 != ?person2)
+
+}

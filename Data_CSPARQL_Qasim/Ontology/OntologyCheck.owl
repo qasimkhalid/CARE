@@ -1,0 +1,1405 @@
+@prefix :      <http://www.ia.urjc.es/ontologies/building/sbevac_scenario#> .
+@prefix schema: <http://schema.org/> .
+@prefix obda:  <https://w3id.org/obda/vocabulary#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix ns:    <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+@prefix ifc:   <http://www.buildingsmart-tech.org/ifcOWL/IFC2X3_TC1#> .
+@prefix saref: <https://w3id.org/saref#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ssn:   <http://www.w3.org/ns/ssn/> .
+@prefix seas:  <https://w3id.org/seas/> .
+@prefix sbevac: <http://www.ia.urjc.es/ontologies/building/sbevac#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix wot:   <http://xmlns.com/wot/0.1/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix fiemser: <http://sites.google.com/site/smartappliancesproject/ontologies/fiemser#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix sosa:  <http://www.w3.org/ns/sosa/> .
+
+:Section6  a                      seas:BuildingSpace , seas:Hall , sbevac:Exit , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:hasAccommodatingCapacity
+                30 ;
+        sbevac:isAdjacentTo       :Section8 , :Section4 , :Section9 , :Section5 ;
+        sbevac:isAvailable        "True"^^xsd:boolean ;
+        sbevac:isConnectedTo      :Section9 , :Section4 , :Section8 , :Section5 ;
+        sbevac:isNotAccessibleTo  :Person4 ;
+        owl:sameAs                :Section6 .
+
+:route21  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section4 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section10 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section4 .
+
+:Person4  a                    foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime          "60000"^^xsd:int ;
+        sbevac:hasDisability   :Non-Motorised ;
+        sbevac:hasID           4 ;
+        sbevac:isAccompanying  :Person3 ;
+        sbevac:isLocatedIn     :Section4 ;
+        owl:sameAs             :Person4 ;
+        foaf:firstName         "Delta"^^xsd:string .
+
+:route7  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section7 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section8 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section1 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section8 .
+
+:route19  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section4 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section4 .
+
+:route1  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section1 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section6 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section1 .
+
+:route13  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section2 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section6 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section2 .
+
+:route26  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section5 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section1 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section5 .
+
+:Section5  a                  seas:Office , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section6 , :Section4 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section6 ;
+        owl:sameAs            :Section5 .
+
+:Person9  a                    foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime          "60000"^^xsd:int ;
+        sbevac:hasDisability   :HearingImpairment ;
+        sbevac:hasID           9 ;
+        sbevac:isAccompanying  :Person8 ;
+        sbevac:isLocatedIn     :Section9 ;
+        owl:sameAs             :Person9 ;
+        foaf:firstName         "India"^^xsd:string .
+
+:Person3  a                      foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime            "60000"^^xsd:int ;
+        sbevac:hasFamiliarityWithBuilding
+                "False"^^xsd:boolean ;
+        sbevac:hasID             3 ;
+        sbevac:isAccompanying    :Person4 ;
+        sbevac:isLocatedIn       :Section4 ;
+        sbevac:needsSupervision  "True"^^xsd:boolean ;
+        owl:sameAs               :Person3 ;
+        foaf:firstName           "Gamma"^^xsd:string , "Charlie"^^xsd:string .
+
+:route6  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section8 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section10 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section8 .
+
+:route12  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section2 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section1 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section2 .
+
+:route25  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section5 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section10 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section5 .
+
+:Section4  a                  seas:Office , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section8 , :Section6 , :Section5 , :Section3 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section6 ;
+        owl:sameAs            :Section4 .
+
+:Person8  a                      foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime            "60000"^^xsd:int ;
+        sbevac:hasFamiliarityWithBuilding
+                "False"^^xsd:boolean ;
+        sbevac:hasFamilyID       1 ;
+        sbevac:hasGroupID        1 ;
+        sbevac:hasID             8 ;
+        sbevac:isAccompanying    :Person9 ;
+        sbevac:isDependentOn     :Person2 ;
+        sbevac:isFamilyOf        :Person2 ;
+        sbevac:isLocatedIn       :Section9 ;
+        sbevac:needsSupervision  "True"^^xsd:boolean ;
+        sbevac:prefersEvacuationWithTies
+                true ;
+        owl:sameAs               :Person8 ;
+        foaf:firstName           "Hotel"^^xsd:string .
+
+:route32  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section4 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section3 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section2 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section7 ;
+                                                                     rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                                  rdf:first  :Section1 ;
+                                                                                  rdf:rest   ()
+                                                                                
+                                                                                ]
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section4 .
+
+:route5  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section8 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section8 .
+
+:route17  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section3 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section8 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section6 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section3 .
+
+:Section9  a                  seas:Hall , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section8 , :Section6 , :Section10 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section6 ;
+        owl:sameAs            :Section9 .
+
+:route11  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section1 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section6 ;
+                                                                     rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                                  rdf:first  :Section9 ;
+                                                                                  rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                                               rdf:first  :Section10 ;
+                                                                                               rdf:rest   ()
+                                                                                             
+                                                                                             ]
+                                                                                ]
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section1 .
+
+:route24  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section5 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section5 .
+
+:Section3  a                  seas:Office , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section8 , :Section4 , :Section2 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section8 , :Section4 , :Section2 ;
+        owl:sameAs            :Section3 .
+
+:Person7  a                      foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime            "60000"^^xsd:int ;
+        sbevac:hasFamiliarityWithBuilding
+                "False"^^xsd:boolean ;
+        sbevac:hasID             7 ;
+        sbevac:isLocatedIn       :Section8 ;
+        sbevac:needsSupervision  "True"^^xsd:boolean ;
+        owl:sameAs               :Person7 ;
+        foaf:firstName           "Golf"^^xsd:string .
+
+:route31  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section3 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section2 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section7 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section1 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section3 .
+
+:Section10  a                     seas:Hall , seas:BuildingSpace , sbevac:Exit , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:hasAccommodatingCapacity
+                10 ;
+        sbevac:isAdjacentTo       :Section9 , :Section8 ;
+        sbevac:isAvailable        "True"^^xsd:boolean ;
+        sbevac:isConnectedTo      :Section8 , :Stairs1 ;
+        sbevac:isNotAccessibleTo  :Person4 ;
+        owl:sameAs                :Section10 .
+
+:route4  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section7 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section8 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section10 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section7 .
+
+:route16  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section3 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section8 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section7 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section1 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section3 .
+
+:Section8  a                  seas:Corridor , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime         "70000"^^xsd:int ;
+        sbevac:hasIncident    sbevac:Fire ;
+        sbevac:isAdjacentTo   :Section6 , :Section7 , :Section9 , :Section10 , :Section4 , :Section3 ;
+        sbevac:isAvailable    "False"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section3 , :Section10 , :Section7 , :Section6 ;
+        owl:sameAs            :Section8 .
+
+:route10  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section1 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section10 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section1 .
+
+:Section2  a                  seas:Office , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section7 , :Section3 , :Section1 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section7 , :Section3 ;
+        owl:sameAs            :Section2 .
+
+:route30  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section3 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section4 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section6 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section3 .
+
+:route3  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section7 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section8 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section6 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section7 .
+
+:route28  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section7 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section7 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section1 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section1 .
+
+:Section7  a                  seas:Hall , seas:BuildingSpace , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isAdjacentTo   :Section8 , :Section2 , :Section1 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section8 , :Section2 , :Section1 ;
+        owl:sameAs            :Section7 .
+
+:route22  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section4 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section7 ;
+                                                                     rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                                  rdf:first  :Section1 ;
+                                                                                  rdf:rest   ()
+                                                                                
+                                                                                ]
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section4 .
+
+:Section1  a                  seas:Hall , seas:BuildingSpace , sbevac:Exit , owl:NamedIndividual , rdfs:Resource , owl:Thing ;
+        sbevac:hasAccommodatingCapacity
+                20 ;
+        sbevac:isAdjacentTo   :Section7 , :Section2 ;
+        sbevac:isAvailable    "True"^^xsd:boolean ;
+        sbevac:isConnectedTo  :Section7 ;
+        owl:sameAs            :Section1 .
+
+:Person5  a                      foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime            "60000"^^xsd:int ;
+        sbevac:hasDisability     :VisuallyImpairment ;
+        sbevac:hasFamiliarityWithBuilding
+                "False"^^xsd:boolean ;
+        sbevac:hasID             5 ;
+        sbevac:isLocatedIn       :Section5 ;
+        sbevac:needsSupervision  "True"^^xsd:boolean ;
+        owl:sameAs               :Person5 ;
+        foaf:firstName           "Echo"^^xsd:string .
+
+:route8  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section6 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section9 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   ()
+                                         
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "True"^^xsd:boolean ;
+        sbevac:startsfrom   :Section9 .
+
+:route2  a                  sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section3 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section8 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section10 ;
+                                                        rdf:rest   ()
+                                                      
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section3 .
+
+:route14  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section10 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section2 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section7 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section10 ;
+                                                                     rdf:rest   ()
+                                                                   
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section2 .
+
+:route27  a                 sbevac:Route , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:endsIn       :Section1 ;
+        sbevac:hasPath      [ a          rdf:List , rdfs:Resource ;
+                              rdf:first  :Section9 ;
+                              rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                           rdf:first  :Section6 ;
+                                           rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                        rdf:first  :Section8 ;
+                                                        rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                     rdf:first  :Section7 ;
+                                                                     rdf:rest   [ a          rdf:List , rdfs:Resource ;
+                                                                                  rdf:first  :Section1 ;
+                                                                                  rdf:rest   ()
+                                                                                
+                                                                                ]
+                                                                   ]
+                                                      ]
+                                         ]
+                            ] ;
+        sbevac:isAvailable  "False"^^xsd:boolean ;
+        sbevac:startsfrom   :Section9 .
+
+rdfs:domain  a              rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Property , rdfs:Resource ;
+        rdfs:range          rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:domain .
+
+sbevac:Sensory  a        rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Sensory .
+
+owl:AnnotationProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , owl:AnnotationProperty .
+
+saref:SmokeSensor  a     rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , saref:SmokeSensor .
+
+xsd:negativeInteger  a   rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:negativeInteger .
+
+rdfs:comment  a     rdf:Property , rdfs:Resource ;
+        rdfs:range  rdfs:Literal .
+
+sbevac:MomentaryLocationSensor
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:MomentaryLocationSensor .
+
+rdf:first  a                rdf:Property , owl:FunctionalProperty , rdfs:Resource ;
+        rdfs:domain         rdf:List , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:first .
+
+saref:TemperatureSensor
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , saref:TemperatureSensor .
+
+rdf:object  a               rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Statement , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:object .
+
+rdfs:subPropertyOf  a       rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Property , rdfs:Resource ;
+        rdfs:range          rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:subPropertyOf .
+
+rdf:Alt  a               rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , rdfs:Container , rdf:Alt .
+
+xsd:duration  a           rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:duration ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:float , xsd:dateTime , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+rdf:List  a                  rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , rdf:List ;
+        owl:equivalentClass  rdf:List .
+
+rdf:Statement  a             rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , rdf:Statement ;
+        owl:equivalentClass  rdf:Statement .
+
+xsd:double  a            rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , xsd:double .
+
+xsd:gMonth  a            rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:gMonth .
+
+rdf:Seq  a               rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , rdfs:Container , rdf:Seq .
+
+xsd:gMonthDay  a         rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , xsd:gMonthDay .
+
+owl:NamedIndividual  a   rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , owl:NamedIndividual .
+
+rdf:Property  a              rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , rdf:Property ;
+        owl:equivalentClass  rdf:Property .
+
+xsd:nonNegativeInteger
+        a                    rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:integer , xsd:nonNegativeInteger , xsd:decimal ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:nonNegativeInteger .
+
+rdf:XMLLiteral  a        rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , rdf:XMLLiteral .
+
+xsd:unsignedShort  a         rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:unsignedLong , xsd:unsignedInt , xsd:int , xsd:integer , xsd:long , xsd:short , xsd:nonNegativeInteger , xsd:unsignedShort , xsd:decimal ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:unsignedShort .
+
+sbevac:Distance  a       rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Distance .
+
+xsd:gDay  a              rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:gDay .
+
+rdf:nil  a      rdf:List , rdfs:Resource .
+
+rdfs:range  a               rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Property , rdfs:Resource ;
+        rdfs:range          rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:range .
+
+xsd:boolean  a            rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:boolean ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:float , xsd:dateTime , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:nonPositiveInteger .
+
+rdfs:Container  a        rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , rdfs:Container .
+
+xsd:hexBinary  a         rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , xsd:hexBinary .
+
+rdf:Bag  a               rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , rdfs:Container , rdf:Bag .
+
+xsd:decimal  a            rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:decimal ;
+        owl:disjointWith  xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean .
+
+sbevac:Route  a          rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Route .
+
+rdfs:label  a       rdf:Property , rdfs:Resource ;
+        rdfs:range  rdfs:Literal .
+
+xsd:dateTime  a           rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:dateTime ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:float , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+xsd:date  a               rdfs:Datatype , rdfs:Resource , rdfs:Class , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:date ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:float , xsd:dateTime , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+xsd:int  a                   rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:int , xsd:integer , xsd:long , xsd:decimal ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:int .
+
+rdf:predicate  a            rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Statement , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:predicate .
+
+xsd:gYear  a             rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , xsd:gYear .
+
+seas:BuildingSpace  a    rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , seas:BuildingSpace .
+
+sbevac:Incident  a       rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Incident .
+
+rdfs:subClassOf  a          rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdfs:Class , rdfs:Resource ;
+        rdfs:range          rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:subClassOf .
+
+rdfs:Resource  a             rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource ;
+        owl:equivalentClass  rdfs:Resource .
+
+rdf:rest  a                 rdf:Property , owl:FunctionalProperty , rdfs:Resource ;
+        rdfs:domain         rdf:List , rdfs:Resource ;
+        rdfs:range          rdf:List , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:rest .
+
+xsd:short  a                 rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:int , xsd:integer , xsd:long , xsd:short , xsd:decimal ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:short .
+
+sbevac:Physical  a       rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Physical .
+
+xsd:positiveInteger  a   rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:positiveInteger .
+
+rdf:type  a                 rdf:Property , rdfs:Resource ;
+        rdfs:range          rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:type .
+
+rdfs:Class  a                rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , rdfs:Class ;
+        owl:equivalentClass  rdfs:Class .
+
+xsd:anyURI  a            rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:anyURI .
+
+xsd:long  a                  rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:integer , xsd:long , xsd:decimal ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:long .
+
+xsd:base64Binary  a      rdfs:Datatype , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , xsd:base64Binary .
+
+foaf:Person  a           rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , foaf:Person .
+
+sbevac:Exit  a           rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Exit .
+
+rdf:subject  a              rdf:Property , rdfs:Resource ;
+        rdfs:domain         rdf:Statement , rdfs:Resource ;
+        rdfs:subPropertyOf  rdf:subject .
+
+xsd:integer  a               rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , xsd:decimal , xsd:integer ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:integer .
+
+sbevac:Wheelchair  a     rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Resource , sbevac:Wheelchair .
+
+xsd:time  a               rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:time ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:unsignedLong , xsd:float , xsd:dateTime , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+rdfs:Literal  a              rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , rdfs:Literal ;
+        owl:equivalentClass  rdfs:Literal .
+
+xsd:float  a              rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:float ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:dateTime , xsd:int , xsd:string , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+xsd:nonPositiveInteger
+        a                 rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:nonPositiveInteger ;
+        owl:disjointWith  xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean .
+
+xsd:gYearMonth  a        rdfs:Datatype , rdfs:Resource , rdfs:Class ;
+        rdfs:subClassOf  rdfs:Resource , xsd:gYearMonth .
+
+xsd:string  a             rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf   rdfs:Resource , xsd:string ;
+        owl:disjointWith  xsd:long , xsd:byte , xsd:unsignedShort , xsd:time , xsd:unsignedLong , xsd:float , xsd:dateTime , xsd:int , xsd:unsignedInt , xsd:short , xsd:nonNegativeInteger , xsd:duration , xsd:unsignedByte , xsd:date , xsd:integer , xsd:decimal , xsd:boolean , xsd:nonPositiveInteger .
+
+owl:DatatypeProperty  a  rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdf:Property , owl:DatatypeProperty , rdfs:Resource .
+
+owl:Property  a              rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , owl:Property ;
+        owl:equivalentClass  owl:Property .
+
+foaf:firstName  a           rdf:Property , owl:AnnotationProperty , rdfs:Resource ;
+        rdfs:subPropertyOf  foaf:firstName .
+
+owl:imports  a              rdf:Property , owl:OntologyProperty , rdfs:Resource ;
+        rdfs:domain         owl:Ontology , rdfs:Resource ;
+        rdfs:range          owl:Ontology , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:imports .
+
+sbevac:hasGroupID  a        rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasGroupID .
+
+owl:intersectionOf  a       rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:intersectionOf .
+
+owl:ObjectProperty  a    rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdf:Property , owl:ObjectProperty , rdfs:Resource .
+
+sbevac:hasID  a             rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasID .
+
+sbevac:hasDistance  a       rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasDistance .
+
+owl:backwardCompatibleWith
+        a                   rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Ontology , rdfs:Resource ;
+        rdfs:range          owl:Ontology , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:backwardCompatibleWith .
+
+owl:Ontology  a              rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Resource , owl:Ontology ;
+        owl:equivalentClass  owl:Ontology .
+
+xsd:unsignedLong  a          rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      xsd:unsignedLong , xsd:integer , xsd:long , xsd:nonNegativeInteger , xsd:decimal , rdfs:Resource ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:unsignedLong .
+
+sbevac:isDependentOn  a     rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isDependentOn .
+
+sbevac:hasIncident  a       rdf:Property , owl:ObjectProperty , rdfs:Resource ;
+        rdfs:domain         owl:Thing , rdfs:Resource ;
+        rdfs:range          owl:Thing , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasIncident .
+
+owl:onProperty  a           rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Restriction , owl:Class , rdfs:Resource , rdfs:Class ;
+        rdfs:range          owl:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:onProperty .
+
+owl:differentFrom  a        owl:SymmetricProperty , owl:ObjectProperty , rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:differentFrom .
+
+owl:disjointWith  a         owl:SymmetricProperty , owl:ObjectProperty , rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:range          owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:disjointWith .
+
+sbevac:isAdjacentTo  a      rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isAdjacentTo .
+
+owl:Class  a                 rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      rdfs:Class , rdfs:Resource , owl:Class ;
+        owl:equivalentClass  owl:Class .
+
+owl:FunctionalProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdf:Property , owl:FunctionalProperty , rdfs:Resource .
+
+xsd:unsignedByte  a          rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      xsd:unsignedLong , xsd:unsignedInt , xsd:int , xsd:integer , xsd:long , xsd:byte , xsd:short , xsd:unsignedByte , xsd:nonNegativeInteger , xsd:unsignedShort , xsd:decimal , rdfs:Resource ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:unsignedByte .
+
+owl:SymmetricProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  owl:ObjectProperty , owl:SymmetricProperty , rdf:Property , rdfs:Resource .
+
+rdfs:ContainerMembershipProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdf:Property , rdfs:ContainerMembershipProperty , rdfs:Resource .
+
+sbevac:isInstalledIn  a     rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isInstalledIn .
+
+sbevac:isConnectedTo  a     rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isConnectedTo .
+
+owl:sameAs  a               owl:SymmetricProperty , owl:ObjectProperty , rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:sameAs .
+
+sbevac:hasPath  a           rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasPath .
+
+sbevac:endsIn  a            rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:endsIn .
+
+rdfs:isDefinedBy  a         rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:seeAlso , rdfs:isDefinedBy .
+
+sbevac:hasFamilyID  a       rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasFamilyID .
+
+owl:Nothing  a               owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf      owl:Thing , rdfs:Resource , owl:Nothing ;
+        owl:equivalentClass  owl:Nothing .
+
+owl:InverseFunctionalProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  owl:ObjectProperty , owl:InverseFunctionalProperty , rdf:Property , rdfs:Resource .
+
+owl:oneOf  a                rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:oneOf .
+
+sbevac:hasFamiliarityWithBuilding
+        a                   rdf:Property , owl:AnnotationProperty , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasFamiliarityWithBuilding .
+
+sbevac:hasAccommodatingCapacity
+        a                   rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasAccommodatingCapacity .
+
+sbevac:atTime  a            rdf:Property , owl:DatatypeProperty , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:atTime .
+
+seas:Elevator  a             rdfs:Class , owl:Class , rdfs:Resource ;
+        rdfs:subClassOf      seas:Elevator , rdfs:Resource , owl:Thing ;
+        owl:equivalentClass  seas:Elevator .
+
+seas:Stairs  a               rdfs:Class , owl:Class , rdfs:Resource ;
+        rdfs:subClassOf      seas:Stairs , rdfs:Resource , owl:Thing ;
+        owl:equivalentClass  seas:Stairs .
+
+sbevac:prefersEvacuationWithTies
+        a                   rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:prefersEvacuationWithTies .
+
+owl:Thing  a                 owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf      owl:Thing , rdfs:Resource ;
+        owl:equivalentClass  owl:Thing .
+
+owl:incompatibleWith  a     rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Ontology , rdfs:Resource ;
+        rdfs:range          owl:Ontology , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:incompatibleWith .
+
+owl:OntologyProperty  a  rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdf:Property , owl:OntologyProperty , rdfs:Resource .
+
+sbevac:hasType  a           rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasType .
+
+owl:priorVersion  a         rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Ontology , rdfs:Resource ;
+        rdfs:range          owl:Ontology , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:priorVersion .
+
+owl:TransitiveProperty
+        a                rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  owl:ObjectProperty , owl:TransitiveProperty , rdf:Property , rdfs:Resource .
+
+owl:equivalentClass  a      rdf:Property , rdfs:Resource ;
+        rdfs:domain         owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:range          owl:Class , rdfs:Class , rdfs:Resource ;
+        rdfs:subPropertyOf  owl:equivalentClass .
+
+sbevac:hasDisability  a     rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:hasDisability .
+
+owl:versionInfo  a  owl:AnnotationProperty , rdfs:Resource .
+
+rdfs:Datatype  a         rdfs:Class , rdfs:Resource ;
+        rdfs:subClassOf  rdfs:Class , rdfs:Datatype , rdfs:Resource .
+
+sbevac:isDistanceOf  a      rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isDistanceOf .
+
+seas:Hall  a                 rdfs:Class , owl:Class , rdfs:Resource ;
+        rdfs:subClassOf      seas:Hall , rdfs:Resource , owl:Thing ;
+        owl:equivalentClass  seas:Hall .
+
+xsd:unsignedInt  a           rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      xsd:unsignedLong , xsd:unsignedInt , xsd:int , xsd:integer , xsd:long , xsd:nonNegativeInteger , xsd:decimal , rdfs:Resource ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:unsignedInt .
+
+seas:Corridor  a             rdfs:Class , owl:Class , rdfs:Resource ;
+        rdfs:subClassOf      seas:Corridor , rdfs:Resource , owl:Thing ;
+        owl:equivalentClass  seas:Corridor .
+
+sbevac:startsfrom  a        rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:startsfrom .
+
+sbevac:isResponibleTo
+        a                   rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isResponibleTo .
+
+sbevac:isFamilyOf  a        rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isFamilyOf .
+
+sbevac:isLocatedIn  a       rdf:Property , owl:ObjectProperty , rdfs:Resource ;
+        rdfs:domain         owl:Thing , rdfs:Resource ;
+        rdfs:range          owl:Thing , rdfs:Resource ;
+        rdfs:subPropertyOf  sbevac:isLocatedIn .
+
+xsd:byte  a                  rdfs:Datatype , rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      xsd:int , xsd:integer , xsd:long , xsd:byte , xsd:short , xsd:decimal , rdfs:Resource ;
+        owl:disjointWith     xsd:time , xsd:float , xsd:dateTime , xsd:string , xsd:duration , xsd:date , xsd:boolean ;
+        owl:equivalentClass  xsd:byte .
+
+owl:Restriction  a           rdfs:Class , rdfs:Resource , owl:Class ;
+        rdfs:subClassOf      owl:Class , rdfs:Resource , owl:Restriction , rdfs:Class ;
+        owl:equivalentClass  owl:Restriction .
+
+seas:Office  a               rdfs:Class , owl:Class , rdfs:Resource ;
+        rdfs:subClassOf      seas:Office , rdfs:Resource , owl:Thing ;
+        owl:equivalentClass  seas:Office .
+
+foaf:age  a     owl:AnnotationProperty , rdfs:Resource .
+
+:Temp4  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section4 .
+
+:Dist7  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1f , :iBeacon1d .
+
+:Smoke1  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section1 .
+
+:HearingImpairment  a  sbevac:Sensory , owl:NamedIndividual , rdfs:Resource .
+
+:iBeacon7g  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7h , :iBeacon7e , :iBeacon7d ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon1d  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon1f , :iBeacon1e , :iBeacon1c , :iBeacon1b , :iBeacon1a ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Smoke9  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section9 .
+
+:iBeacon4c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon6a , :iBeacon4b ;
+        sbevac:isInstalledIn  :Section4 .
+
+:iBeacon2b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon2a , :iBeacon1c ;
+        sbevac:isInstalledIn  :Section2 .
+
+:iBeacon10c  a                sbevac:MomentaryLocationSensor , sbevac:Exit , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon9c , :iBeacon10b ;
+        sbevac:isInstalledIn  :Section10 .
+
+:Dist2  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1c , :iBeacon1a .
+
+:iBeacon9c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon9b , :iBeacon6c , :iBeacon10c ;
+        sbevac:isInstalledIn  :Section9 .
+
+:iBeacon7b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7f , :iBeacon7e , :iBeacon7d , :iBeacon7c , :iBeacon7a ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon5a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon5b ;
+        sbevac:isInstalledIn  :Section5 .
+
+:Temp7  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section7 .
+
+:Dist10  a                   sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1e , :iBeacon1c .
+
+:Smoke4  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section4 .
+
+:Temp2  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section2 .
+
+:Dist5  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1d , :iBeacon1b .
+
+:Motorised  a   sbevac:Wheelchair , owl:NamedIndividual , rdfs:Resource .
+
+:iBeacon7e  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7c , :iBeacon7d , :iBeacon7h , :iBeacon7i , :iBeacon7f , :iBeacon7g , :iBeacon7a , :iBeacon7b ;
+        sbevac:isInstalledIn  :Section7 .
+
+<http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+        a            owl:Ontology , rdfs:Resource ;
+        owl:imports  <file:/C:/Users/Qasim%20KHALID/Dropbox/Qasim's%20Progress/Others/My%20Ontology/SBEvac/General/SBEvac_Ontology_1.2_General(T-Box).owl> .
+
+:iBeacon3c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8a , :iBeacon3b ;
+        sbevac:isInstalledIn  :Section3 .
+
+:iBeacon1b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon1d , :iBeacon1c , :iBeacon1a ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Smoke7  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon8c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8b , :iBeacon10a ;
+        sbevac:isInstalledIn  :Section8 .
+
+:Smoke10  a                   saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section10 .
+
+:iBeacon6b  a                 sbevac:MomentaryLocationSensor , sbevac:Exit , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon6c , :iBeacon6a ;
+        sbevac:isInstalledIn  :Section6 .
+
+:iBeacon4a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon4b ;
+        sbevac:isInstalledIn  :Section4 .
+
+:LowerStamina  a  sbevac:Physical , owl:NamedIndividual , rdfs:Resource .
+
+:iBeacon10a  a                sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8c , :iBeacon1b ;
+        sbevac:isInstalledIn  :Section10 .
+
+:iBeacon9a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon9b ;
+        sbevac:isInstalledIn  :Section9 .
+
+:Temp5  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section5 .
+
+:Smoke2  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section2 .
+
+:Dist8  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1f , :iBeacon1e , :iBeacon1d , :iBeacon1c .
+
+:iBeacon7h  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7i , :iBeacon7g , :iBeacon7f , :iBeacon7e , :iBeacon7d ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon1e  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7a , :iBeacon1f , :iBeacon1d , :iBeacon1c ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Person6  a                 foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime       "60000"^^xsd:int ;
+        sbevac:hasID        6 ;
+        sbevac:isLocatedIn  :Section7 ;
+        owl:sameAs          :Person6 ;
+        foaf:firstName      "Foxtrot"^^xsd:string .
+
+:Non-Motorised  a  sbevac:Wheelchair , owl:NamedIndividual , rdfs:Resource .
+
+:iBeacon2c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7c , :iBeacon2b ;
+        sbevac:isInstalledIn  :Section2 .
+
+:Dist3  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1d , :iBeacon1a .
+
+:iBeacon7c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8a , :iBeacon7f , :iBeacon7e , :iBeacon7b , :iBeacon2c ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon5b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon5c , :iBeacon5a ;
+        sbevac:isInstalledIn  :Section5 .
+
+:Temp8  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section8 .
+
+:iBeacon3a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon3b ;
+        sbevac:isInstalledIn  :Section3 .
+
+:Dist11  a                   sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1f , :iBeacon1e .
+
+:Smoke5  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section5 .
+
+:Person1  a                 foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime       "60000"^^xsd:int ;
+        sbevac:hasID        1 ;
+        sbevac:isLocatedIn  :Section2 ;
+        owl:sameAs          :Person1 ;
+        foaf:firstName      "Alfa"^^xsd:string .
+
+:iBeacon8a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8b , :iBeacon7c , :iBeacon6a , :iBeacon3c ;
+        sbevac:isInstalledIn  :Section8 .
+
+:Elevator1  a               seas:Elevator , sbevac:Exit , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:isLocatedIn  :Section6 ;
+        owl:sameAs          :Elevator1 .
+
+:Temp3  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section3 .
+
+:Stempeding  a          sbevac:Incident , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasType  "Normal" .
+
+:Dist6  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1d , :iBeacon1c .
+
+:iBeacon7f  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7i , :iBeacon7h , :iBeacon7e , :iBeacon7c , :iBeacon7b ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon1c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon1f , :iBeacon1e , :iBeacon1d , :iBeacon1b , :iBeacon1a ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Temp10  a                    saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section10 .
+
+:Smoke8  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section8 .
+
+:Congestion  a          sbevac:Incident , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasType  "Normal" .
+
+:iBeacon6c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon9c , :iBeacon6b , :iBeacon5c ;
+        sbevac:isInstalledIn  :Section6 .
+
+:iBeacon4b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon4c , :iBeacon4a ;
+        sbevac:isInstalledIn  :Section4 .
+
+:iBeacon2a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon2b ;
+        sbevac:isInstalledIn  :Section2 .
+
+:Stairs1  a                   seas:Stairs , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:hasAccommodatingCapacity
+                10 ;
+        sbevac:isConnectedTo  :Section8 , :Section10 ;
+        sbevac:isLocatedIn    :Section10 ;
+        owl:sameAs            :Stairs1 .
+
+:iBeacon10b  a                sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon10c , :iBeacon10a ;
+        sbevac:isInstalledIn  :Section10 .
+
+:Dist1  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1b , :iBeacon1a .
+
+:iBeacon9b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon9c , :iBeacon9a ;
+        sbevac:isInstalledIn  :Section9 .
+
+:iBeacon7a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7e , :iBeacon7d , :iBeacon7b , :iBeacon1e ;
+        sbevac:isInstalledIn  :Section7 .
+
+:Temp6  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section6 .
+
+:Smoke3  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section3 .
+
+:VisuallyImpairment  a  sbevac:Sensory , owl:NamedIndividual , rdfs:Resource .
+
+:iBeacon7i  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7h , :iBeacon7f , :iBeacon7e ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon1f  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon1e , :iBeacon1d , :iBeacon1c ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Temp1  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Dist4  a                    sbevac:Distance , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasDistance   5 ;
+        sbevac:isDistanceOf  :iBeacon1c , :iBeacon1b .
+
+:Fire   a               sbevac:Incident , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:hasType  "Severe"^^xsd:string .
+
+:iBeacon7d  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon7h , :iBeacon7g , :iBeacon7e , :iBeacon7b , :iBeacon7a ;
+        sbevac:isInstalledIn  :Section7 .
+
+:iBeacon5c  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon6c , :iBeacon5b ;
+        sbevac:isInstalledIn  :Section5 .
+
+:Temp9  a                     saref:TemperatureSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section9 .
+
+:iBeacon3b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon3c , :iBeacon3a ;
+        sbevac:isInstalledIn  :Section3 .
+
+:iBeacon1a  a                 sbevac:MomentaryLocationSensor , sbevac:Exit , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon1d , :iBeacon1c , :iBeacon1b ;
+        sbevac:isInstalledIn  :Section1 .
+
+:Smoke6  a                    saref:SmokeSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isInstalledIn  :Section6 .
+
+:Person2  a                    foaf:Person , owl:NamedIndividual , owl:Thing , rdfs:Resource ;
+        sbevac:atTime          "60000"^^xsd:int ;
+        sbevac:hasFamilyID     1 ;
+        sbevac:hasGroupID      1 ;
+        sbevac:hasID           2 ;
+        sbevac:isFamilyOf      :Person8 ;
+        sbevac:isLocatedIn     :Section3 ;
+        sbevac:isResponibleTo  :Person8 ;
+        sbevac:prefersEvacuationWithTies
+                true ;
+        owl:sameAs             :Person2 ;
+        foaf:firstName         "Beta"^^xsd:string .
+
+:iBeacon8b  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon8c , :iBeacon8a ;
+        sbevac:isInstalledIn  :Section8 .
+
+:iBeacon6a  a                 sbevac:MomentaryLocationSensor , owl:NamedIndividual , rdfs:Resource ;
+        sbevac:isAdjacentTo   :iBeacon6b , :iBeacon4c ;
+        sbevac:isInstalledIn  :Section6 .
+
+rdfs:seeAlso  a             rdf:Property , rdfs:Resource ;
+        rdfs:subPropertyOf  rdfs:seeAlso .
+
+sbevac:Fire  a      owl:Thing , rdfs:Resource ;
+        owl:sameAs  sbevac:Fire .
+
+<file:/C:/Users/Qasim%20KHALID/Dropbox/Qasim's%20Progress/Others/My%20Ontology/SBEvac/General/SBEvac_Ontology_1.2_General(T-Box).owl>
+        a       owl:Ontology , rdfs:Resource .

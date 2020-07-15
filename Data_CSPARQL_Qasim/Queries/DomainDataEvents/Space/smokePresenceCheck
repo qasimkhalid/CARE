@@ -1,0 +1,13 @@
+CONSTRUCT {
+?SmokeID :hasSmoke ?value1.
+?SmokeID :atTime ?time1.
+}
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/> [RANGE 1s TUMBLING]
+FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+WHERE {
+?event1 ?SmokeID ?value1.
+?SmokeID a :SmokeSensor.
+BIND (f:timestamp(?event1,?SmokeID,?value1) AS ?time1)
+FILTER (?value1 = "true"^^xsd:boolean)
+}
+
