@@ -2,8 +2,8 @@ CONSTRUCT {
 ?SmokeID :hasSmoke ?value1.
 ?SmokeID :atTime ?time1.
 }
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/> [RANGE 1s TUMBLING]
-FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/SmokeEvents/> [RANGE 1s TUMBLING]
+FROM <http://www.ia.urjc.es/ontologies/building/sbeo_scenario>
 WHERE {
 ?event1 ?SmokeID ?value1.
 ?SmokeID a :SmokeSensor.

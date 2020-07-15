@@ -99,11 +99,11 @@ public class Output extends ConsoleFormatter {
 
         String rules = CsparqlUtils.fileToString(file);
 
-        PrintUtil.registerPrefix("sbevac", "http://www.ia.urjc.es/ontologies/building/sbevac#");
+        PrintUtil.registerPrefix("sbeo", "http://www.ia.urjc.es/ontologies/building/sbeo#");
         PrintUtil.registerPrefix("foaf", "http://xmlns.com/foaf/0.1/");
         PrintUtil.registerPrefix("seas", "https://w3id.org/seas/");
         PrintUtil.registerPrefix("xsd", "http://www.w3.org/2001/XMLSchema#");
-        PrintUtil.registerPrefix("", "http://www.ia.urjc.es/ontologies/building/sbevac_scenario#");
+        PrintUtil.registerPrefix("", "http://www.ia.urjc.es/ontologies/building/sbeo_scenario#");
 
         Reasoner ruleReasoner = new GenericRuleReasoner(Rule.parseRules(rules));
         model = ModelFactory.createInfModel(ruleReasoner, model);
@@ -130,7 +130,7 @@ public class Output extends ConsoleFormatter {
                         String data = t.toString();
                         String[] data1 = data.split("\t");
 
-                        subject = (data1[0].substring(58, data1[0].length()));
+                        subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
@@ -138,7 +138,7 @@ public class Output extends ConsoleFormatter {
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
                             //Location Information
-                            String location = (data1[2].substring(58, data1[2].length()));
+                            String location = (data1[2].substring(56, data1[2].length()));
                             eachTriple[2] = location;
                         }
 
@@ -191,7 +191,7 @@ public class Output extends ConsoleFormatter {
                         String data = t.toString();
                         String[] data1 = data.split("\t");
 
-                        subject = (data1[0].substring(58, data1[0].length()));
+                        subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
@@ -200,7 +200,7 @@ public class Output extends ConsoleFormatter {
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
                             //Location Information
-                            String location = (data1[2].substring(58, data1[2].length()));
+                            String location = (data1[2].substring(56, data1[2].length()));
                             eachTriple[2] = location;
                         }
 
@@ -252,7 +252,7 @@ public class Output extends ConsoleFormatter {
                         String data = t.toString();
                         String[] data1 = data.split("\t");
 
-                        subject = (data1[0].substring(58));
+                        subject = (data1[0].substring(56));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
@@ -261,11 +261,11 @@ public class Output extends ConsoleFormatter {
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
                             //Location Information
-                            String location = (data1[2].substring(58));
+                            String location = (data1[2].substring(56));
                             eachTriple[2] = location;
                         }  else if (data1[1].contains("movedFrom")) {
                             //Location Information
-                            String location = (data1[2].substring(58));
+                            String location = (data1[2].substring(56));
                             eachTriple[3] = location;
                         }
 
@@ -317,7 +317,7 @@ public class Output extends ConsoleFormatter {
                         String data = t.toString();
                         String[] data1 = data.split("\t");
 
-                        subject = (data1[0].substring(58));
+                        subject = (data1[0].substring(56));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
@@ -326,11 +326,11 @@ public class Output extends ConsoleFormatter {
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
                             //Location Information
-                            String location = (data1[2].substring(58));
+                            String location = (data1[2].substring(56));
                             eachTriple[2] = location;
                         }  else if (data1[1].contains("movedFrom")) {
                             //Location Information
-                            String location = (data1[2].substring(58));
+                            String location = (data1[2].substring(56));
                             eachTriple[3] = location;
                         }
 
@@ -382,7 +382,7 @@ public class Output extends ConsoleFormatter {
                         String data = t.toString();
                         String[] data1 = data.split("\t");
 
-                        subject = (data1[0].substring(58, data1[0].length()));
+                        subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));

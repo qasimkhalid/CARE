@@ -62,7 +62,7 @@ public class CAREE {
             FileOutputStream writer3 = new FileOutputStream("outputFiles/NonVulnerablePeopleMovement");
             FileOutputStream writer4 = new FileOutputStream("outputFiles/EvacuationStatusCompleted");
 
-            // Input Files location (Data from Sensors)
+            // Input Files location (or Data from Sensors)
             final String streamFileLocationSensors= "Data_CSPARQL_Qasim/Dataset/usermovementsScenario1.stream";
             final String streamFileTemperatureSensors= "Data_CSPARQL_Qasim/Dataset/TempScenario1.stream";
             final String streamFileSmokeSensors= "Data_CSPARQL_Qasim/Dataset/SmokeScenario1.stream";
@@ -85,16 +85,16 @@ public class CAREE {
 
 
             // Stream IRI
-            String iri1 = "http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/";
-            String iri2 = "http://www.ia.urjc.es/ontologies/building/sbevac/TemperatureEvents/";
-            String iri3 = "http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/";
+            String iri1 = "http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/";
+            String iri2 = "http://www.ia.urjc.es/ontologies/building/sbeo/TemperatureEvents/";
+            String iri3 = "http://www.ia.urjc.es/ontologies/building/sbeo/SmokeEvents/";
 
             // Prefixes
             String prefixes =   "PREFIX f: <http://larkc.eu/csparql/sparql/jena/ext#> "
-                                + "PREFIX loc: <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/> "
-                                + "PREFIX temp: <http://www.ia.urjc.es/ontologies/building/sbevac/TemperatureEvents/> "
-                                + "PREFIX smok: <http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/> "
-                                + "PREFIX : <http://www.ia.urjc.es/ontologies/building/sbevac#> "
+                                + "PREFIX loc: <http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/> "
+                                + "PREFIX temp: <http://www.ia.urjc.es/ontologies/building/sbeo/TemperatureEvents/> "
+                                + "PREFIX smok: <http://www.ia.urjc.es/ontologies/building/sbeo/SmokeEvents/> "
+                                + "PREFIX : <http://www.ia.urjc.es/ontologies/building/sbeo#> "
                                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "
                                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
                                 + "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> "
@@ -161,7 +161,7 @@ public class CAREE {
             /*
              * Using of static knowledge; data from SBEvac Ontology
              */
-            engine.putStaticNamedModel("http://www.ia.urjc.es/ontologies/building/sbevac_scenario", CsparqlUtils.serializeRDFFile(ontologyStatic));
+            engine.putStaticNamedModel("http://www.ia.urjc.es/ontologies/building/sbeo_scenario", CsparqlUtils.serializeRDFFile(ontologyStatic));
 
 
             /*
@@ -176,12 +176,12 @@ public class CAREE {
               /*
                * Create new stream formatter to create new RDF stream from the results of a query
                */
-            RDFStreamFormatter SmokeDetectionStreamFormatter = new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/SmokeDetected/");
-            RDFStreamFormatter  TemperatureRiseStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/TemperatureEvents/TemperatureRisen/");
-            RDFStreamFormatter  LocationEachPersonStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/LocationUpdate/");
-            RDFStreamFormatter  VulnerablePeopleMovementDetectionStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/VulnerablePeopleMovementDetection/");
-            RDFStreamFormatter  NonVulnerablePeopleMovementDetectionStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/NonVulnerablePeopleMovementDetection/");
-            RDFStreamFormatter  VulnerablePersonMovedWithStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/VulnerablePersonMovedWith/");
+            RDFStreamFormatter SmokeDetectionStreamFormatter = new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/SmokeEvents/SmokeDetected/");
+            RDFStreamFormatter  TemperatureRiseStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/TemperatureEvents/TemperatureRisen/");
+            RDFStreamFormatter  LocationEachPersonStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/LocationUpdate/");
+            RDFStreamFormatter  VulnerablePeopleMovementDetectionStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/VulnerablePeopleMovementDetection/");
+            RDFStreamFormatter  NonVulnerablePeopleMovementDetectionStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/NonVulnerablePeopleMovementDetection/");
+            RDFStreamFormatter  VulnerablePersonMovedWithStreamFormatter= new RDFStreamFormatter("http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/VulnerablePersonMovedWith/");
 
             /*
              *  Register the new streams in the engine.

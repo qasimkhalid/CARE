@@ -2,9 +2,9 @@ CONSTRUCT {
 ?fireInstance :locatedIn ?section1.
 ?fireInstance :atTime ?time1.
 }
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/SmokeEvents/SmokeDetected/> [RANGE 1s TUMBLING]
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/TemperatureEvents/TemperatureRisen/> [RANGE 1s TUMBLING]
-FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/SmokeEvents/SmokeDetected/> [RANGE 1s TUMBLING]
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/TemperatureEvents/TemperatureRisen/> [RANGE 1s TUMBLING]
+FROM <http://www.ia.urjc.es/ontologies/building/sbeo_scenario>
 WHERE {
 
 ?SmokeID a :SmokeSensor.

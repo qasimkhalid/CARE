@@ -2,8 +2,8 @@ CONSTRUCT {
 ?person1 :movedTo ?section2 .
 ?person1 :atTime ?time2 .
 }
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/> [RANGE 2s STEP 1s]
-FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/> [RANGE 2s STEP 1s]
+FROM <http://www.ia.urjc.es/ontologies/building/sbeo_scenario>
 WHERE {
 ?event1 loc:PersonID ?personID1.
 ?person1 :hasID ?personID1 .

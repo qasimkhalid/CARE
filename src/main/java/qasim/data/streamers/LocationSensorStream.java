@@ -77,7 +77,7 @@ public class LocationSensorStream extends RdfStream implements Runnable {
 //                    System.out.println("Person Line of Data has been Feeded " + q.toString());
                     this.put(q);
 
-                    q = new RdfQuadruple((event_sequence), iri_events + "SensorID", "http://www.ia.urjc.es/ontologies/building/sbevac_scenario#" + data[1], HumanTimeToMilliSeconds(data[0]));
+                    q = new RdfQuadruple((event_sequence), iri_events + "SensorID", "http://www.ia.urjc.es/ontologies/building/sbeo_scenario#" + data[1], HumanTimeToMilliSeconds(data[0]));
 //                    System.out.println("Sensor Line of Data has been Feeded " + q.toString());
                     this.put(q);
                     time_check_old = time_check;

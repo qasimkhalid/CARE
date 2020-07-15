@@ -73,7 +73,7 @@ public class TemperatureSensorStream extends RdfStream implements Runnable {
                         event_counter += 1;
                     }
                     event_sequence = iri_events + event_counter;
-                    RdfQuadruple q = new RdfQuadruple(event_sequence, "http://www.ia.urjc.es/ontologies/building/sbevac_scenario#" + data[1], "\"" + data[2] + "\"^^http://www.w3.org/2001/XMLSchema#integer", HumanTimeToMilliSeconds(data[0]));
+                    RdfQuadruple q = new RdfQuadruple(event_sequence, "http://www.ia.urjc.es/ontologies/building/sbeo_scenario#" + data[1], "\"" + data[2] + "\"^^http://www.w3.org/2001/XMLSchema#integer", HumanTimeToMilliSeconds(data[0]));
 //						System.out.println("Temperature Sensor Line of Data has been Feeded " + q.toString());
                     this.put(q);
 

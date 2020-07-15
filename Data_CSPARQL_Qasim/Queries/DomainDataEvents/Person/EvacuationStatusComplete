@@ -2,8 +2,8 @@ CONSTRUCT {
 ?person1 :evacuationStatus "completed"^^xsd:string .
 ?person1 :atTime ?time1 .
 }
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/> [RANGE 1s TUMBLING]
-FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/> [RANGE 1s TUMBLING]
+FROM <http://www.ia.urjc.es/ontologies/building/sbeo_scenario>
 WHERE {
 
 ?person1 a :Person .

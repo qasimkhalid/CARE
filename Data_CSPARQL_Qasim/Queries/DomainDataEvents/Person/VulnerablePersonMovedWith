@@ -5,8 +5,8 @@ CONSTRUCT {
 ?person2 :movedTo ?section2 .
 ?person2 :movedFrom ?section1 .
 }
-FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbevac/LocationEvents/LocationUpdate/> [RANGE 3s STEP 1s]
-FROM <http://www.ia.urjc.es/ontologies/building/sbevac_scenario>
+FROM STREAM <http://www.ia.urjc.es/ontologies/building/sbeo/LocationEvents/LocationUpdate/> [RANGE 3s STEP 1s]
+FROM <http://www.ia.urjc.es/ontologies/building/sbeo_scenario>
 WHERE {
 
 ?person1 a :Person .
