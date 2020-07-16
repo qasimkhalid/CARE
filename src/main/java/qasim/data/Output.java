@@ -149,24 +149,24 @@ public class Output extends ConsoleFormatter {
                             BufferedWriter writer;
 
                             try {
-                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-                                String currentReadingLine = reader.readLine();
-                                while (currentReadingLine != null) {
-
-                                    String[] data_reader = currentReadingLine.split(" ");
-                                    String old_subject = data_reader[0];
-                                    String old_time = data_reader[7];
-                                    String old_location = data_reader[4];
-
-                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
-                                        int line_number = reader.getLineNumber();
-                                        reader.close();
-                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-                                        break;
-                                    }
-                                    currentReadingLine = reader.readLine();
-
-                                }
+//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
+//                                String currentReadingLine = reader.readLine();
+//                                while (currentReadingLine != null) {
+//
+//                                    String[] data_reader = currentReadingLine.split(" ");
+//                                    String old_subject = data_reader[0];
+//                                    String old_time = data_reader[7];
+//                                    String old_location = data_reader[4];
+//
+//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
+//                                        int line_number = reader.getLineNumber();
+//                                        reader.close();
+//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
+//                                        break;
+//                                    }
+//                                    currentReadingLine = reader.readLine();
+//
+//                                }
 
                                 modifiedFileContent = output;
                                 writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
@@ -210,24 +210,24 @@ public class Output extends ConsoleFormatter {
 
                             BufferedWriter writer;
                             try {
-                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-                                String currentReadingLine = reader.readLine();
-                                while (currentReadingLine != null) {
-
-                                    String[] data_reader = currentReadingLine.split(" ");
-                                    String old_subject = data_reader[0];
-                                    String old_time = data_reader[6];
-                                    String old_location = data_reader[4];
-
-                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
-                                        int line_number = reader.getLineNumber();
-                                        reader.close();
-                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-                                        break;
-                                    }
-                                    currentReadingLine = reader.readLine();
-
-                                }
+//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
+//                                String currentReadingLine = reader.readLine();
+//                                while (currentReadingLine != null) {
+//
+//                                    String[] data_reader = currentReadingLine.split(" ");
+//                                    String old_subject = data_reader[0];
+//                                    String old_time = data_reader[6];
+//                                    String old_location = data_reader[4];
+//
+//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
+//                                        int line_number = reader.getLineNumber();
+//                                        reader.close();
+//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
+//                                        break;
+//                                    }
+//                                    currentReadingLine = reader.readLine();
+//
+//                                }
 
                                 modifiedFileContent = output;
                                 writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
@@ -274,24 +274,24 @@ public class Output extends ConsoleFormatter {
 
                             BufferedWriter writer;
                             try {
-                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-                                String currentReadingLine = reader.readLine();
-                                while (currentReadingLine != null) {
-
-                                    String[] data_reader = currentReadingLine.split(" ");
-                                    String old_subject = data_reader[0];
-                                    String old_time = data_reader[7];
-                                    String old_location_check = data_reader[4];
-
-                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
-                                        int line_number = reader.getLineNumber();
-                                        reader.close();
-                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-                                        break;
-                                    }
-                                    currentReadingLine = reader.readLine();
-
-                                }
+//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
+//                                String currentReadingLine = reader.readLine();
+//                                while (currentReadingLine != null) {
+//
+//                                    String[] data_reader = currentReadingLine.split(" ");
+//                                    String old_subject = data_reader[0];
+//                                    String old_time = data_reader[7];
+//                                    String old_location_check = data_reader[4];
+//
+//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
+//                                        int line_number = reader.getLineNumber();
+//                                        reader.close();
+//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
+//                                        break;
+//                                    }
+//                                    currentReadingLine = reader.readLine();
+//
+//                                }
                                 String output = eachTriple[0] + " is moved to " + eachTriple[2] + " at time " + eachTriple[1] + " from " + eachTriple[3];
 
                                 modifiedFileContent = output;
@@ -339,24 +339,24 @@ public class Output extends ConsoleFormatter {
 
                             BufferedWriter writer;
                             try {
-                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-                                String currentReadingLine = reader.readLine();
-                                while (currentReadingLine != null) {
-
-                                    String[] data_reader = currentReadingLine.split(" ");
-                                    String old_subject = data_reader[0];
-                                    String old_time = data_reader[7];
-                                    String old_location_check = data_reader[4];
-
-                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
-                                        int line_number = reader.getLineNumber();
-                                        reader.close();
-                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-                                        break;
-                                    }
-                                    currentReadingLine = reader.readLine();
-
-                                }
+//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
+//                                String currentReadingLine = reader.readLine();
+//                                while (currentReadingLine != null) {
+//
+//                                    String[] data_reader = currentReadingLine.split(" ");
+//                                    String old_subject = data_reader[0];
+//                                    String old_time = data_reader[7];
+//                                    String old_location_check = data_reader[4];
+//
+//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
+//                                        int line_number = reader.getLineNumber();
+//                                        reader.close();
+//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
+//                                        break;
+//                                    }
+//                                    currentReadingLine = reader.readLine();
+//
+//                                }
                                 String output = eachTriple[0] + " is moved to " + eachTriple[2] + " at time " + eachTriple[1] + " from " + eachTriple[3];
 
                                 modifiedFileContent = output;
