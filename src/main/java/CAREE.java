@@ -55,12 +55,11 @@ public class CAREE {
             */
             engine.initialize(true);
 
-            // Output Files Cleaning
-            FileOutputStream writer = new FileOutputStream("outputFiles/EachPersonLocationUpdate");
-            FileOutputStream writer1 = new FileOutputStream("outputFiles/FireCheck");
-            FileOutputStream writer2 = new FileOutputStream("outputFiles/VulnerablePeopleMovement");
-            FileOutputStream writer3 = new FileOutputStream("outputFiles/NonVulnerablePeopleMovement");
-            FileOutputStream writer4 = new FileOutputStream("outputFiles/EvacuationStatusCompleted");
+            /* Output Files Cleaning*/
+            String outputFileAddress = "C:\\Users\\Qasim KHALID\\Dropbox\\Qasim's Progress\\My Software\\CAREE_Git\\outputFiles\\outputAll";
+            PrintWriter clearOutputFile = new PrintWriter(outputFileAddress);
+            clearOutputFile.close();
+
 
             // Input Files location (or Data from Sensors)
             final String streamFileLocationSensors= "Data_CSPARQL_Qasim/Dataset/usermovementsScenario1.stream";
@@ -207,14 +206,12 @@ public class CAREE {
              */
             temperatureRiseForFireCheck.addObserver(TemperatureRiseStreamFormatter);
             smokePresenceCheck.addObserver(SmokeDetectionStreamFormatter);
-            FireCheck.addObserver(new Output("FireCheck", "outputFiles/FireCheck"));
-
-            eachPersonLocation.addObserver(new Output("EachPersonLocationUpdate", "outputFiles/EachPersonLocationUpdate"));
+            FireCheck.addObserver(new Output("FireCheck", outputFileAddress));
+            eachPersonLocation.addObserver(new Output("EachPersonLocationUpdate", outputFileAddress));
             eachPersonLocation.addObserver(LocationEachPersonStreamFormatter);
-            VulnerablePeopleMovementDetection.addObserver(new Output("VulnerablePeopleMovement", "outputFiles/VulnerablePeopleMovement"));
-            NonVulnerablePeopleMovementDetection.addObserver(new Output("NonVulnerablePeopleMovement", "outputFiles/NonVulnerablePeopleMovement"));
-
-            EvacuationStatusCompleted.addObserver(new Output("EvacuationStatusCompleted", "outputFiles/EvacuationStatusCompleted"));
+            VulnerablePeopleMovementDetection.addObserver(new Output("VulnerablePeopleMovement", outputFileAddress));
+            NonVulnerablePeopleMovementDetection.addObserver(new Output("NonVulnerablePeopleMovement", outputFileAddress));
+            EvacuationStatusCompleted.addObserver(new Output("EvacuationStatusCompleted", outputFileAddress));
 
 
             /*

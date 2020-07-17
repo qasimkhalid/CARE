@@ -14,9 +14,7 @@ import eu.larkc.csparql.core.engine.ConsoleFormatter;
 import eu.larkc.csparql.common.RDFTable;
 import eu.larkc.csparql.common.RDFTuple;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Observable;
+import java.util.*;
 import java.io.*;
 
 
@@ -26,6 +24,9 @@ public class Output extends ConsoleFormatter {
     public InfModel baseInferred;
     public String type;
     public String outputFileLocation;
+    public List evacuated_person_store = new ArrayList();
+    public List output_all_list = new ArrayList();
+
 
 
     public Output() {
@@ -34,6 +35,7 @@ public class Output extends ConsoleFormatter {
     public Output(String type, String outputFileLocation) {
         this.type = type;
         this.outputFileLocation = outputFileLocation;
+//        this.writer = writer;
     }
 
     public Output(OntModel baseModel, String type) {
@@ -55,8 +57,11 @@ public class Output extends ConsoleFormatter {
         int hour = ((millis / 1000) / 3600);
         int minute = (((millis / 1000) / 60) % 60);
         int second = ((millis / 1000) % 60);
-        return String.format("%d:%02d:%02d", hour, minute, second);
+        return String.format("%02d:%02d:%02d", hour, minute, second);
     }
+
+
+
 
     private boolean delete_lines_from_file( String file_name, int startline, int numlines)
     {
@@ -113,7 +118,7 @@ public class Output extends ConsoleFormatter {
 
     public void update( Observable o, Object arg) {
         RDFTable q = (RDFTable) arg;
-        System.out.println(q.size() + " results updated in " + type + " output file ");
+        System.out.println(q.size() + " results updated in " + type + " outputAll file ");
         Iterator i$ = q.iterator();
         RDFTuple t;
         String data_separator = ", ";
@@ -123,6 +128,8 @@ public class Output extends ConsoleFormatter {
 
                 case "EachPersonLocationUpdate": {
                     String modifiedFileContent;
+                    String time_milliseconds = null;
+                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -133,7 +140,8 @@ public class Output extends ConsoleFormatter {
                         subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
@@ -146,32 +154,10 @@ public class Output extends ConsoleFormatter {
 
                             String output = eachTriple[0] + " is located at " + eachTriple[2] + " at time " + eachTriple[1];
 
-                            BufferedWriter writer;
 
                             try {
-//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-//                                String currentReadingLine = reader.readLine();
-//                                while (currentReadingLine != null) {
-//
-//                                    String[] data_reader = currentReadingLine.split(" ");
-//                                    String old_subject = data_reader[0];
-//                                    String old_time = data_reader[7];
-//                                    String old_location = data_reader[4];
-//
-//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
-//                                        int line_number = reader.getLineNumber();
-//                                        reader.close();
-//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-//                                        break;
-//                                    }
-//                                    currentReadingLine = reader.readLine();
-//
-//                                }
-
-                                modifiedFileContent = output;
-                                writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
-                                writer.write(modifiedFileContent + "\n");
-                                writer.flush();
+                                FileWriter writer = new FileWriter(outputFileLocation, true);
+                                writer.write(output + "\n");
                                 writer.close();
                                 Arrays.fill(eachTriple, null);
 
@@ -184,18 +170,20 @@ public class Output extends ConsoleFormatter {
 
                 case "FireCheck": {
                     String modifiedFileContent;
+                    String time_milliseconds = null;
+                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
                         t = (RDFTuple) i$.next();
                         String data = t.toString();
                         String[] data1 = data.split("\t");
-
                         subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
@@ -203,39 +191,13 @@ public class Output extends ConsoleFormatter {
                             String location = (data1[2].substring(56, data1[2].length()));
                             eachTriple[2] = location;
                         }
-
                         if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
-
                             String output = eachTriple[0] + " exists at " + eachTriple[2] + " at time " + eachTriple[1];
-
-                            BufferedWriter writer;
                             try {
-//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-//                                String currentReadingLine = reader.readLine();
-//                                while (currentReadingLine != null) {
-//
-//                                    String[] data_reader = currentReadingLine.split(" ");
-//                                    String old_subject = data_reader[0];
-//                                    String old_time = data_reader[6];
-//                                    String old_location = data_reader[4];
-//
-//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location))) {
-//                                        int line_number = reader.getLineNumber();
-//                                        reader.close();
-//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-//                                        break;
-//                                    }
-//                                    currentReadingLine = reader.readLine();
-//
-//                                }
-
-                                modifiedFileContent = output;
-                                writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
-                                writer.write(modifiedFileContent + "\n");
-                                writer.flush();
+                                FileWriter writer = new FileWriter(outputFileLocation, true);
+                                writer.write(output + "\n");
                                 writer.close();
                                 Arrays.fill(eachTriple, null);
-
                             } catch (IOException e) {
                             }
                         }
@@ -245,18 +207,22 @@ public class Output extends ConsoleFormatter {
 
                 case "VulnerablePeopleMovement": {
                     String modifiedFileContent;
+
+                    String time_milliseconds = null;
+                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[4];
                     String subject = null;
                     while (i$.hasNext()) {
                         t = (RDFTuple) i$.next();
                         String data = t.toString();
                         String[] data1 = data.split("\t");
-
                         subject = (data1[0].substring(56));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+
+                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
@@ -268,39 +234,14 @@ public class Output extends ConsoleFormatter {
                             String location = (data1[2].substring(56));
                             eachTriple[3] = location;
                         }
-
                         if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
-
-
-                            BufferedWriter writer;
                             try {
-//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-//                                String currentReadingLine = reader.readLine();
-//                                while (currentReadingLine != null) {
+                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
 //
-//                                    String[] data_reader = currentReadingLine.split(" ");
-//                                    String old_subject = data_reader[0];
-//                                    String old_time = data_reader[7];
-//                                    String old_location_check = data_reader[4];
-//
-//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
-//                                        int line_number = reader.getLineNumber();
-//                                        reader.close();
-//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-//                                        break;
-//                                    }
-//                                    currentReadingLine = reader.readLine();
-//
-//                                }
-                                String output = eachTriple[0] + " is moved to " + eachTriple[2] + " at time " + eachTriple[1] + " from " + eachTriple[3];
-
-                                modifiedFileContent = output;
-                                writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
-                                writer.write(modifiedFileContent + "\n");
-                                writer.flush();
+                                FileWriter writer = new FileWriter(outputFileLocation, true);
+                                writer.write(output + "\n");
                                 writer.close();
                                 Arrays.fill(eachTriple, null);
-
                             } catch (IOException e) {
                             }
                         }
@@ -310,6 +251,9 @@ public class Output extends ConsoleFormatter {
 
                 case "NonVulnerablePeopleMovement": {
                     String modifiedFileContent;
+
+                    String time_milliseconds = null;
+                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[4];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -321,7 +265,9 @@ public class Output extends ConsoleFormatter {
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+
+                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
@@ -333,39 +279,14 @@ public class Output extends ConsoleFormatter {
                             String location = (data1[2].substring(56));
                             eachTriple[3] = location;
                         }
-
                         if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
-
-
-                            BufferedWriter writer;
                             try {
-//                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-//                                String currentReadingLine = reader.readLine();
-//                                while (currentReadingLine != null) {
+                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
 //
-//                                    String[] data_reader = currentReadingLine.split(" ");
-//                                    String old_subject = data_reader[0];
-//                                    String old_time = data_reader[7];
-//                                    String old_location_check = data_reader[4];
-//
-//                                    if (eachTriple[0].equals(old_subject) && (!eachTriple[1].equals(old_time) || !eachTriple[2].equals(old_location_check))) {
-//                                        int line_number = reader.getLineNumber();
-//                                        reader.close();
-//                                        boolean line_delete = delete_lines_from_file(outputFileLocation, line_number, 1);
-//                                        break;
-//                                    }
-//                                    currentReadingLine = reader.readLine();
-//
-//                                }
-                                String output = eachTriple[0] + " is moved to " + eachTriple[2] + " at time " + eachTriple[1] + " from " + eachTriple[3];
-
-                                modifiedFileContent = output;
-                                writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
-                                writer.write(modifiedFileContent + "\n");
-                                writer.flush();
+                                FileWriter writer = new FileWriter(outputFileLocation, true);
+                                writer.write(output + "\n");
                                 writer.close();
                                 Arrays.fill(eachTriple, null);
-
                             } catch (IOException e) {
                             }
                         }
@@ -375,6 +296,9 @@ public class Output extends ConsoleFormatter {
 
                 case "EvacuationStatusCompleted": {
                     String modifiedFileContent;
+
+                    String time_milliseconds = null;
+                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -385,7 +309,9 @@ public class Output extends ConsoleFormatter {
                         subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+
+                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("evacuationStatus")) {
@@ -395,37 +321,23 @@ public class Output extends ConsoleFormatter {
                         }
 
                         if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
-
-
-                            BufferedWriter writer;
-                            boolean found=false;
-                            try {
-                                LineNumberReader reader = new LineNumberReader(new BufferedReader(new FileReader(outputFileLocation)));
-                                String currentReadingLine = reader.readLine();
-                                while (currentReadingLine != null) {
-                                    String[] data_reader = currentReadingLine.split(" ");
-                                    String old_subject = data_reader[0];
-                                    if (eachTriple[0].equals(old_subject)){
-                                        found = true;
-                                        break;
-                                    }
-                                    currentReadingLine = reader.readLine();
-                                }
-                                if(!found) {
+                            if (evacuated_person_store.contains(subject)) {
+                                break;
+                            } else {
+                                evacuated_person_store.add(subject);
+                                try {
                                     String output = eachTriple[0] + " has " + eachTriple[2] + " the evacuation successfully at time " + eachTriple[1];
-                                    modifiedFileContent = output;
-                                    writer = new BufferedWriter(new FileWriter(outputFileLocation, true));
-                                    writer.write(modifiedFileContent + "\n");
-                                    writer.flush();
+                                    FileWriter writer = new FileWriter(outputFileLocation, true);
+                                    writer.write(output + "\n");
                                     writer.close();
                                     Arrays.fill(eachTriple, null);
+                                } catch (IOException e) {
                                 }
-                            } catch (IOException e) {
                             }
                         }
                     }
-                    break;
-                }
+                        break;
+                    }
 
                 default: {
                     while (i$.hasNext()) {
