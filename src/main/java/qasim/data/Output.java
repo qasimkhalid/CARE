@@ -49,7 +49,11 @@ public class Output extends ConsoleFormatter {
         this.baseInferred = baseModelInferred;
     }
 
-
+    private void WriterAppended( String data, String fileLocation ) throws IOException {
+        FileWriter writer = new FileWriter(fileLocation, true);
+        writer.write(data + "\n");
+        writer.close();
+    }
 
 
     private String MillisecondsToHumanTime( int millis ) {
@@ -59,8 +63,6 @@ public class Output extends ConsoleFormatter {
         int second = ((millis / 1000) % 60);
         return String.format("%02d:%02d:%02d", hour, minute, second);
     }
-
-
 
 
     private boolean delete_lines_from_file( String file_name, int startline, int numlines)
@@ -127,9 +129,6 @@ public class Output extends ConsoleFormatter {
             switch (type) {
 
                 case "EachPersonLocationUpdate": {
-                    String modifiedFileContent;
-                    String time_milliseconds = null;
-                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -140,8 +139,7 @@ public class Output extends ConsoleFormatter {
                         subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
-                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
+                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
@@ -156,9 +154,7 @@ public class Output extends ConsoleFormatter {
 
 
                             try {
-                                FileWriter writer = new FileWriter(outputFileLocation, true);
-                                writer.write(output + "\n");
-                                writer.close();
+                                WriterAppended(output, outputFileLocation);
                                 Arrays.fill(eachTriple, null);
 
                             } catch (IOException e) {
@@ -169,9 +165,6 @@ public class Output extends ConsoleFormatter {
                 }
 
                 case "FireCheck": {
-                    String modifiedFileContent;
-                    String time_milliseconds = null;
-                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -182,8 +175,7 @@ public class Output extends ConsoleFormatter {
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
+                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("locatedIn")) {
@@ -194,9 +186,7 @@ public class Output extends ConsoleFormatter {
                         if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
                             String output = eachTriple[0] + " exists at " + eachTriple[2] + " at time " + eachTriple[1];
                             try {
-                                FileWriter writer = new FileWriter(outputFileLocation, true);
-                                writer.write(output + "\n");
-                                writer.close();
+                                WriterAppended(output, outputFileLocation);
                                 Arrays.fill(eachTriple, null);
                             } catch (IOException e) {
                             }
@@ -206,10 +196,6 @@ public class Output extends ConsoleFormatter {
                 }
 
                 case "VulnerablePeopleMovement": {
-                    String modifiedFileContent;
-
-                    String time_milliseconds = null;
-                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[4];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -220,9 +206,7 @@ public class Output extends ConsoleFormatter {
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-
-                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
+                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
@@ -238,9 +222,7 @@ public class Output extends ConsoleFormatter {
                             try {
                                 String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
 //
-                                FileWriter writer = new FileWriter(outputFileLocation, true);
-                                writer.write(output + "\n");
-                                writer.close();
+                                WriterAppended(output, outputFileLocation);
                                 Arrays.fill(eachTriple, null);
                             } catch (IOException e) {
                             }
@@ -250,10 +232,6 @@ public class Output extends ConsoleFormatter {
                 }
 
                 case "NonVulnerablePeopleMovement": {
-                    String modifiedFileContent;
-
-                    String time_milliseconds = null;
-                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[4];
                     String subject = null;
                     while (i$.hasNext()) {
@@ -265,9 +243,7 @@ public class Output extends ConsoleFormatter {
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
                             // Time Information
-                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-
-                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
+                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("movedTo")) {
@@ -283,9 +259,7 @@ public class Output extends ConsoleFormatter {
                             try {
                                 String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
 //
-                                FileWriter writer = new FileWriter(outputFileLocation, true);
-                                writer.write(output + "\n");
-                                writer.close();
+                                WriterAppended(output, outputFileLocation);
                                 Arrays.fill(eachTriple, null);
                             } catch (IOException e) {
                             }
@@ -295,23 +269,16 @@ public class Output extends ConsoleFormatter {
                 }
 
                 case "EvacuationStatusCompleted": {
-                    String modifiedFileContent;
-
-                    String time_milliseconds = null;
-                    int time_milliseconds_int = 0;
                     String[] eachTriple = new String[3];
                     String subject = null;
                     while (i$.hasNext()) {
                         t = (RDFTuple) i$.next();
                         String data = t.toString();
                         String[] data1 = data.split("\t");
-
                         subject = (data1[0].substring(56, data1[0].length()));
                         eachTriple[0] = subject;
                         if (data1[1].contains("atTime")) {
-                            time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-
-                            time_milliseconds_int = Integer.parseInt(time_milliseconds);
+                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
                             String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
                             eachTriple[1] = time_human;
                         } else if (data1[1].contains("evacuationStatus")) {
@@ -327,9 +294,7 @@ public class Output extends ConsoleFormatter {
                                 evacuated_person_store.add(subject);
                                 try {
                                     String output = eachTriple[0] + " has " + eachTriple[2] + " the evacuation successfully at time " + eachTriple[1];
-                                    FileWriter writer = new FileWriter(outputFileLocation, true);
-                                    writer.write(output + "\n");
-                                    writer.close();
+                                    WriterAppended(output, outputFileLocation);
                                     Arrays.fill(eachTriple, null);
                                 } catch (IOException e) {
                                 }
@@ -355,6 +320,8 @@ public class Output extends ConsoleFormatter {
         }
 
     }
+
+
 }
 
 
