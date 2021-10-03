@@ -2,9 +2,6 @@
 CAREE: Context-AwaRe Emergency Evacuation Software
 */
 
-
-
-package main.java;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -62,10 +59,10 @@ public class CAREE {
 
 
             // Input Files location (or Data from Sensors)
-            final String streamFileLocationSensors= "Data_CSPARQL_Qasim/Dataset/usermovementsScenario1.stream";
-            final String streamFileTemperatureSensors= "Data_CSPARQL_Qasim/Dataset/TempScenario1.stream";
-            final String streamFileSmokeSensors= "Data_CSPARQL_Qasim/Dataset/SmokeScenario1.stream";
-            final String ontologyStatic = "Data_CSPARQL_Qasim/Ontology/SBEvac_Ontology_1.6_Scenario_1_v0.2_A-Box(Turtle).owl";
+            final String streamFileLocationSensors= "data/Dataset/usermovementsScenario1.stream";
+            final String streamFileTemperatureSensors= "data/Dataset/TempScenario1.stream";
+            final String streamFileSmokeSensors= "data/Dataset/SmokeScenario1.stream";
+            final String ontologyStatic = "data/Ontology/SBEvac_Ontology_1.6_Scenario_1_v0.2_A-Box(Turtle).ttl";
 
 
             InputStream in = FileManager.get().open(ontologyStatic);
@@ -106,29 +103,29 @@ public class CAREE {
             //*****//*****//*****//*****////*****//*****//*****//*****//
 
             //Query: Getting the Location of Each Person:
-            String locationEachPersonQuery = "REGISTER STREAM EachPersonLocation AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/RawEvents/locationEachPerson");
+            String locationEachPersonQuery = "REGISTER STREAM EachPersonLocation AS " + prefixes + CsparqlUtils.fileToString("data/Queries/RawEvents/locationEachPerson");
 
             //Query: Checking the rise in Temperature (if any):
-            String temperatureRiseForFireCheckQuery = "REGISTER Stream TemperatureRiseForFireCheck AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/DomainDataEvents/Space/temperatureRiseForFireCheck");
+            String temperatureRiseForFireCheckQuery = "REGISTER Stream TemperatureRiseForFireCheck AS " + prefixes + CsparqlUtils.fileToString("data/Queries/DomainDataEvents/Space/temperatureRiseForFireCheck");
 
             //Query: Checking the Smoke (if any):
-            String smokePresenceCheckQuery =  "REGISTER Stream SmokePresenceCheck AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/DomainDataEvents/Space/smokePresenceCheck");
+            String smokePresenceCheckQuery =  "REGISTER Stream SmokePresenceCheck AS " + prefixes + CsparqlUtils.fileToString("data/Queries/DomainDataEvents/Space/smokePresenceCheck");
 
             //Query: Vulnerable People Movement Detection (if any):
-            String VulnerablePeopleMovementDetectionCheckQuery = "REGISTER STREAM VulnerablePeopleMovementDetection AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/DomainDataEvents/Person/VulnerablePeopleMovementDetection");
+            String VulnerablePeopleMovementDetectionCheckQuery = "REGISTER STREAM VulnerablePeopleMovementDetection AS " + prefixes + CsparqlUtils.fileToString("data/Queries/DomainDataEvents/Person/VulnerablePeopleMovementDetection");
 
             //Query: Person Moving Without Authorisation (if any):
-            String NonVulnerablePeopleMovementDetectionCheckQuery = "REGISTER STREAM NonVulnerablePeopleMovementDetection AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/DomainDataEvents/Person/NonVulnerablePeopleMovementDetection");
+            String NonVulnerablePeopleMovementDetectionCheckQuery = "REGISTER STREAM NonVulnerablePeopleMovementDetection AS " + prefixes + CsparqlUtils.fileToString("data/Queries/DomainDataEvents/Person/NonVulnerablePeopleMovementDetection");
 
             //Query: Vulnerable Person Moved With Check (if any):
-            String EvacuationStatusCompletedCheckQuery = "REGISTER STREAM EvacuationStatusComplete AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/DomainDataEvents/Person/EvacuationStatusComplete");
+            String EvacuationStatusCompletedCheckQuery = "REGISTER STREAM EvacuationStatusComplete AS " + prefixes + CsparqlUtils.fileToString("data/Queries/DomainDataEvents/Person/EvacuationStatusComplete");
 
             //*****//*****//*****//*****////*****//*****//*****//*****//
             //Following is the list of Queries to get Information about Hazardous Events Using Domain Data Events
             //*****//*****//*****//*****////*****//*****//*****//*****//
 
             //Query: Fire Detection (if any):
-            String fireCheckQuery = "REGISTER STREAM FireCheck AS " + prefixes + CsparqlUtils.fileToString("Data_CSPARQL_Qasim/Queries/HazardousEvents/fireCheck");
+            String fireCheckQuery = "REGISTER STREAM FireCheck AS " + prefixes + CsparqlUtils.fileToString("data/Queries/HazardousEvents/fireCheck");
 
 
 
