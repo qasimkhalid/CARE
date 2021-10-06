@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CSPARQL-ReadyToGoPack.iml" filepath="$PROJECT_DIR$/CSPARQL-ReadyToGoPack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CSPARQL.iml" filepath="$PROJECT_DIR$/CSPARQL.iml" />
     </modules>
   </component>
 </project>
