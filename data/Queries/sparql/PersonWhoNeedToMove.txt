@@ -8,13 +8,15 @@ PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-select ?person ?space (sample(?space2)  as ?nextSpace)
+select ?person ?space (sample(?space2) as ?nextSpace) ?val
 where {
         ?person a foaf:Person ;
-                sbeo:locatedIn ?space .
+                sbeo:locatedIn ?space ;
+                sbeo:id ?val .
         ?space sbeo:connectedTo ?space2 .
         FILTER (NOT EXISTS {?space2 sbeo:AvailabilityStatus sbeo:UnAvailable}) .
-        FILTER (EXISTS {?person sbeo:hasActivityStatus ex:Evacuating}) .
         FILTER (EXISTS {?person sbeo:hasMotionState ex:Standing}) .
+        FILTER (NOT EXISTS {?person sbeo:hasactivityStatus ex:Evacuating}) .
       }
-group by ?person ?space
+group by ?person ?space ?val
+ORDER By ASC(?person)

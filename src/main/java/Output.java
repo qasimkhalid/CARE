@@ -28,8 +28,9 @@ public class Output extends ConsoleFormatter {
 
 
 
-//    public Output() {
-//    }
+    public Output(String outputFileLocation) {
+        this.outputFileLocation = outputFileLocation;
+    }
 
     public Output(String type, String outputFileLocation) {
         this.type = type;
@@ -124,194 +125,194 @@ public class Output extends ConsoleFormatter {
         RDFTuple t;
         String data_separator = ", ";
 
-        if (type !=null) {
-            switch (type) {
-
-                case "EachPersonLocationUpdate": {
-                    String[] eachTriple = new String[3];
-                    String subject = null;
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        String data = t.toString();
-                        String[] data1 = data.split("\t");
-
-                        subject = (data1[0].substring(56, data1[0].length()));
-                        eachTriple[0] = subject;
-                        if (data1[1].contains("atTime")) {
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
-                            eachTriple[1] = time_human;
-                        } else if (data1[1].contains("locatedIn")) {
-                            //Location Information
-                            String location = (data1[2].substring(56, data1[2].length()));
-                            eachTriple[2] = location;
-                        }
-
-                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
-
-                            String output = eachTriple[0] + " is located at " + eachTriple[2] + " at time " + eachTriple[1];
-
-
-                            try {
-                                WriterAppended(output, outputFileLocation);
-                                Arrays.fill(eachTriple, null);
-
-                            } catch (IOException e) {
-                            }
-                        }
-                    }
-                    break;
-                }
-
-                case "FireCheck": {
-                    String[] eachTriple = new String[3];
-                    String subject = null;
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        String data = t.toString();
-                        String[] data1 = data.split("\t");
-                        subject = (data1[0].substring(56, data1[0].length()));
-                        eachTriple[0] = subject;
-                        if (data1[1].contains("atTime")) {
-                            // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
-                            eachTriple[1] = time_human;
-                        } else if (data1[1].contains("locatedIn")) {
-                            //Location Information
-                            String location = (data1[2].substring(56, data1[2].length()));
-                            eachTriple[2] = location;
-                        }
-                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
-                            String output = eachTriple[0] + " exists at " + eachTriple[2] + " at time " + eachTriple[1];
-                            try {
-                                WriterAppended(output, outputFileLocation);
-                                Arrays.fill(eachTriple, null);
-                            } catch (IOException e) {
-                            }
-                        }
-                    }
-                    break;
-                }
-
-                case "VulnerablePeopleMovement": {
-                    String[] eachTriple = new String[4];
-                    String subject = null;
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        String data = t.toString();
-                        String[] data1 = data.split("\t");
-                        subject = (data1[0].substring(56));
-                        eachTriple[0] = subject;
-                        if (data1[1].contains("atTime")) {
-                            // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
-                            eachTriple[1] = time_human;
-                        } else if (data1[1].contains("movedTo")) {
-                            //Location Information
-                            String location = (data1[2].substring(56));
-                            eachTriple[2] = location;
-                        }  else if (data1[1].contains("movedFrom")) {
-                            //Location Information
-                            String location = (data1[2].substring(56));
-                            eachTriple[3] = location;
-                        }
-                        if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
-                            try {
-                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
+//        if (type !=null) {
+//            switch (type) {
 //
-                                WriterAppended(output, outputFileLocation);
-                                Arrays.fill(eachTriple, null);
-                            } catch (IOException e) {
-                            }
-                        }
-                    }
-                    break;
-                }
-
-                case "NonVulnerablePeopleMovement": {
-                    String[] eachTriple = new String[4];
-                    String subject = null;
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        String data = t.toString();
-                        String[] data1 = data.split("\t");
-
-                        subject = (data1[0].substring(56));
-                        eachTriple[0] = subject;
-                        if (data1[1].contains("atTime")) {
-                            // Time Information
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
-                            eachTriple[1] = time_human;
-                        } else if (data1[1].contains("movedTo")) {
-                            //Location Information
-                            String location = (data1[2].substring(56));
-                            eachTriple[2] = location;
-                        }  else if (data1[1].contains("movedFrom")) {
-                            //Location Information
-                            String location = (data1[2].substring(56));
-                            eachTriple[3] = location;
-                        }
-                        if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
-                            try {
-                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
+//                case "EachPersonLocationUpdate": {
+//                    String[] eachTriple = new String[3];
+//                    String subject = null;
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        String data = t.toString();
+//                        String[] data1 = data.split("\t");
 //
-                                WriterAppended(output, outputFileLocation);
-                                Arrays.fill(eachTriple, null);
-                            } catch (IOException e) {
-                            }
-                        }
-                    }
-                    break;
-                }
+//                        subject = (data1[0].substring(56, data1[0].length()));
+//                        eachTriple[0] = subject;
+//                        if (data1[1].contains("atTime")) {
+//                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+//                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
+//                            eachTriple[1] = time_human;
+//                        } else if (data1[1].contains("locatedIn")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56, data1[2].length()));
+//                            eachTriple[2] = location;
+//                        }
+//
+//                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
+//
+//                            String output = eachTriple[0] + " is located at " + eachTriple[2] + " at time " + eachTriple[1];
+//
+//
+//                            try {
+//                                WriterAppended(output, outputFileLocation);
+//                                Arrays.fill(eachTriple, null);
+//
+//                            } catch (IOException e) {
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//
+//                case "FireCheck": {
+//                    String[] eachTriple = new String[3];
+//                    String subject = null;
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        String data = t.toString();
+//                        String[] data1 = data.split("\t");
+//                        subject = (data1[0].substring(56, data1[0].length()));
+//                        eachTriple[0] = subject;
+//                        if (data1[1].contains("atTime")) {
+//                            // Time Information
+//                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+//                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
+//                            eachTriple[1] = time_human;
+//                        } else if (data1[1].contains("locatedIn")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56, data1[2].length()));
+//                            eachTriple[2] = location;
+//                        }
+//                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
+//                            String output = eachTriple[0] + " exists at " + eachTriple[2] + " at time " + eachTriple[1];
+//                            try {
+//                                WriterAppended(output, outputFileLocation);
+//                                Arrays.fill(eachTriple, null);
+//                            } catch (IOException e) {
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//
+//                case "VulnerablePeopleMovement": {
+//                    String[] eachTriple = new String[4];
+//                    String subject = null;
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        String data = t.toString();
+//                        String[] data1 = data.split("\t");
+//                        subject = (data1[0].substring(56));
+//                        eachTriple[0] = subject;
+//                        if (data1[1].contains("atTime")) {
+//                            // Time Information
+//                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+//                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
+//                            eachTriple[1] = time_human;
+//                        } else if (data1[1].contains("movedTo")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56));
+//                            eachTriple[2] = location;
+//                        }  else if (data1[1].contains("movedFrom")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56));
+//                            eachTriple[3] = location;
+//                        }
+//                        if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
+//                            try {
+//                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
+////
+//                                WriterAppended(output, outputFileLocation);
+//                                Arrays.fill(eachTriple, null);
+//                            } catch (IOException e) {
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//
+//                case "NonVulnerablePeopleMovement": {
+//                    String[] eachTriple = new String[4];
+//                    String subject = null;
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        String data = t.toString();
+//                        String[] data1 = data.split("\t");
+//
+//                        subject = (data1[0].substring(56));
+//                        eachTriple[0] = subject;
+//                        if (data1[1].contains("atTime")) {
+//                            // Time Information
+//                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+//                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
+//                            eachTriple[1] = time_human;
+//                        } else if (data1[1].contains("movedTo")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56));
+//                            eachTriple[2] = location;
+//                        }  else if (data1[1].contains("movedFrom")) {
+//                            //Location Information
+//                            String location = (data1[2].substring(56));
+//                            eachTriple[3] = location;
+//                        }
+//                        if ((eachTriple[1] != null) && (eachTriple[2] != null) && (eachTriple[3] != null)) {
+//                            try {
+//                                String output = eachTriple[0] + " is moved to " + eachTriple[2]  + " from " + eachTriple[3]+ " at time " + eachTriple[1];
+////
+//                                WriterAppended(output, outputFileLocation);
+//                                Arrays.fill(eachTriple, null);
+//                            } catch (IOException e) {
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//
+//                case "EvacuationStatusCompleted": {
+//                    String[] eachTriple = new String[3];
+//                    String subject = null;
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        String data = t.toString();
+//                        String[] data1 = data.split("\t");
+//                        subject = (data1[0].substring(56, data1[0].length()));
+//                        eachTriple[0] = subject;
+//                        if (data1[1].contains("atTime")) {
+//                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
+//                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
+//                            eachTriple[1] = time_human;
+//                        } else if (data1[1].contains("evacuationStatus")) {
+//                            //Location Information
+//                            String status = (data1[2].substring(1, data1[2].length() - 42));
+//                            eachTriple[2] = status;
+//                        }
+//
+//                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
+//                            if (evacuated_person_store.contains(subject)) {
+//                                break;
+//                            } else {
+//                                evacuated_person_store.add(subject);
+//                                try {
+//                                    String output = eachTriple[0] + " has " + eachTriple[2] + " the evacuation successfully at time " + eachTriple[1];
+//                                    WriterAppended(output, outputFileLocation);
+//                                    Arrays.fill(eachTriple, null);
+//                                } catch (IOException e) {
+//                                }
+//                            }
+//                        }
+//                    }
+//                        break;
+//                    }
+//
+//                default: {
+//                    while (i$.hasNext()) {
+//                        t = (RDFTuple) i$.next();
+//                        System.out.println(t.toString());
+//                    }
+//                }
 
-                case "EvacuationStatusCompleted": {
-                    String[] eachTriple = new String[3];
-                    String subject = null;
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        String data = t.toString();
-                        String[] data1 = data.split("\t");
-                        subject = (data1[0].substring(56, data1[0].length()));
-                        eachTriple[0] = subject;
-                        if (data1[1].contains("atTime")) {
-                            String time_milliseconds = (data1[2].substring(1, data1[2].length() - 43));
-                            String time_human = MillisecondsToHumanTime(Integer.parseInt(time_milliseconds));
-                            eachTriple[1] = time_human;
-                        } else if (data1[1].contains("evacuationStatus")) {
-                            //Location Information
-                            String status = (data1[2].substring(1, data1[2].length() - 42));
-                            eachTriple[2] = status;
-                        }
-
-                        if ((eachTriple[1] != null) && (eachTriple[2] != null)) {
-                            if (evacuated_person_store.contains(subject)) {
-                                break;
-                            } else {
-                                evacuated_person_store.add(subject);
-                                try {
-                                    String output = eachTriple[0] + " has " + eachTriple[2] + " the evacuation successfully at time " + eachTriple[1];
-                                    WriterAppended(output, outputFileLocation);
-                                    Arrays.fill(eachTriple, null);
-                                } catch (IOException e) {
-                                }
-                            }
-                        }
-                    }
-                        break;
-                    }
-
-                default: {
-                    while (i$.hasNext()) {
-                        t = (RDFTuple) i$.next();
-                        System.out.println(t.toString());
-                    }
-                }
-
-            }
-        }else {
+//            }
+//        }else {
             while (i$.hasNext()) {
                 t = (RDFTuple) i$.next();
                 System.out.println(t.toString());
@@ -321,7 +322,7 @@ public class Output extends ConsoleFormatter {
     }
 
 
-}
+//}
 
 
 

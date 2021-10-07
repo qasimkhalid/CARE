@@ -1,0 +1,16 @@
+SELECT DISTINCT ?time ?space ?person
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+        ?person a foaf:Person ;
+                sbeo:id ?id .
+
+        ?obs a sosa:Observation;
+            sosa:observedProperty ex:HumanDetection;
+            sosa:hasSimpleResult ?id ;
+            sbeo:atTime ?time ;
+            sosa:madeBySensor ?sensor .
+
+        ?sensor sbeo:installedIn ?space .
+}
+ORDER BY ASC(?person)

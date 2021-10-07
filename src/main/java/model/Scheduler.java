@@ -19,14 +19,14 @@ public class Scheduler {
         this.movingPersons = movingPersons;
     }
 
-    public void addMovingPerson(String person, long timeRequired, long timeElapsed, String origin, String destination){
-        PersonMovementTime m = new PersonMovementTime(person, timeRequired, timeElapsed, origin, destination);
-        movingPersons.add(m);
+    public void addMovingPerson(String person, long timeRequired, long timeElapsed, String origin, String destination, String id){
+        PersonMovementTime m = new PersonMovementTime(person, timeRequired, timeElapsed, origin, destination, id);
+        this.movingPersons.add(m);
     }
 
     public void removeMovingPerson(List<PersonMovementTime> list){
         for(PersonMovementTime l :list){
-            movingPersons.remove(l);
+            this.movingPersons.remove(l);
         }
     }
 
@@ -43,6 +43,8 @@ public class Scheduler {
             long getPersonTimeElapsed = l.getTimeElapsed();
             long getPersonTimeRequired = l.getTimeRequired();
             if (getPersonTimeRequired > getPersonTimeElapsed){
+
+
                 l.setTimeElapsed(getPersonTimeElapsed + deltaTime);
             } else {
                 personWhoFinishedMovement.add(l);

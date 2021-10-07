@@ -7,6 +7,7 @@ public class PersonMovementTime {
     private long timeElapsed;
     private String origin;
     private String destination;
+    private String id;
 
 
     public PersonMovementTime( String person, long timeRequired, long timeElapsed ) {
@@ -15,12 +16,21 @@ public class PersonMovementTime {
         this.timeElapsed = timeElapsed;
     }
 
-    public PersonMovementTime( String person, long timeRequired, long timeElapsed, String origin, String destination ) {
+    public PersonMovementTime( String person, long timeRequired, long timeElapsed, String origin, String destination, String id ) {
         this.person = person;
         this.timeRequired = timeRequired;
         this.timeElapsed = timeElapsed;
         this.origin = origin;
         this.destination = destination;
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId( String id ) {
+        this.id = id;
     }
 
     public String getPerson() {
