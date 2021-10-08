@@ -2,13 +2,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class Scheduler {
 
     private List<PersonMovementTime> movingPersons = new ArrayList<>();
 
     public Scheduler() {
-
     }
 
     public List<PersonMovementTime> getMovingPersons() {
@@ -30,21 +31,12 @@ public class Scheduler {
         }
     }
 
-    public void  updateMovingPerson(){
-    }
-
-
-    public void deleteMovingPerson(){
-    }
-
     public List<PersonMovementTime> update( long deltaTime, List<PersonMovementTime> list){
         List<PersonMovementTime> personWhoFinishedMovement = new ArrayList<>();
         for(PersonMovementTime l : list){
             long getPersonTimeElapsed = l.getTimeElapsed();
             long getPersonTimeRequired = l.getTimeRequired();
             if (getPersonTimeRequired > getPersonTimeElapsed){
-
-
                 l.setTimeElapsed(getPersonTimeElapsed + deltaTime);
             } else {
                 personWhoFinishedMovement.add(l);
@@ -54,6 +46,7 @@ public class Scheduler {
         return personWhoFinishedMovement;
     }
 
-
-
+    public void addMovingPerson( PersonMovementTime person ) {
+        this.movingPersons.add(person);
+    }
 }

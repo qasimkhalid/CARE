@@ -72,4 +72,8 @@ public class PersonMovementTime {
     public void setDestination( String destination ) {
         this.destination = destination;
     }
+
+    public void incrementTimeRequired( long additionalTime ) {
+        this.timeRequired += additionalTime;
+    }
 }

@@ -699,7 +699,11 @@ ex:OpenHall2_Temperature_Sensor rdf:type owl:NamedIndividual ,
 
 ###  https://w3id.org/sbeo/example/officescenario#POI1
 ex:POI1 rdf:type owl:NamedIndividual ,
-                 sbeo:PointOfInterest .
+                 sbeo:PointOfInterest ;
+        sbeo:connectedTo ex:J1 ;
+        sbeo:accommodationCapacity 1 ;
+        sbeo:area "5.0"^^xsd:float .
+
 
 
 ###  https://w3id.org/sbeo/example/officescenario#POI1_HumanDetection_Sensor

@@ -6,22 +6,21 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
+import helper.MathOperations;
 import helper.SparqlFunctions;
 import model.ODPair;
 import model.PersonMovementTime;
 import model.Scheduler;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
+import model.Space;
+import org.apache.thrift.TException;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HumanLocationStream extends RdfStream implements Runnable {
 
-    private static InfModel infModel;
+    private volatile static InfModel infModel;
     private final static String foafPrefix = "http://xmlns.com/foaf/0.1/";
     private final static String rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
     private final static String sbeoPrefix = "https://w3id.org/sbeo#";
@@ -39,6 +38,7 @@ public class HumanLocationStream extends RdfStream implements Runnable {
     private final String streamIRI;
     private boolean keepRunning = true;
     private long initialTime;
+    private static final float AREA_PER_PERSON_M2 = 1f;
 
     private static Resource originInstance ;
     private static Resource destinationInstance ;
@@ -49,7 +49,7 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
 
 
-    public HumanLocationStream(final String iri, int timeStep, InfModel model, long initialTime) {
+    public HumanLocationStream(final String iri, int timeStep, InfModel model) {
         super(iri);
         this.streamIRI = iri;
         this.timeStep = timeStep;
@@ -71,14 +71,18 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         atTime = infModel.getProperty(sbeoPrefix+ "atTime");
 
         List<ODPair> odPairList = new ArrayList<>();
-        Scheduler sch = new Scheduler();
-        List<String> personNeedToMoveODQueryResult = null;
+        List<Space> spaceInfoList = new ArrayList<>();
+        Scheduler scheduler = new Scheduler();
+        List<String> personNeedToMoveODQueryResult;
         List<PersonMovementTime> personWhoFinished;
-        OutputStream s;
-        long dT;
-
+//        OutputStream out;
+        long deltaTime;
+        long timeRequired;
+        long extraTime;
+        float area;
         try {
-            getCostOfAllODPairs(infModel, odPairList);
+            odPairList = getCostOfAllODPairs(infModel);
+            spaceInfoList = getSpaceInfo(infModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,10 +91,14 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
             System.out.println("Time Step No: " +  count );
             try {
-                dT = System.currentTimeMillis() - initialTime;
+                deltaTime = System.currentTimeMillis() - initialTime;
 
                 personNeedToMoveODQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel,  "data/Queries/sparql/PersonWhoNeedToMove.txt");
                 if(!personNeedToMoveODQueryResult.isEmpty()) {
+
+                    Map<String, Integer> spaceDensityMap = new HashMap<>();
+                    List<PersonMovementTime> personNeedToMove = new ArrayList<>();
+
                     for(int i=0; i < personNeedToMoveODQueryResult.size()-3; i+=4){
 
                         String p = personNeedToMoveODQueryResult.get(i);
@@ -98,29 +106,59 @@ public class HumanLocationStream extends RdfStream implements Runnable {
                         String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
                         String origin = personNeedToMoveODQueryResult.get(i+2);
                         String destination = personNeedToMoveODQueryResult.get(i+3);
-                        Long tReq = 0L;
-                        for(ODPair t: odPairList){
-                            if (t.getOrigin().equals(origin) && t.getDestination().equals(destination)){
-                                tReq = t.getValue() * 1000;
-                                break;
-                            }
+
+                        // calculate required time
+                        Optional<ODPair> odPair = odPairList.stream()
+                                .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
+
+                        if (odPair.isPresent()) {
+                            timeRequired = odPair.get().getValue() * 1000;
+                        } else {
+                            throw new Exception("Origin and Destination not found in odPairList");
                         }
-                        sch.addMovingPerson(p, tReq, 0, origin, destination, id);
+
+                        // calculate density of each space
+                        spaceDensityMap.merge(origin, 1, Integer::sum);
+
+                        PersonMovementTime person = new PersonMovementTime(p, timeRequired, 0, origin, destination, id);
+                        personNeedToMove.add(person);
+
+                    }
+
+                    for (PersonMovementTime person : personNeedToMove) {
+
+                        // find space area
+                        Optional<Space> space = spaceInfoList.stream()
+                                .filter(x -> x.getSpace().equals(person.getOrigin())).findFirst();
+                        if (space.isPresent()) {
+                            area = space.get().getArea();
+                        } else {
+                            throw new Exception("Origin of person not found in spaceInfoList");
+                        }
+
+                        Integer density = spaceDensityMap.get(person.getOrigin());
+                        extraTime = MathOperations.getExtraTime(area, density, AREA_PER_PERSON_M2);
+                        if (extraTime > 0) {
+                            person.incrementTimeRequired(extraTime);
+                        }
+
+                        // add person in the scheduler
+                        scheduler.addMovingPerson(person);
                     }
                 }
 
-                updateModelBeforePersonMoves(infModel, sch.getMovingPersons());
+                updateModelBeforePersonMoves(infModel, scheduler.getMovingPersons());
 
 
 //                    s = new FileOutputStream("data/output/4.txt");
 //                    RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
-                personWhoFinished = sch.update(dT, sch.getMovingPersons());
+                personWhoFinished = scheduler.update(deltaTime, scheduler.getMovingPersons());
 
                 if(!personWhoFinished.isEmpty()) {
                     updateModelWhenPersonFinishedMoving(infModel, personWhoFinished);
-                    s = new FileOutputStream("data/output/5.txt");
-                    RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
-                    int test = 0;
+//                    s = new FileOutputStream("data/output/5.txt");
+//                    RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
+//                    int test = 0;
                 }
 
                 this.initialTime = System.currentTimeMillis();
@@ -132,7 +170,7 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         }
     }
 
-    private void updateModelWhenPersonFinishedMoving( InfModel infModel, List<PersonMovementTime> list) throws FileNotFoundException {
+    private void updateModelWhenPersonFinishedMoving( InfModel infModel, List<PersonMovementTime> list) {
         RdfQuadruple q;
 
 
@@ -178,10 +216,10 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         }
     }
 
-    private List<ODPair> getCostOfAllODPairs( InfModel infModel, List<ODPair> list) throws Exception {
+    private List<ODPair> getCostOfAllODPairs( InfModel infModel) throws Exception {
         List<String> odPairQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindO-DPairs.txt");
+        List<ODPair> list = new ArrayList<>();
         ODPair odp;
-
         for(int i=0; i < odPairQueryResult.size()-2; i+=3) {
             odp = new ODPair(odPairQueryResult.get(i), odPairQueryResult.get(i+1), odPairQueryResult.get(i+2));
             list.add(odp);
@@ -191,10 +229,18 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         return list;
     }
 
-    private static String getCurrentTimeStamp() {
-        Date date = new java.util.Date();
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+    private List<Space> getSpaceInfo( InfModel infModel) throws Exception {
+        List<String> spaceInfoQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/GetSpaceInfo.txt");
+        List<Space> list = new ArrayList<>();
+        Space s;
+        for(int i=0; i < spaceInfoQueryResult.size()-1; i+=2) {
+            s = new Space(spaceInfoQueryResult.get(i), spaceInfoQueryResult.get(i+1));
+            list.add(s);
+        }
+        return list;
     }
+
+
 
 
 

@@ -40,4 +40,9 @@ public class ODPair {
 //        this.value = Long.parseLong(value.substring(0, value.length() - 1).trim());
         this.value = Long.parseLong(value.trim());
     }
+
+    public ODPair( String origin, String destination) {
+        this.origin = origin;
+        this.destination = destination;
+    }
 }

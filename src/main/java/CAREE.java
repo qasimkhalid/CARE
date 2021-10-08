@@ -1,15 +1,9 @@
-/**
+/*
 CAREE: Context-AwaRe Emergency Evacuation Software
 
  Example: sbeo evaluation
-
 */
 
-//import com.hp.hpl.jena.rdf.model.Model;
-//import com.hp.hpl.jena.rdf.model.ModelFactory;
-//import eu.larkc.csparql.core.engine.RDFStreamFormatter;
-//
-import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.*;
@@ -17,20 +11,13 @@ import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 import eu.larkc.csparql.common.utils.CsparqlUtils;
 
-import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import eu.larkc.csparql.cep.api.RdfStream;
-import eu.larkc.csparql.common.utils.CsparqlUtils;
 import eu.larkc.csparql.core.engine.ConsoleFormatter;
+import helper.MathOperations;
 import helper.SparqlFunctions;
-import model.ODPair;
-import model.PersonMovementTime;
-import model.Scheduler;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import eu.larkc.csparql.core.engine.CsparqlEngineImpl;
 import eu.larkc.csparql.core.engine.CsparqlQueryResultProxy;
 import org.apache.jena.riot.RDFDataMgr;
@@ -43,11 +30,13 @@ import java.util.Random;
 
 public class CAREE {
 
+    public volatile static InfModel infModel;
     private final static String outputFileAddress = "data/output/outputAll";
     private final static String ontologyStatic = "https://raw.githubusercontent.com/qasimkhalid/SBEO/master/sbeo.owl";
     private final static String baseIRI = "https://w3id.org/sbeo";
     private final static String kbIRI = "https://w3id.org/sbeo/example/officescenario";
     private final static long initialTime = System.currentTimeMillis();
+
 
     private static Property motionState;
     private static Property locatedIn;
@@ -79,12 +68,12 @@ public class CAREE {
         Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
         reasoner = reasoner.bindSchema(baseModel);
 
-        InfModel infModel = ModelFactory.createInfModel(reasoner, kbModel);
+        infModel = ModelFactory.createInfModel(reasoner, kbModel);
 
 //        OutputStream s = new FileOutputStream("data/output/1.txt");
 //        RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
 
-        setPeopleInBuilding(infModel, 10, true);
+        setPeopleInBuilding(infModel, 100, true);
 
         String prefixes = "PREFIX f: <http://larkc.eu/csparql/sparql/jena/ext#> "
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "
@@ -108,7 +97,7 @@ public class CAREE {
 //        s = new FileOutputStream("data/output/2.txt");
 //        RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
 
-        HumanLocationStream hlStream = new HumanLocationStream(kbIRI, 1000, infModel, initialTime);
+        HumanLocationStream hlStream = new HumanLocationStream(kbIRI, 1000, infModel);
 
 
         engine.registerStream(hlStream);
@@ -149,7 +138,7 @@ public class CAREE {
         if(allPersonMove){
             randomPersonsCount = peopleCount;
         } else {
-            randomPersonsCount = randomNumberSelector(peopleCount,1);
+            randomPersonsCount = MathOperations.randomNumberSelector(peopleCount,1);
         }
 
         Resource personClass = infModel.getResource(foafPrefix + "Person");
@@ -161,8 +150,7 @@ public class CAREE {
         atTime = infModel.getProperty(sbeoPrefix+ "atTime");
         Property activityStatus = infModel.getProperty(sbeoPrefix + "hasActivityStatus");
 
-        SparqlFunctions s = new SparqlFunctions();
-        List<String> availableSpaces = s.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
+        List<String> availableSpaces = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
 
         for(int i=1 ; i <= randomPersonsCount; i++){
             personInstance = ResourceFactory.createResource( exPrefix+ "Person" +i);
@@ -184,10 +172,5 @@ public class CAREE {
             infModel.addLiteral(personInstance, atTime, initialTime);
         }
     }
-
-    public static int randomNumberSelector(int max, int min) {
-        return (int)Math.floor(Math.random()*(max-min+1)+min);
-    }
-
 
 }

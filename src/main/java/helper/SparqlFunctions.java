@@ -22,7 +22,7 @@ public class SparqlFunctions {
             for (QuerySolution a : resultRaw) {
                 String str = a.toString();
 //                String[] tokens = (objType.equals("literal")) ?  str.split("\\(|= <|> \\)|\\?val =| ") : str.split("\\(|= <|> \\)");
-                String[] tokens = str.split("\\(|= <|> \\)|\\?val =| \\)");
+                String[] tokens = str.split("\\(|= <|> \\)|\\?val =| \\)|\\?val2 =");
                 for (int i = 2; i < tokens.length; i += 3) {
                     result.add(tokens[i].trim());
                 }
