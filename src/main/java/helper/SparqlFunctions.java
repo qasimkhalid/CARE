@@ -37,4 +37,10 @@ public class SparqlFunctions {
         QueryExecution qExec = QueryExecutionFactory.create(query, infModel);
         return ResultSetFormatter.toList(qExec.execSelect());
     }
+
 }
+
+//        try {
+//            Files.write(Paths.get("data/output/1.txt"), quadruples.toString().getBytes(), StandardOpenOption.APPEND);
+//        }catch (IOException e) {
+//        }

@@ -12,9 +12,18 @@ import model.ODPair;
 import model.PersonMovementTime;
 import model.Scheduler;
 import model.Space;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.RDFFormat;
 import org.apache.thrift.TException;
 
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -75,7 +84,7 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         Scheduler scheduler = new Scheduler();
         List<String> personNeedToMoveODQueryResult;
         List<PersonMovementTime> personWhoFinished;
-//        OutputStream out;
+        OutputStream out;
         long deltaTime;
         long timeRequired;
         long extraTime;
@@ -156,9 +165,9 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
                 if(!personWhoFinished.isEmpty()) {
                     updateModelWhenPersonFinishedMoving(infModel, personWhoFinished);
-//                    s = new FileOutputStream("data/output/5.txt");
-//                    RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
-//                    int test = 0;
+//                    out = new FileOutputStream("data/output/5.txt");
+//                    RDFDataMgr.write(out, infModel, RDFFormat.TURTLE_PRETTY);
+                    int test = 0;
                 }
 
                 this.initialTime = System.currentTimeMillis();
@@ -172,17 +181,19 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
     private void updateModelWhenPersonFinishedMoving( InfModel infModel, List<PersonMovementTime> list) {
         RdfQuadruple q;
+        List<RdfQuadruple> quadruples = new ArrayList<>();
 
-
-        for (PersonMovementTime p : list) {
-            String observationCounter = String.valueOf(System.currentTimeMillis());
-            personInstance = infModel.getResource(p.getPerson());
-            destinationInstance = infModel.getResource(p.getDestination());
+        for (int i=0; i < list.size(); i++) {
+//            String observationCounter = String.valueOf(System.currentTimeMillis())+i;
+            String timeNow = String.valueOf(System.currentTimeMillis());
+            int observationCounter = i;
+            personInstance = infModel.getResource(list.get(i).getPerson());
+            destinationInstance = infModel.getResource(list.get(i).getDestination());
             infModel.remove(personInstance, motionState, motionStateWalking);
             infModel.add(personInstance, motionState, motionStateStanding);
             infModel.add(personInstance, locatedIn, destinationInstance);
 
-//            System.out.println(p.getPerson() + " "+ p.getOrigin() + " " + p.getDestination());
+//            System.out.println(observationCounter  + " "+  p.getPerson() + " "+ p.getOrigin() + " " + p.getDestination());
 
             q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, rdfPrefix + "type", sosaPrefix+ "Observation", System.currentTimeMillis());
             this.put(q);
@@ -190,14 +201,16 @@ public class HumanLocationStream extends RdfStream implements Runnable {
             q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix + "observedProperty", exPrefix+ "HumanDetection", System.currentTimeMillis());
             this.put(q);
 
-            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix+ "hasSimpleResult", p.getId()+"^^xsd:int", System.currentTimeMillis());
+            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix+ "hasSimpleResult", list.get(i).getId()+"^^xsd:int", System.currentTimeMillis());
             this.put(q);
 
-            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sbeoPrefix+ "atTime", observationCounter , System.currentTimeMillis());
+            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sbeoPrefix+ "atTime", timeNow , System.currentTimeMillis());
             this.put(q);
 
-            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix+ "madeBySensor", p.getDestination()+"_HumanDetection_Sensor" , System.currentTimeMillis());
+
+            q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix+ "madeBySensor", list.get(i).getDestination()+"_HumanDetection_Sensor" , System.currentTimeMillis());
             this.put(q);
+
         }
 
     }
@@ -239,9 +252,5 @@ public class HumanLocationStream extends RdfStream implements Runnable {
         }
         return list;
     }
-
-
-
-
 
 }

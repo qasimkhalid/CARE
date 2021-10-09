@@ -73,7 +73,7 @@ public class CAREE {
 //        OutputStream s = new FileOutputStream("data/output/1.txt");
 //        RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
 
-        setPeopleInBuilding(infModel, 100, true);
+        setPeopleInBuilding(infModel, 10, true);
 
         String prefixes = "PREFIX f: <http://larkc.eu/csparql/sparql/jena/ext#> "
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "
