@@ -15,22 +15,19 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import eu.larkc.csparql.core.engine.ConsoleFormatter;
-import helper.MathOperations;
-import helper.SparqlFunctions;
+import helper.AutomatedOperations;
+import helper.Output;
 import eu.larkc.csparql.core.engine.CsparqlEngineImpl;
 import eu.larkc.csparql.core.engine.CsparqlQueryResultProxy;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
 import streamers.HumanLocationStream;
+import streamers.SpaceSensorsStreamer;
 
 import java.io.*;
-import java.util.List;
-import java.util.Random;
 
 public class CAREE {
 
-    public volatile static InfModel infModel;
+//    public volatile static InfModel infModel;
+    public static InfModel infModel;
     private final static String outputFileAddress = "data/output/outputAll";
     private final static String ontologyStatic = "https://raw.githubusercontent.com/qasimkhalid/SBEO/master/sbeo.owl";
     private final static String baseIRI = "https://w3id.org/sbeo";
@@ -50,31 +47,33 @@ public class CAREE {
     private static final Resource activityStatusEvacuating = ResourceFactory.createResource(exPrefix + "Evacuating");
     private static Resource personInstance;
 
-    public static void main( String[] args ) throws Exception {
+    public static synchronized void main( String[] args ) throws Exception {
 
+        //Intialization C-SPARQL engine with timestamp function.
         CsparqlEngineImpl engine = new CsparqlEngineImpl();
         engine.initialize(true);
 
-
+        //read the latest version of schema from the git repository.
         OntModel baseModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_LITE_MEM_TRANS_INF);
         baseModel.read(ontologyStatic, baseIRI, "TURTLE");
 
+        //read the data (includes the information about the building, such as distance, location of sensors) file based on the schema as an input .
 //        InputStream in = new FileInputStream("G:\\.shortcut-targets-by-id\\1DQfFtktu-cWZCdp7V2zH4sCOhw49RekS\\Qasim-Shared\\sbeo_paper_evaluation_example_modeling\\data\\kb\\initial_scenario.owl");
-//
         InputStream in = new FileInputStream("data/kb/initial_scenario.owl");
 
+        //binding the schema with data using a light reasoner(just transitive and symmetric inferences).
         OntModel kbModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_LITE_MEM_TRANS_INF);
         kbModel.read(in, kbIRI, "TURTLE");
         Reasoner reasoner = ReasonerRegistry.getOWLMicroReasoner();
         reasoner = reasoner.bindSchema(baseModel);
-
         infModel = ModelFactory.createInfModel(reasoner, kbModel);
 
 //        OutputStream s = new FileOutputStream("data/output/1.txt");
 //        RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
 
-        setPeopleInBuilding(infModel, 10, true);
+        AutomatedOperations.setPeopleInBuilding(infModel, 10, true);
 
+        //prefixed for the C-SPARQL Query.
         String prefixes = "PREFIX f: <http://larkc.eu/csparql/sparql/jena/ext#> "
                 + "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> "
                 + "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> "
@@ -87,8 +86,18 @@ public class CAREE {
                 + "PREFIX foaf: <http://xmlns.com/foaf/0.1/> "
                 + "PREFIX ex: <https://w3id.org/sbeo/example/officescenario#>";
 
-        String StreamQueryLocation = "REGISTER QUERY EachPersonLocation AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/humanDetectionInSpacesUsingTheirID.txt");
+        //C-SPARQL query for to get the location of each person using their ID.
+        String streamQueryLocation = "REGISTER QUERY EachPersonLocation AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/humanDetectionInSpacesUsingTheirID.txt");
 
+        String streamQueryTemperatureSensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/TemperatureSensorValues.txt");
+
+        String streamQuerySmokeSensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/SmokeSensorValues.txt");
+
+        String streamQueryHumiditySensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/HumiditySensorValues.txt");
+
+        String streamQuerySpaceAccessibilitySensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + prefixes + CsparqlUtils.fileToString("data/Queries/csparql/SpaceAccessibilitySensorValues.txt");
+
+        //inserting a static data (schema + data + inferred) in the C-SPARQL as a base model.
         StringWriter staticModel = new StringWriter();
         infModel.write(staticModel, "Turtle");
         String result = staticModel.toString();
@@ -97,22 +106,38 @@ public class CAREE {
 //        s = new FileOutputStream("data/output/2.txt");
 //        RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
 
-        HumanLocationStream hlStream = new HumanLocationStream(kbIRI, 1000, infModel);
+        // creating an instance of Random human location data stream.
+        HumanLocationStream hlStream = new HumanLocationStream(kbIRI, 1000, infModel, false, 2f);
+        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(kbIRI, 1000, infModel);
 
-
+        //Injecting the stream in the C-SPARQL engine.
         engine.registerStream(hlStream);
+        engine.registerStream(ssStream);
 
+        //Binding the stream with a new thread.
         Thread hlStreamThread = new Thread(hlStream);
+        Thread ssStreamThread = new Thread(ssStream);
 
+        //Creating an instance of the listener and registering the C-SPARQL query.
+        CsparqlQueryResultProxy personLocation = engine.registerQuery(streamQueryLocation, false);
+        CsparqlQueryResultProxy temperatureSensorValues = engine.registerQuery(streamQueryTemperatureSensors, false);
+        CsparqlQueryResultProxy smokeSensorValues = engine.registerQuery(streamQuerySmokeSensors, false);
+        CsparqlQueryResultProxy humiditySensorValues = engine.registerQuery(streamQueryHumiditySensors, false);
+        CsparqlQueryResultProxy spaceAccessibilitySensorValues = engine.registerQuery(streamQuerySpaceAccessibilitySensors, false);
 
-        CsparqlQueryResultProxy PersonLocation = engine.registerQuery(StreamQueryLocation, false);
+        //Adding an observer to the instance of the listener
+//        EvacuationStatusCompleted.addObserver(new helper.Output(outputFileAddress));
+        personLocation.addObserver(new Output("data/output/HumanLocationsBySpace.txt"));
+        temperatureSensorValues.addObserver(new Output("data/output/TemperatureSensorValueAfterEachTimeStep.txt"));
+        smokeSensorValues.addObserver(new Output("data/output/SmokeSensorValueAfterEachTimeStep.txt"));
+        humiditySensorValues.addObserver(new Output("data/output/HumiditySensorValueAfterEachTimeStep.txt"));
+        spaceAccessibilitySensorValues.addObserver(new Output("data/output/SpaceAccessiblitySensorValueAfterEachTimeStep.txt"));
 
-//        EvacuationStatusCompleted.addObserver(new Output(outputFileAddress));
-        PersonLocation.addObserver(new ConsoleFormatter());
-
-
-        System.out.println("About to start the streaming thread...");
+        //Starting all threads of streamers
+        System.out.println("About to start the streaming threads...");
         hlStreamThread.start();
+        ssStreamThread.start();
+
 
         System.out.println("First thread about to go to sleep for long time...");
         try {
@@ -123,8 +148,10 @@ public class CAREE {
 
 
         System.out.println("About to stop the thread and unregistering the stream");
-        hlStream.pleaseStop();
+        hlStream.stop();
+        ssStream.stop();
         engine.unregisterStream(hlStream.getIRI());
+        engine.unregisterStream(ssStream.getIRI());
 
         System.out.println("About to exit");
         System.exit(0);
@@ -132,45 +159,6 @@ public class CAREE {
 
     }
 
-    private static void setPeopleInBuilding( InfModel infModel, int peopleCount, boolean allPersonMove) throws Exception {
-        int randomPersonsCount;
 
-        if(allPersonMove){
-            randomPersonsCount = peopleCount;
-        } else {
-            randomPersonsCount = MathOperations.randomNumberSelector(peopleCount,1);
-        }
-
-        Resource personClass = infModel.getResource(foafPrefix + "Person");
-
-        Property rdfType = infModel.getProperty(rdfPrefix + "type");
-        Property id = infModel.getProperty(sbeoPrefix + "id");
-        motionState = infModel.getProperty(sbeoPrefix+ "hasMotionState");
-        locatedIn = infModel.getProperty(sbeoPrefix+ "locatedIn");
-        atTime = infModel.getProperty(sbeoPrefix+ "atTime");
-        Property activityStatus = infModel.getProperty(sbeoPrefix + "hasActivityStatus");
-
-        List<String> availableSpaces = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
-
-        for(int i=1 ; i <= randomPersonsCount; i++){
-            personInstance = ResourceFactory.createResource( exPrefix+ "Person" +i);
-            infModel.add(personInstance, rdfType, personClass);
-            infModel.add(personInstance, motionState, motionStateStanding);
-            infModel.addLiteral(personInstance, id, i);
-
-            Random random = new Random();
-            if(allPersonMove){
-                infModel.add(personInstance, activityStatus, activityStatusEvacuating);
-            } else if (random.nextBoolean()) {
-                infModel.add(personInstance, activityStatus, activityStatusEvacuating);
-            }
-
-
-            String rs = availableSpaces.get(random.nextInt(availableSpaces.size()));
-            Resource spaceInstance = ResourceFactory.createResource(rs);
-            infModel.add(personInstance, locatedIn, spaceInstance);
-            infModel.addLiteral(personInstance, atTime, initialTime);
-        }
-    }
 
 }

@@ -29,7 +29,7 @@ import java.util.*;
 
 public class HumanLocationStream extends RdfStream implements Runnable {
 
-    private volatile static InfModel infModel;
+    private static InfModel infModel;
     private final static String foafPrefix = "http://xmlns.com/foaf/0.1/";
     private final static String rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
     private final static String sbeoPrefix = "https://w3id.org/sbeo#";
@@ -43,11 +43,12 @@ public class HumanLocationStream extends RdfStream implements Runnable {
     private Property atTime;
 
 
-    private final int timeStep;
+    private final long timeStep;
     private final String streamIRI;
     private boolean keepRunning = true;
     private long initialTime;
-    private static final float AREA_PER_PERSON_M2 = 1f;
+    private static float areaPerPersonM2 = 1f;
+    private boolean freeFlow;
 
     private static Resource originInstance ;
     private static Resource destinationInstance ;
@@ -58,26 +59,28 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
 
 
-    public HumanLocationStream(final String iri, int timeStep, InfModel model) {
+    public HumanLocationStream(final String iri, long timeStep, InfModel model, boolean freeFlow, float areaPerPersonM2 ) {
         super(iri);
         this.streamIRI = iri;
         this.timeStep = timeStep;
         this.infModel = model;
         this.initialTime = System.currentTimeMillis();
+        this.freeFlow= freeFlow;
+        this.areaPerPersonM2 = areaPerPersonM2;
     }
 
-    public void pleaseStop() {
+    public void stop() {
         keepRunning = false;
     }
 
     @Override
-    public void run() {
+    public synchronized void run() {
 
         int count = 1;
 
         motionState = infModel.getProperty(sbeoPrefix + "hasMotionState");
         locatedIn = infModel.getProperty(sbeoPrefix + "locatedIn");
-        atTime = infModel.getProperty(sbeoPrefix+ "atTime");
+        atTime = infModel.getProperty(sbeoPrefix + "atTime");
 
         List<ODPair> odPairList = new ArrayList<>();
         List<Space> spaceInfoList = new ArrayList<>();
@@ -96,25 +99,29 @@ public class HumanLocationStream extends RdfStream implements Runnable {
             e.printStackTrace();
         }
 
-        while (keepRunning){
 
-            System.out.println("Time Step No: " +  count );
+        while (keepRunning) {
+
+
+            System.out.println("Human Location Streamer Time Step No: " + count);
             try {
                 deltaTime = System.currentTimeMillis() - initialTime;
 
-                personNeedToMoveODQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel,  "data/Queries/sparql/PersonWhoNeedToMove.txt");
-                if(!personNeedToMoveODQueryResult.isEmpty()) {
+                personNeedToMoveODQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/PersonWhoNeedToMove.txt");
+                if (!personNeedToMoveODQueryResult.isEmpty()) {
 
                     Map<String, Integer> spaceDensityMap = new HashMap<>();
                     List<PersonMovementTime> personNeedToMove = new ArrayList<>();
+                    String p;
+                    String[] tokens;
+                    String id;
+                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 3; i += 4) {
 
-                    for(int i=0; i < personNeedToMoveODQueryResult.size()-3; i+=4){
-
-                        String p = personNeedToMoveODQueryResult.get(i);
-                        String[] tokens = personNeedToMoveODQueryResult.get(i+1).split("\"");
-                        String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
-                        String origin = personNeedToMoveODQueryResult.get(i+2);
-                        String destination = personNeedToMoveODQueryResult.get(i+3);
+                        p = personNeedToMoveODQueryResult.get(i);
+                        tokens = personNeedToMoveODQueryResult.get(i + 1).split("\"");
+                        id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
+                        String origin = personNeedToMoveODQueryResult.get(i + 2);
+                        String destination = personNeedToMoveODQueryResult.get(i + 3);
 
                         // calculate required time
                         Optional<ODPair> odPair = odPairList.stream()
@@ -134,26 +141,37 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 
                     }
 
+                    StringBuilder sb = new StringBuilder();
+                    // Finding extra time needed for each person if the total number of persons exceeds the provided limit (area per person) in any space.
                     for (PersonMovementTime person : personNeedToMove) {
 
-                        // find space area
-                        Optional<Space> space = spaceInfoList.stream()
-                                .filter(x -> x.getSpace().equals(person.getOrigin())).findFirst();
-                        if (space.isPresent()) {
-                            area = space.get().getArea();
-                        } else {
-                            throw new Exception("Origin of person not found in spaceInfoList");
-                        }
+                        // Checking if the movement of persons is free flow or density dependent.
+                        // If its density dependent, then extra time is added to the required time for each person.
+                        if (!freeFlow) {
 
-                        Integer density = spaceDensityMap.get(person.getOrigin());
-                        extraTime = MathOperations.getExtraTime(area, density, AREA_PER_PERSON_M2);
-                        if (extraTime > 0) {
-                            person.incrementTimeRequired(extraTime);
+                            // find space area
+                            Optional<Space> space = spaceInfoList.stream()
+                                    .filter(x -> x.getSpace().equals(person.getOrigin())).findFirst();
+                            if (space.isPresent()) {
+                                area = space.get().getArea();
+                            } else {
+                                throw new Exception("Origin of person not found in spaceInfoList");
+                            }
+
+                            // get the space density status where the person is located
+                            Integer density = spaceDensityMap.get(person.getOrigin());
+                            extraTime = MathOperations.getExtraTime(area, density, areaPerPersonM2);
+                            if (extraTime > 0) {
+                                person.incrementTimeRequired(extraTime);
+                            }
                         }
+                        sb.append(initialTime + "\t" + person.toString() + "\n");
 
                         // add person in the scheduler
                         scheduler.addMovingPerson(person);
                     }
+                    Files.write(Paths.get("data/output/O-DPairAreaSpecificNeededTime.txt"), sb.toString().getBytes(), StandardOpenOption.APPEND);
+                    int x = 0;
                 }
 
                 updateModelBeforePersonMoves(infModel, scheduler.getMovingPersons());
@@ -163,7 +181,7 @@ public class HumanLocationStream extends RdfStream implements Runnable {
 //                    RDFDataMgr.write(s, infModel, RDFFormat.TURTLE_PRETTY);
                 personWhoFinished = scheduler.update(deltaTime, scheduler.getMovingPersons());
 
-                if(!personWhoFinished.isEmpty()) {
+                if (!personWhoFinished.isEmpty()) {
                     updateModelWhenPersonFinishedMoving(infModel, personWhoFinished);
 //                    out = new FileOutputStream("data/output/5.txt");
 //                    RDFDataMgr.write(out, infModel, RDFFormat.TURTLE_PRETTY);
@@ -177,16 +195,17 @@ public class HumanLocationStream extends RdfStream implements Runnable {
                 e.printStackTrace();
             }
         }
+
     }
 
     private void updateModelWhenPersonFinishedMoving( InfModel infModel, List<PersonMovementTime> list) {
         RdfQuadruple q;
-        List<RdfQuadruple> quadruples = new ArrayList<>();
+//        List<RdfQuadruple> quadruples = new ArrayList<>();
 
         for (int i=0; i < list.size(); i++) {
 //            String observationCounter = String.valueOf(System.currentTimeMillis())+i;
             String timeNow = String.valueOf(System.currentTimeMillis());
-            int observationCounter = i;
+            String observationCounter = "_"+ i;
             personInstance = infModel.getResource(list.get(i).getPerson());
             destinationInstance = infModel.getResource(list.get(i).getDestination());
             infModel.remove(personInstance, motionState, motionStateWalking);
@@ -207,10 +226,8 @@ public class HumanLocationStream extends RdfStream implements Runnable {
             q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sbeoPrefix+ "atTime", timeNow , System.currentTimeMillis());
             this.put(q);
 
-
             q = new RdfQuadruple(exPrefix + "ObsLocation"+observationCounter, sosaPrefix+ "madeBySensor", list.get(i).getDestination()+"_HumanDetection_Sensor" , System.currentTimeMillis());
             this.put(q);
-
         }
 
     }
@@ -232,13 +249,17 @@ public class HumanLocationStream extends RdfStream implements Runnable {
     private List<ODPair> getCostOfAllODPairs( InfModel infModel) throws Exception {
         List<String> odPairQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindO-DPairs.txt");
         List<ODPair> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         ODPair odp;
         for(int i=0; i < odPairQueryResult.size()-2; i+=3) {
             odp = new ODPair(odPairQueryResult.get(i), odPairQueryResult.get(i+1), odPairQueryResult.get(i+2));
             list.add(odp);
+            sb.append(odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i+2) + "\n");
             odp = new ODPair(odPairQueryResult.get(i+1), odPairQueryResult.get(i), odPairQueryResult.get(i+2));
+            sb.append(odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+2) + "\n");
             list.add(odp);
         }
+        Files.write(Paths.get("data/output/O-DPairDistance.txt"), sb.toString().getBytes(), StandardOpenOption.WRITE);
         return list;
     }
 

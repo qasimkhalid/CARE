@@ -7,18 +7,10 @@ PREFIX sbeo: <https://w3id.org/sbeo#>
 PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-SELECT DISTINCT ?time ?space ?person
 
+SELECT DISTINCT ?sensor ?space
 WHERE {
-        ?person a foaf:Person ;
-                sbeo:id ?id .
-
-        ?obs a sosa:Observation;
-            sosa:observedProperty ex:HumanDetection;
-            sosa:hasSimpleResult ?id ;
-            sbeo:atTime ?time ;
-            sosa:madeBySensor ?sensor .
-
-        ?sensor sbeo:installedIn ?space .
+?sensor a sosa:Sensor;
+	sbeo:installedIn ?space ;
+	sosa:observes ex:Smoke .
 }
-ORDER BY ASC(?person)

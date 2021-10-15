@@ -1,4 +1,4 @@
-SELECT DISTINCT ?time ?space ?person
+SELECT DISTINCT ?time ?space (COUNT(?person) as ?count)
 FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
 FROM <https://w3id.org/sbeo#>
 WHERE {
@@ -12,5 +12,6 @@ WHERE {
             sosa:madeBySensor ?sensor .
 
         ?sensor sbeo:installedIn ?space .
+
 }
-ORDER BY ASC(?person)
+group by ?space ?time

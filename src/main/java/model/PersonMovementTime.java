@@ -76,4 +76,12 @@ public class PersonMovementTime {
     public void incrementTimeRequired( long additionalTime ) {
         this.timeRequired += additionalTime;
     }
+
+    @Override
+    public String toString() {
+        return origin + '\t' +
+                destination + '\t' +
+                person + '\t' +
+                timeRequired;
+    }
 }

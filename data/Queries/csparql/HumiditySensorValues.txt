@@ -1,0 +1,12 @@
+SELECT DISTINCT ?time ?sensor ?value
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+        ?obs a sosa:Observation;
+                sosa:hasSimpleResult ?value;
+                sosa:madeBySensor ?sensor ;
+                sbeo:atTime ?time .
+
+        ?sensor sosa:observes ex:Humidity .
+}
+ORDER By ASC(?sensor)

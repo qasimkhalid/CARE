@@ -255,7 +255,8 @@ ex:FE2_Temperature_Sensor rdf:type owl:NamedIndividual ,
 
 
 ###  https://w3id.org/sbeo/example/officescenario#HumanDetection
-ex:HumanDetection rdf:type owl:NamedIndividual .
+ex:HumanDetection rdf:type owl:NamedIndividual ,
+                           sosa:ObservableProperty .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#Humidity

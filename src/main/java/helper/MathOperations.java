@@ -2,6 +2,7 @@ package helper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 final public class MathOperations
 {
@@ -14,7 +15,22 @@ final public class MathOperations
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
     }
 
-    public static int randomNumberSelector(int max, int min) {
-        return (int)Math.floor(Math.random()*(max-min+1)+min);
+    public static int getRandomNumberInRange(int max, int min) {
+        return (int) Math.floor(Math.random()*(max-min+1)+min);
+    }
+
+    public static float getRandomNumberInRange(float max, float min) {
+        Random random = new Random();
+        return min + random.nextFloat() * (max - min);
+    }
+
+    public static boolean getRandomBoolean() {
+        Random random = new Random();
+        return random.nextBoolean();
+    }
+
+    public static int getRandomNumber(int size) {
+        Random random = new Random();
+        return random.nextInt(size);
     }
 }

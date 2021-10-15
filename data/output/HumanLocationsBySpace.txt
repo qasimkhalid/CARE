@@ -1,0 +1,61 @@
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293679670	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293681012	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293682192	https://w3id.org/sbeo/example/officescenario#OpenHall1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293684559	https://w3id.org/sbeo/example/officescenario#RE2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293684559	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293685654	https://w3id.org/sbeo/example/officescenario#RE1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293688969	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293690086	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293693602	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293693602	https://w3id.org/sbeo/example/officescenario#J2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293693602	https://w3id.org/sbeo/example/officescenario#Office1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293695846	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293698073	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293698073	https://w3id.org/sbeo/example/officescenario#RE1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293700306	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293701395	https://w3id.org/sbeo/example/officescenario#RE1	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293702464	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293704699	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293705808	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293705808	https://w3id.org/sbeo/example/officescenario#Office1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293706911	https://w3id.org/sbeo/example/officescenario#Office1	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293706911	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293709133	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293710266	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293710266	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293711350	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293712476	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293715694	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293715694	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293719020	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293719020	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293720106	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293722285	https://w3id.org/sbeo/example/officescenario#Office1	"6"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293724430	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634293724430	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+		"0"^^http://www.w3.org/2001/XMLSchema#integer	
