@@ -25,6 +25,12 @@ public class PersonMovementTime {
         this.id = id;
     }
 
+    public PersonMovementTime(String person, String origin, String id) {
+        this.person = person;
+        this.origin = origin;
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

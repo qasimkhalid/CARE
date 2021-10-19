@@ -4,7 +4,6 @@ FROM <https://w3id.org/sbeo#>
 WHERE {
         ?person a foaf:Person ;
                 sbeo:id ?id .
-
         ?obs a sosa:Observation;
             sosa:observedProperty ex:HumanDetection;
             sosa:hasSimpleResult ?id ;
@@ -12,6 +11,5 @@ WHERE {
             sosa:madeBySensor ?sensor .
 
         ?sensor sbeo:installedIn ?space .
-
 }
 group by ?space ?time

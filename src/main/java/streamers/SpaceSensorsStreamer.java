@@ -1,44 +1,23 @@
 package streamers;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
+import java.util.*;
 import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 import helper.MathOperations;
-import helper.SparqlFunctions;
+import helper.HelpingVariables;
+import model.CareeInfModel;
 import model.Location;
 import model.Sensor;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-
 public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
-//    private volatile static InfModel infModel;
-    private static InfModel infModel;
     private final long timeStep;
-    private long initialTime;
     private boolean keepRunning = true;
 
-//    private final static long initialTime = System.currentTimeMillis();
-
-    private final static String foafPrefix = "http://xmlns.com/foaf/0.1/";
-    private final static String rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    private final static String sbeoPrefix = "https://w3id.org/sbeo#";
-    private final static String exPrefix = "https://w3id.org/sbeo/example/officescenario#";
-    private final static String sosaPrefix = "http://www.w3.org/ns/sosa/";
-
-    private static Resource personInstance;
-    private static final Resource motionStateStanding = ResourceFactory.createResource(exPrefix + "Standing");
-    private static final Resource motionStateWalking = ResourceFactory.createResource(exPrefix + "Walking");
-    private static final Resource activityStatusEvacuating = ResourceFactory.createResource(exPrefix + "Evacuating");
-
-    public SpaceSensorsStreamer( final String iri, long timeStep, InfModel model) {
+    public SpaceSensorsStreamer( final String iri, long timeStep) {
         super(iri);
         this.timeStep = timeStep;
-        this.infModel = model;
-        this.initialTime = System.currentTimeMillis();
     }
 
     public void stop() {
@@ -46,7 +25,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     }
 
     @Override
-    public synchronized void run() {
+    public void run() {
 
         int count = 1;
         List<Sensor> sensorDetailsList = new ArrayList<>();
@@ -55,7 +34,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
         String timeNow;
 
         try {
-            sparqlQueryAllSensorsList = SparqlFunctions.getSPARQLQueryResult(infModel,"data/Queries/sparql/FindAllSensorsInTheBuildingAlongWithTheirSpace.txt");
+            sparqlQueryAllSensorsList = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/FindAllSensorsInTheBuildingAlongWithTheirSpace.txt");
 
             if(!sparqlQueryAllSensorsList.isEmpty()) {
 
@@ -72,56 +51,33 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         allSensorsValueAtSpecificLocationList.put(locationName, new Location(locationName));
                     }
 
-                    generateSensorValue(sensor, timeNow, allSensorsValueAtSpecificLocationList.get(locationName), count);
+                    generateSensorValue(sensor, timeNow, allSensorsValueAtSpecificLocationList.get(locationName));
                 }
             }
             Thread.sleep(timeStep);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        OntModel m = ModelFactory.createOntologyModel(OntModelSpec.OWL_LITE_MEM_TRANS_INF);
+
         while (keepRunning){
             System.out.println("Sensors Streamer Time Step No: " +  count);
             timeNow = String.valueOf(System.currentTimeMillis());
 
             for (Sensor s: sensorDetailsList) {
-                generateSensorValue(s, timeNow, allSensorsValueAtSpecificLocationList.get(s.getLocation()), count);
+                generateSensorValue(s, timeNow, allSensorsValueAtSpecificLocationList.get(s.getLocation()));
             }
 
-            //Checking the fire scenario & making a space unavailable
-
-//            Resource unavailableInstance = infModel.getResource(sbeoPrefix+"UnAvailable");
-//            Resource AvailableInstance = infModel.getResource(sbeoPrefix+"Available");
-//            Property hasAvailabilityStatus = infModel.getProperty(sbeoPrefix + "hasAvailabilityStatus");
-//
-//
-//            for (String key : allSensorsValueAtSpecificLocationList.keySet()) {
-//                Location l = allSensorsValueAtSpecificLocationList.get(key);
-//                if(l.isSmokeExists() && l.getTemperatureSensorValue() >=55f){
-//                    Resource locationInstance = infModel.getResource(l.getLocationName());
-//                    if (infModel.contains(locationInstance, hasAvailabilityStatus)) {
-//                        infModel.remove(infModel.getRequiredProperty(locationInstance, hasAvailabilityStatus));
-//                    }
-//                    infModel.add(locationInstance, hasAvailabilityStatus, unavailableInstance);
-//                }
-//
-//            }
-
-
-//            allSensorsValueAtSpecificLocationList.forEach((key, value) -> {
-//                if (value.isSmokeExists() && value.getTemperatureSensorValue() >= 55f) {
-//                    Resource locationInstance = infModel.getResource(value.getLocationName());
-//                    if (infModel.contains(locationInstance, hasAvailabilityStatus)) {
-//                        infModel.remove(infModel.getRequiredProperty(locationInstance, hasAvailabilityStatus));
-//                    }
-//                    infModel.add(locationInstance, hasAvailabilityStatus, unavailableInstance);
-//                }
-//            });
-
-
-
-
-
+            /*
+            Making a space unavailable in the model if it has become unavailable because of fire scenario (Temperature > 50 and Smoke is true).
+            By doing so, this specific space is no longer considered as a destination of a person.
+             */
+            for (String key : allSensorsValueAtSpecificLocationList.keySet()) {
+                Location l = allSensorsValueAtSpecificLocationList.get(key);
+                if (!l.isAvailable()) {
+                    Resource locationInstance = CareeInfModel.Instance().getResource(l.getLocationName());
+                    CareeInfModel.Instance().add(locationInstance, HelpingVariables.hasAvailabilityStatus, HelpingVariables.unavailableInstance);
+                }
+            }
             count ++;
             try {
                 Thread.sleep(timeStep);
@@ -133,74 +89,67 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     }
 
 
-    public void generateSensorValue( Sensor sensor, String time, Location location, int count ) {
+    public void generateSensorValue( Sensor sensor, String time, Location location) {
         float sensorValueNumber;
         boolean sensorValueBoolean;
-        String sensorValueString;
         RdfQuadruple q;
         String type = sensor.getObservationType();
 
         switch (type) {
 
-            case exPrefix + "Temperature":
+            case HelpingVariables.exPrefix + "Temperature":
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        rdfPrefix + "type",
-                        sosaPrefix + "Observation", System.currentTimeMillis());
+                        HelpingVariables.rdfPrefix + "type",
+                        HelpingVariables.sosaPrefix + "Observation", System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "observedProperty",
-                        exPrefix + "Temperature", System.currentTimeMillis());
+                        HelpingVariables.sosaPrefix + "observedProperty",
+                        HelpingVariables.exPrefix + "Temperature", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(25f);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Float) sensor.getValue() + 15, (Float) sensor.getValue() - 2);
+                sensorValueNumber = MathOperations.getRandomNumberInRange((Float) sensor.getValue() + 5, (Float) sensor.getValue() - 2);
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "hasSimpleResult",
+                        HelpingVariables.sosaPrefix + "hasSimpleResult",
                         sensorValueNumber  + "^^http://www.w3.org/2001/XMLSchema#float", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sbeoPrefix + "atTime",
+                        HelpingVariables.sbeoPrefix + "atTime",
                         ""+ time, System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
-
-
+                    
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "madeBySensor",
+                        HelpingVariables.sosaPrefix + "madeBySensor",
                         ""+ sensor.getSensorName(), System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
 
                 location.setTemperatureSensorValue(sensorValueNumber);
                 sensor.setValue(sensorValueNumber);
                 break;
 
-            case exPrefix + "Smoke":
+            case HelpingVariables.exPrefix + "Smoke":
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        rdfPrefix + "type",
-                        sosaPrefix + "Observation", System.currentTimeMillis());
+                        HelpingVariables.rdfPrefix + "type",
+                        HelpingVariables.sosaPrefix + "Observation", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "observedProperty",
-                        exPrefix + "Smoke", System.currentTimeMillis());
+                        HelpingVariables.sosaPrefix + "observedProperty",
+                        HelpingVariables.exPrefix + "Smoke", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(false);
@@ -210,43 +159,43 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 sensorValueBoolean = (boolean) sensor.getValue();
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "hasSimpleResult",
+                        HelpingVariables.sosaPrefix + "hasSimpleResult",
                         String.valueOf(sensorValueBoolean) + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sbeoPrefix + "atTime",
+                        HelpingVariables.sbeoPrefix + "atTime",
                         ""+ time, System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "madeBySensor",
+                        HelpingVariables.sosaPrefix + "madeBySensor",
                         ""+ sensor.getSensorName(), System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 location.setSmokeExists(sensorValueBoolean);
                 sensor.setValue(sensorValueBoolean);
                 break;
 
-            case exPrefix + "Humidity":
+            case HelpingVariables.exPrefix + "Humidity":
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        rdfPrefix + "type",
-                        sosaPrefix + "Observation", System.currentTimeMillis());
+                        HelpingVariables.rdfPrefix + "type",
+                        HelpingVariables.sosaPrefix + "Observation", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "observedProperty",
-                        exPrefix + "Humidity", System.currentTimeMillis());
+                        HelpingVariables.sosaPrefix + "observedProperty",
+                        HelpingVariables.exPrefix + "Humidity", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(0.4f);
@@ -254,46 +203,46 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 sensorValueNumber = MathOperations.getRandomNumberInRange((Float) sensor.getValue() + .025f, (Float) sensor.getValue() - .025f);
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "hasSimpleResult",
+                        HelpingVariables.sosaPrefix + "hasSimpleResult",
                         sensorValueNumber + "^^http://www.w3.org/2001/XMLSchema#float", System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sbeoPrefix + "atTime",
+                        HelpingVariables.sbeoPrefix + "atTime",
                         ""+ time, System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "madeBySensor",
+                        HelpingVariables.sosaPrefix + "madeBySensor",
                         ""+ sensor.getSensorName(), System.currentTimeMillis());
                     this.put(q);
-//                System.out.println(q);
+
 
                 location.setHumiditySensorValue(sensorValueNumber);
                 sensor.setValue(sensorValueNumber);
                 break;
 
-            case exPrefix + "HumanDetection":
+            case HelpingVariables.exPrefix + "HumanDetection":
                 break;
 
-            case exPrefix + "SpaceAccessibility":
+            case HelpingVariables.exPrefix + "SpaceAccessibility":
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        rdfPrefix + "type",
-                        sosaPrefix + "Observation", System.currentTimeMillis());
+                        HelpingVariables.rdfPrefix + "type",
+                        HelpingVariables.sosaPrefix + "Observation", System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "observedProperty",
-                        exPrefix + "SpaceAccessibility", System.currentTimeMillis());
+                        HelpingVariables.sosaPrefix + "observedProperty",
+                        HelpingVariables.exPrefix + "SpaceAccessibility", System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
+
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(true);
@@ -303,24 +252,24 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 sensorValueBoolean = (boolean) sensor.getValue();
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "hasSimpleResult",
+                        HelpingVariables.sosaPrefix + "hasSimpleResult",
                         String.valueOf(sensorValueBoolean) + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sbeoPrefix + "atTime",
+                        HelpingVariables.sbeoPrefix + "atTime",
                         ""+ time, System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
+
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
-                        sosaPrefix + "madeBySensor",
+                        HelpingVariables.sosaPrefix + "madeBySensor",
                         ""+ sensor.getSensorName(), System.currentTimeMillis());
                 this.put(q);
-//                System.out.println(q);
+
 
                 location.setAvailable(sensorValueBoolean);
                 break;

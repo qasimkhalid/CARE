@@ -9,4 +9,4 @@ WHERE {
 
         ?sensor sosa:observes ex:Humidity .
 }
-ORDER By ASC(?sensor)
+ORDER By ASC(?time)

@@ -1,61 +1,216 @@
+1634652434057	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652435238	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652436405	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652436405	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652437626	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652437626	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652438828	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652438828	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652438828	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652439987	https://w3id.org/sbeo/example/officescenario#J2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652439987	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652439987	https://w3id.org/sbeo/example/officescenario#RE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652439987	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652441171	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652442327	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652442327	https://w3id.org/sbeo/example/officescenario#OE3	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652442327	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652442327	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652443488	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652443488	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
 		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652444646	https://w3id.org/sbeo/example/officescenario#OpenHall2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652444646	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652445788	https://w3id.org/sbeo/example/officescenario#RE1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652445788	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652446936	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652446936	https://w3id.org/sbeo/example/officescenario#J2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652446936	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652446936	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652448071	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652449176	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652449176	https://w3id.org/sbeo/example/officescenario#Office1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652449176	https://w3id.org/sbeo/example/officescenario#RE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652450311	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652450311	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652450311	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652451409	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652451409	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652451409	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652452495	https://w3id.org/sbeo/example/officescenario#RE1	"4"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652452495	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652452495	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652452495	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652453598	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652453598	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652453598	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652453598	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652454683	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652454683	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652454683	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
 		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652455769	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652455769	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652455769	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652455769	https://w3id.org/sbeo/example/officescenario#J2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652456925	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652456925	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652456925	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652458197	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652458197	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652458197	https://w3id.org/sbeo/example/officescenario#OE2	"4"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652458197	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652459401	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652459401	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652459401	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652459401	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652460490	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652460490	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652460490	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652460490	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
 		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293679670	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293681012	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293682192	https://w3id.org/sbeo/example/officescenario#OpenHall1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293684559	https://w3id.org/sbeo/example/officescenario#RE2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293684559	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293685654	https://w3id.org/sbeo/example/officescenario#RE1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293688969	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293690086	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293693602	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293693602	https://w3id.org/sbeo/example/officescenario#J2	"2"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293693602	https://w3id.org/sbeo/example/officescenario#Office1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293695846	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293698073	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293698073	https://w3id.org/sbeo/example/officescenario#RE1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293700306	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293701395	https://w3id.org/sbeo/example/officescenario#RE1	"2"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293702464	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293704699	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293705808	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293705808	https://w3id.org/sbeo/example/officescenario#Office1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293706911	https://w3id.org/sbeo/example/officescenario#Office1	"2"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293706911	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293709133	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293710266	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293710266	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293711350	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293712476	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293715694	https://w3id.org/sbeo/example/officescenario#Office1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293715694	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293719020	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293719020	https://w3id.org/sbeo/example/officescenario#POI1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293720106	https://w3id.org/sbeo/example/officescenario#J1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293722285	https://w3id.org/sbeo/example/officescenario#Office1	"6"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293724430	https://w3id.org/sbeo/example/officescenario#J1	"3"^^http://www.w3.org/2001/XMLSchema#integer	
-1634293724430	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
-		"0"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652461580	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652461580	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652461580	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652461580	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652461580	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652462734	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652462734	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652462734	https://w3id.org/sbeo/example/officescenario#RE1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652462734	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652462734	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652463879	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652463879	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652463879	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652463879	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652463879	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652465002	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652465002	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652465002	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652465002	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652465002	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652466016	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652466016	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652466016	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652466016	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652466016	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652467036	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652467036	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652467036	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652467036	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652467036	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652468056	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652468056	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652468056	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652468056	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652468056	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652469103	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652469103	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652469103	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652469103	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652469103	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652470240	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652470240	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652470240	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652470240	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652470240	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652471267	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652471267	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652471267	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652471267	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652471267	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652472302	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652472302	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652472302	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652472302	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652472302	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652473318	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652473318	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652473318	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652473318	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652473318	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652474330	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652474330	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652474330	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652474330	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652474330	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652475341	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652475341	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652475341	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652475341	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652475341	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652476359	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652476359	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652476359	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652476359	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652476359	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652477370	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652477370	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652477370	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652477370	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652477370	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652478377	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652478377	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652478377	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652478377	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652478377	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652479384	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652479384	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652479384	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652479384	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652479384	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652480401	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652480401	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652480401	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652480401	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652480401	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652481410	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652481410	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652481410	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652481410	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652481410	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652482416	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652482416	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652482416	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652482416	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652482416	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652483428	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652483428	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652483428	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652483428	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652483428	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652484451	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652484451	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652484451	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652484451	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652484451	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652485459	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652485459	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652485459	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652485459	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652485459	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652486479	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652486479	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652486479	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652486479	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652486479	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652487491	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652487491	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652487491	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652487491	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652487491	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652488501	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652488501	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652488501	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652488501	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652488501	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652489509	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652489509	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652489509	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652489509	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652489509	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652490518	https://w3id.org/sbeo/example/officescenario#POI1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652490518	https://w3id.org/sbeo/example/officescenario#WC1	"1"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652490518	https://w3id.org/sbeo/example/officescenario#RE1	"5"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652490518	https://w3id.org/sbeo/example/officescenario#OE4	"2"^^http://www.w3.org/2001/XMLSchema#integer	
+1634652490518	https://w3id.org/sbeo/example/officescenario#OE2	"1"^^http://www.w3.org/2001/XMLSchema#integer	

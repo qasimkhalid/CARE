@@ -33,4 +33,11 @@ final public class MathOperations
         Random random = new Random();
         return random.nextInt(size);
     }
+
+    public String MillisecondsToHumanTime( int millis ) {
+        int hour = ((millis / 1000) / 3600);
+        int minute = (((millis / 1000) / 60) % 60);
+        int second = ((millis / 1000) % 60);
+        return String.format("%02d:%02d:%02d", hour, minute, second);
+    }
 }

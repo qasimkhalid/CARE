@@ -1,36 +1,54 @@
 package helper;
 
 import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import eu.larkc.csparql.cep.api.RdfQuadruple;
-import model.Location;
-import model.Sensor;
+import model.CareeInfModel;
+import model.ODPair;
+import model.PersonMovementTime;
+import model.Space;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 public class AutomatedOperations {
-    private final static long initialTime = System.currentTimeMillis();
 
-    private final static String foafPrefix = "http://xmlns.com/foaf/0.1/";
-    private final static String rdfPrefix = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-    private final static String sbeoPrefix = "https://w3id.org/sbeo#";
-    private final static String exPrefix = "https://w3id.org/sbeo/example/officescenario#";
-    private final static String sosaPrefix = "http://www.w3.org/ns/sosa/";
+    public static List<Space> getSpaceInfo( InfModel infModel ) throws Exception {
+        List<String> spaceInfoQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/GetSpaceInfo.txt");
+        List<Space> list = new ArrayList<>();
+        Space s;
+        for(int i=0; i < spaceInfoQueryResult.size()-1; i+=2) {
+            s = new Space(spaceInfoQueryResult.get(i), spaceInfoQueryResult.get(i+1));
+            list.add(s);
+        }
+        return list;
+    }
 
-    private static Resource personInstance;
-    private static final Resource motionStateStanding = ResourceFactory.createResource(exPrefix + "Standing");
-    private static final Resource motionStateWalking = ResourceFactory.createResource(exPrefix + "Walking");
-    private static final Resource activityStatusEvacuating = ResourceFactory.createResource(exPrefix + "Evacuating");
-
-
+    public static List<ODPair> getCostOfAllODPairs( InfModel infModel) throws Exception {
+        List<String> odPairQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindO-DPairs.txt");
+        List<ODPair> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        ODPair odp;
+        for(int i=0; i < odPairQueryResult.size()-2; i+=3) {
+            odp = new ODPair(odPairQueryResult.get(i), odPairQueryResult.get(i+1), odPairQueryResult.get(i+2));
+            list.add(odp);
+            sb.append(odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i+2) + "\n");
+            odp = new ODPair(odPairQueryResult.get(i+1), odPairQueryResult.get(i), odPairQueryResult.get(i+2));
+            sb.append(odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+2) + "\n");
+            list.add(odp);
+        }
+        Files.write(Paths.get("data/output/O-DPairDistance.txt"), sb.toString().getBytes(), StandardOpenOption.WRITE);
+        return list;
+    }
 
     public static void setPeopleInBuilding( InfModel infModel, int peopleCount, boolean allPersonMove) throws Exception {
+        long initialTime = System.currentTimeMillis();
         int randomPersonsCount;
-
+        Resource personInstance;
+        Resource spaceInstance;
 
         if(allPersonMove){
             randomPersonsCount = peopleCount;
@@ -38,38 +56,51 @@ public class AutomatedOperations {
             randomPersonsCount = MathOperations.getRandomNumberInRange(peopleCount,1);
         }
 
-        Resource personClass = infModel.getResource(foafPrefix + "Person");
-
-        Property rdfType = infModel.getProperty(rdfPrefix + "type");
-        Property id = infModel.getProperty(sbeoPrefix + "id");
-        Property motionState = infModel.getProperty(sbeoPrefix + "hasMotionState");
-        Property locatedIn = infModel.getProperty(sbeoPrefix + "locatedIn");
-        Property atTime = infModel.getProperty(sbeoPrefix + "atTime");
-        Property activityStatus = infModel.getProperty(sbeoPrefix + "hasActivityStatus");
-
         List<String> availableSpaces = getAvailableSpaces(infModel);
 
         for(int i=1 ; i <= randomPersonsCount; i++){
-            personInstance = ResourceFactory.createResource( exPrefix+ "Person" +i);
-            infModel.add(personInstance, rdfType, personClass);
-            infModel.add(personInstance, motionState, motionStateStanding);
-            infModel.addLiteral(personInstance, id, i);
+            personInstance = ResourceFactory.createResource( HelpingVariables.exPrefix+ "Person" +i);
+            infModel.add(personInstance, HelpingVariables.rdfType, HelpingVariables.personClass);
+            infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+            infModel.addLiteral(personInstance, HelpingVariables.id, i);
 
             if(allPersonMove){
-                infModel.add(personInstance, activityStatus, activityStatusEvacuating);
+                infModel.add(personInstance, HelpingVariables.activityStatus, HelpingVariables.activityStatusEvacuating);
             } else if (MathOperations.getRandomBoolean()) {
-                infModel.add(personInstance, activityStatus, activityStatusEvacuating);
+                infModel.add(personInstance, HelpingVariables.activityStatus, HelpingVariables.activityStatusEvacuating);
             }
 
             //Choosing a random space as a person location
             String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
-            Resource spaceInstance = ResourceFactory.createResource(rs);
-            infModel.add(personInstance, locatedIn, spaceInstance);
-            infModel.addLiteral(personInstance, atTime, initialTime);
+            spaceInstance = ResourceFactory.createResource(rs);
+            infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
+            infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
         }
     }
 
-    private static List<String> getAvailableSpaces( InfModel infModel ) throws Exception {
+    public static List<String> getAvailableSpaces( InfModel infModel ) throws Exception {
         return SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
+    }
+
+    public static void updateModelWhenPersonFinishedMoving(List<PersonMovementTime> list) {
+        Resource personInstance;
+        for (PersonMovementTime personMovementTime : list) {
+            personInstance = CareeInfModel.Instance().getResource(personMovementTime.getPerson());
+            Resource destinationInstance = CareeInfModel.Instance().getResource(personMovementTime.getDestination());
+            CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
+            CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+            CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
+        }
+    }
+
+    public static void updateModelBeforePersonMoves(List<PersonMovementTime> list) {
+        Resource personInstance;
+        for (PersonMovementTime t : list) {
+            personInstance = CareeInfModel.Instance().getResource(t.getPerson());
+            Resource originInstance = CareeInfModel.Instance().getResource(t.getOrigin());
+            CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+            CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
+            CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
+        }
     }
 }
