@@ -1,3 +1,4 @@
+@prefix : <https://w3id.org/sbeo/example/officescenario#> .
 @prefix ex: <https://w3id.org/sbeo/example/officescenario#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -22,7 +23,7 @@ ex:D1 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:OE3 ;
       sbeo:origin ex:FE2 ;
-      sbeo:hasValue  7.
+      sbeo:hasValue 7 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D10
@@ -274,6 +275,50 @@ ex:J1 rdf:type owl:NamedIndividual ,
       sbeo:area "2.0"^^xsd:float .
 
 
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1
+ex:J1_FE1 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:FE1 ,
+                           ex:J1 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1_HumanDetection_Sensor
+ex:J1_FE1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:J1_FE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1_Humidity_Sensor
+ex:J1_FE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:J1_FE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1_Smoke_Sensor
+ex:J1_FE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:J1_FE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1_SpaceAccessibility_Sensor
+ex:J1_FE1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:J1_FE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_FE1_Temperature_Sensor
+ex:J1_FE1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:J1_FE1 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#J1_HumanDetection_Sensor
 ex:J1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
                                      sosa:Sensor ;
@@ -286,6 +331,94 @@ ex:J1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                sosa:Sensor ;
                       sosa:observes ex:Humidity ;
                       sbeo:installedIn ex:J1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1
+ex:J1_OE1 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:J1 ,
+                           ex:OE1 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1_HumanDetection_Sensor
+ex:J1_OE1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:J1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1_Humidity_Sensor
+ex:J1_OE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:J1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1_Smoke_Sensor
+ex:J1_OE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:J1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1_SpaceAccessibility_Sensor
+ex:J1_OE1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:J1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE1_Temperature_Sensor
+ex:J1_OE1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:J1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2
+ex:J1_OE2 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:J1 ,
+                           ex:OE2 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2_HumanDetection_Sensor
+ex:J1_OE2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:J1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2_Humidity_Sensor
+ex:J1_OE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:J1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2_Smoke_Sensor
+ex:J1_OE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:J1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2_SpaceAccessibility_Sensor
+ex:J1_OE2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:J1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J1_OE2_Temperature_Sensor
+ex:J1_OE2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:J1_OE2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#J1_Smoke_Sensor
@@ -330,6 +463,50 @@ ex:J2_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                sosa:Sensor ;
                       sosa:observes ex:Humidity ;
                       sbeo:installedIn ex:J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4
+ex:J2_OE4 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:J2 ,
+                           ex:OE4 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4_HumanDetection_Sensor
+ex:J2_OE4_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:J2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4_Humidity_Sensor
+ex:J2_OE4_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:J2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4_Smoke_Sensor
+ex:J2_OE4_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:J2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4_SpaceAccessibility_Sensor
+ex:J2_OE4_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:J2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#J2_OE4_Temperature_Sensor
+ex:J2_OE4_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:J2_OE4 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#J2_Smoke_Sensor
@@ -420,6 +597,50 @@ ex:OE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
                        sbeo:installedIn ex:OE2 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1
+ex:OE2_RE1 rdf:type owl:NamedIndividual ,
+                    sbeo:CorridorSegment ;
+           sbeo:connectedTo ex:OE2 ,
+                            ex:RE1 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1_HumanDetection_Sensor
+ex:OE2_RE1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:OE2_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1_Humidity_Sensor
+ex:OE2_RE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:OE2_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1_Smoke_Sensor
+ex:OE2_RE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:OE2_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1_SpaceAccessibility_Sensor
+ex:OE2_RE1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:OE2_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE2_RE1_Temperature_Sensor
+ex:OE2_RE1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:OE2_RE1 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#OE2_Smoke_Sensor
 ex:OE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
                              sosa:Sensor ;
@@ -448,6 +669,50 @@ ex:OE3 rdf:type owl:NamedIndividual ,
                         ex:RE2 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2
+ex:OE3_FE2 rdf:type owl:NamedIndividual ,
+                    sbeo:CorridorSegment ;
+           sbeo:connectedTo ex:FE2 ,
+                            ex:OE3 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2_HumanDetection_Sensor
+ex:OE3_FE2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:OE3_FE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2_Humidity_Sensor
+ex:OE3_FE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:OE3_FE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2_Smoke_Sensor
+ex:OE3_FE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:OE3_FE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2_SpaceAccessibility_Sensor
+ex:OE3_FE2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:OE3_FE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE3_FE2_Temperature_Sensor
+ex:OE3_FE2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:OE3_FE2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OE3_HumanDetection_Sensor
@@ -506,6 +771,50 @@ ex:OE4_Humidity_Sensor rdf:type owl:NamedIndividual ,
                        sbeo:installedIn ex:OE4 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3
+ex:OE4_RE3 rdf:type owl:NamedIndividual ,
+                    sbeo:CorridorSegment ;
+           sbeo:connectedTo ex:OE4 ,
+                            ex:RE3 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3_HumanDetection_Sensor
+ex:OE4_RE3_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:OE4_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3_Humidity_Sensor
+ex:OE4_RE3_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:OE4_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3_Smoke_Sensor
+ex:OE4_RE3_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:OE4_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3_SpaceAccessibility_Sensor
+ex:OE4_RE3_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:OE4_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OE4_RE3_Temperature_Sensor
+ex:OE4_RE3_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:OE4_RE3 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#OE4_Smoke_Sensor
 ex:OE4_Smoke_Sensor rdf:type owl:NamedIndividual ,
                              sosa:Sensor ;
@@ -531,7 +840,7 @@ ex:OE4_Temperature_Sensor rdf:type owl:NamedIndividual ,
 ex:Office1 rdf:type owl:NamedIndividual ,
                     seas:Office ;
            sbeo:accommodationCapacity 5 ;
-           sbeo:area "5.0"^^xsd:float .
+           sbeo:area "6.0"^^xsd:float .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#Office1_HumanDetection_Sensor
@@ -546,6 +855,94 @@ ex:Office1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                     sosa:Sensor ;
                            sosa:observes ex:Humidity ;
                            sbeo:installedIn ex:Office1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2
+ex:Office1_Office2 rdf:type owl:NamedIndividual ,
+                            sbeo:RoomSegment ;
+                   sbeo:connectedTo ex:Office1 ,
+                                    ex:Office2 ;
+                   sbeo:accommodationCapacity 2 ;
+                   sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2_HumanDetection_Sensor
+ex:Office1_Office2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                                  sosa:Sensor ;
+                                         sosa:observes ex:HumanDetection ;
+                                         sbeo:installedIn ex:Office1_Office2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2_Humidity_Sensor
+ex:Office1_Office2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                            sosa:Sensor ;
+                                   sosa:observes ex:Humidity ;
+                                   sbeo:installedIn ex:Office1_Office2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2_Smoke_Sensor
+ex:Office1_Office2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:Smoke ;
+                                sbeo:installedIn ex:Office1_Office2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2_SpaceAccessibility_Sensor
+ex:Office1_Office2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                      sosa:Sensor ;
+                                             sosa:observes ex:SpaceAccessibility ;
+                                             sbeo:installedIn ex:Office1_Office2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_Office2_Temperature_Sensor
+ex:Office1_Office2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                               sosa:Sensor ;
+                                      sosa:observes ex:Temperature ;
+                                      sbeo:installedIn ex:Office1_Office2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1
+ex:Office1_RE1 rdf:type owl:NamedIndividual ,
+                        sbeo:RoomSegment ;
+               sbeo:connectedTo ex:Office1 ,
+                                ex:RE1 ;
+               sbeo:accommodationCapacity 2 ;
+               sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1_HumanDetection_Sensor
+ex:Office1_RE1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:HumanDetection ;
+                                     sbeo:installedIn ex:Office1_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1_Humidity_Sensor
+ex:Office1_RE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                        sosa:Sensor ;
+                               sosa:observes ex:Humidity ;
+                               sbeo:installedIn ex:Office1_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1_Smoke_Sensor
+ex:Office1_RE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                     sosa:Sensor ;
+                            sosa:observes ex:Smoke ;
+                            sbeo:installedIn ex:Office1_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1_SpaceAccessibility_Sensor
+ex:Office1_RE1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                  sosa:Sensor ;
+                                         sosa:observes ex:SpaceAccessibility ;
+                                         sbeo:installedIn ex:Office1_RE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office1_RE1_Temperature_Sensor
+ex:Office1_RE1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                           sosa:Sensor ;
+                                  sosa:observes ex:Temperature ;
+                                  sbeo:installedIn ex:Office1_RE1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#Office1_Smoke_Sensor
@@ -592,6 +989,50 @@ ex:Office2_Humidity_Sensor rdf:type owl:NamedIndividual ,
                            sbeo:installedIn ex:Office2 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2
+ex:Office2_RE2 rdf:type owl:NamedIndividual ,
+                        sbeo:RoomSegment ;
+               sbeo:connectedTo ex:Office2 ,
+                                ex:RE2 ;
+               sbeo:accommodationCapacity 2 ;
+               sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2_HumanDetection_Sensor
+ex:Office2_RE2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:HumanDetection ;
+                                     sbeo:installedIn ex:Office2_RE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2_Humidity_Sensor
+ex:Office2_RE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                        sosa:Sensor ;
+                               sosa:observes ex:Humidity ;
+                               sbeo:installedIn ex:Office2_RE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2_Smoke_Sensor
+ex:Office2_RE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                     sosa:Sensor ;
+                            sosa:observes ex:Smoke ;
+                            sbeo:installedIn ex:Office2_RE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2_SpaceAccessibility_Sensor
+ex:Office2_RE2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                  sosa:Sensor ;
+                                         sosa:observes ex:SpaceAccessibility ;
+                                         sbeo:installedIn ex:Office2_RE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#Office2_RE2_Temperature_Sensor
+ex:Office2_RE2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                           sosa:Sensor ;
+                                  sosa:observes ex:Temperature ;
+                                  sbeo:installedIn ex:Office2_RE2 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#Office2_Smoke_Sensor
 ex:Office2_Smoke_Sensor rdf:type owl:NamedIndividual ,
                                  sosa:Sensor ;
@@ -632,6 +1073,94 @@ ex:OpenHall1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                       sosa:Sensor ;
                              sosa:observes ex:Humidity ;
                              sbeo:installedIn ex:OpenHall1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1
+ex:OpenHall1_OE1 rdf:type owl:NamedIndividual ,
+                          sbeo:HallSegment ;
+                 sbeo:connectedTo ex:OE1 ,
+                                  ex:OpenHall1 ;
+                 sbeo:accommodationCapacity 2 ;
+                 sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1_HumanDetection_Sensor
+ex:OpenHall1_OE1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                                sosa:Sensor ;
+                                       sosa:observes ex:HumanDetection ;
+                                       sbeo:installedIn ex:OpenHall1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1_Humidity_Sensor
+ex:OpenHall1_OE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:Humidity ;
+                                 sbeo:installedIn ex:OpenHall1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1_Smoke_Sensor
+ex:OpenHall1_OE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Smoke ;
+                              sbeo:installedIn ex:OpenHall1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1_SpaceAccessibility_Sensor
+ex:OpenHall1_OE1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                    sosa:Sensor ;
+                                           sosa:observes ex:SpaceAccessibility ;
+                                           sbeo:installedIn ex:OpenHall1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE1_Temperature_Sensor
+ex:OpenHall1_OE1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:Temperature ;
+                                    sbeo:installedIn ex:OpenHall1_OE1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2
+ex:OpenHall1_OE2 rdf:type owl:NamedIndividual ,
+                          sbeo:HallSegment ;
+                 sbeo:connectedTo ex:OE2 ,
+                                  ex:OpenHall1 ;
+                 sbeo:accommodationCapacity 2 ;
+                 sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2_HumanDetection_Sensor
+ex:OpenHall1_OE2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                                sosa:Sensor ;
+                                       sosa:observes ex:HumanDetection ;
+                                       sbeo:installedIn ex:OpenHall1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2_Humidity_Sensor
+ex:OpenHall1_OE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:Humidity ;
+                                 sbeo:installedIn ex:OpenHall1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2_Smoke_Sensor
+ex:OpenHall1_OE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Smoke ;
+                              sbeo:installedIn ex:OpenHall1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2_SpaceAccessibility_Sensor
+ex:OpenHall1_OE2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                    sosa:Sensor ;
+                                           sosa:observes ex:SpaceAccessibility ;
+                                           sbeo:installedIn ex:OpenHall1_OE2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall1_OE2_Temperature_Sensor
+ex:OpenHall1_OE2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:Temperature ;
+                                    sbeo:installedIn ex:OpenHall1_OE2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OpenHall1_Smoke_Sensor
@@ -677,6 +1206,94 @@ ex:OpenHall2_Humidity_Sensor rdf:type owl:NamedIndividual ,
                              sbeo:installedIn ex:OpenHall2 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3
+ex:OpenHall2_OE3 rdf:type owl:NamedIndividual ,
+                          sbeo:HallSegment ;
+                 sbeo:connectedTo ex:OE3 ,
+                                  ex:OpenHall2 ;
+                 sbeo:accommodationCapacity 2 ;
+                 sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3_HumanDetection_Sensor
+ex:OpenHall2_OE3_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                                sosa:Sensor ;
+                                       sosa:observes ex:HumanDetection ;
+                                       sbeo:installedIn ex:OpenHall2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3_Humidity_Sensor
+ex:OpenHall2_OE3_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:Humidity ;
+                                 sbeo:installedIn ex:OpenHall2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3_Smoke_Sensor
+ex:OpenHall2_OE3_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Smoke ;
+                              sbeo:installedIn ex:OpenHall2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3_SpaceAccessibility_Sensor
+ex:OpenHall2_OE3_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                    sosa:Sensor ;
+                                           sosa:observes ex:SpaceAccessibility ;
+                                           sbeo:installedIn ex:OpenHall2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE3_Temperature_Sensor
+ex:OpenHall2_OE3_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:Temperature ;
+                                    sbeo:installedIn ex:OpenHall2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4
+ex:OpenHall2_OE4 rdf:type owl:NamedIndividual ,
+                          sbeo:HallSegment ;
+                 sbeo:connectedTo ex:OE4 ,
+                                  ex:OpenHall2 ;
+                 sbeo:accommodationCapacity 2 ;
+                 sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4_HumanDetection_Sensor
+ex:OpenHall2_OE4_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                                sosa:Sensor ;
+                                       sosa:observes ex:HumanDetection ;
+                                       sbeo:installedIn ex:OpenHall2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4_Humidity_Sensor
+ex:OpenHall2_OE4_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:Humidity ;
+                                 sbeo:installedIn ex:OpenHall2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4_Smoke_Sensor
+ex:OpenHall2_OE4_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Smoke ;
+                              sbeo:installedIn ex:OpenHall2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4_SpaceAccessibility_Sensor
+ex:OpenHall2_OE4_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                                    sosa:Sensor ;
+                                           sosa:observes ex:SpaceAccessibility ;
+                                           sbeo:installedIn ex:OpenHall2_OE4 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#OpenHall2_OE4_Temperature_Sensor
+ex:OpenHall2_OE4_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:Temperature ;
+                                    sbeo:installedIn ex:OpenHall2_OE4 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#OpenHall2_Smoke_Sensor
 ex:OpenHall2_Smoke_Sensor rdf:type owl:NamedIndividual ,
                                    sosa:Sensor ;
@@ -706,7 +1323,6 @@ ex:POI1 rdf:type owl:NamedIndividual ,
         sbeo:area "5.0"^^xsd:float .
 
 
-
 ###  https://w3id.org/sbeo/example/officescenario#POI1_HumanDetection_Sensor
 ex:POI1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
                                        sosa:Sensor ;
@@ -719,6 +1335,50 @@ ex:POI1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                  sosa:Sensor ;
                         sosa:observes ex:Humidity ;
                         sbeo:installedIn ex:POI1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1
+ex:POI1_J1 rdf:type owl:NamedIndividual ,
+                    sbeo:PointOfInterestSegment ;
+           sbeo:connectedTo ex:J1 ,
+                            ex:POI1 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1_HumanDetection_Sensor
+ex:POI1_J1_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:POI1_J1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1_Humidity_Sensor
+ex:POI1_J1_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:POI1_J1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1_Smoke_Sensor
+ex:POI1_J1_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:POI1_J1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1_SpaceAccessibility_Sensor
+ex:POI1_J1_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:POI1_J1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#POI1_J1_Temperature_Sensor
+ex:POI1_J1_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:POI1_J1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#POI1_Smoke_Sensor
@@ -764,6 +1424,50 @@ ex:RE1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                        sbeo:installedIn ex:RE1 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2
+ex:RE1_J2 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:J2 ,
+                           ex:RE1 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2_HumanDetection_Sensor
+ex:RE1_J2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:RE1_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2_Humidity_Sensor
+ex:RE1_J2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:RE1_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2_Smoke_Sensor
+ex:RE1_J2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:RE1_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2_SpaceAccessibility_Sensor
+ex:RE1_J2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:RE1_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE1_J2_Temperature_Sensor
+ex:RE1_J2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:RE1_J2 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#RE1_Smoke_Sensor
 ex:RE1_Smoke_Sensor rdf:type owl:NamedIndividual ,
                              sosa:Sensor ;
@@ -807,6 +1511,94 @@ ex:RE2_Humidity_Sensor rdf:type owl:NamedIndividual ,
                        sbeo:installedIn ex:RE2 .
 
 
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2
+ex:RE2_J2 rdf:type owl:NamedIndividual ,
+                   sbeo:CorridorSegment ;
+          sbeo:connectedTo ex:J2 ,
+                           ex:RE2 ;
+          sbeo:accommodationCapacity 2 ;
+          sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2_HumanDetection_Sensor
+ex:RE2_J2_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                         sosa:Sensor ;
+                                sosa:observes ex:HumanDetection ;
+                                sbeo:installedIn ex:RE2_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2_Humidity_Sensor
+ex:RE2_J2_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                   sosa:Sensor ;
+                          sosa:observes ex:Humidity ;
+                          sbeo:installedIn ex:RE2_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2_Smoke_Sensor
+ex:RE2_J2_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                sosa:Sensor ;
+                       sosa:observes ex:Smoke ;
+                       sbeo:installedIn ex:RE2_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2_SpaceAccessibility_Sensor
+ex:RE2_J2_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                             sosa:Sensor ;
+                                    sosa:observes ex:SpaceAccessibility ;
+                                    sbeo:installedIn ex:RE2_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_J2_Temperature_Sensor
+ex:RE2_J2_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                      sosa:Sensor ;
+                             sosa:observes ex:Temperature ;
+                             sbeo:installedIn ex:RE2_J2 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3
+ex:RE2_OE3 rdf:type owl:NamedIndividual ,
+                    sbeo:CorridorSegment ;
+           sbeo:connectedTo ex:OE3 ,
+                            ex:RE2 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3_HumanDetection_Sensor
+ex:RE2_OE3_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:RE2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3_Humidity_Sensor
+ex:RE2_OE3_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:RE2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3_Smoke_Sensor
+ex:RE2_OE3_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:RE2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3_SpaceAccessibility_Sensor
+ex:RE2_OE3_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:RE2_OE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#RE2_OE3_Temperature_Sensor
+ex:RE2_OE3_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:RE2_OE3 .
+
+
 ###  https://w3id.org/sbeo/example/officescenario#RE2_Smoke_Sensor
 ex:RE2_Smoke_Sensor rdf:type owl:NamedIndividual ,
                              sosa:Sensor ;
@@ -833,7 +1625,6 @@ ex:RE3 rdf:type owl:NamedIndividual ,
                 sbeo:RoomExit ;
        sbeo:connectedTo ex:OE4 ,
                         ex:WC1 ;
-       sbeo:hasAvailabilityStatus sbeo:UnAvailable ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float .
 
@@ -907,6 +1698,50 @@ ex:WC1_Humidity_Sensor rdf:type owl:NamedIndividual ,
                                 sosa:Sensor ;
                        sosa:observes ex:Humidity ;
                        sbeo:installedIn ex:WC1 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3
+ex:WC1_RE3 rdf:type owl:NamedIndividual ,
+                    sbeo:RoomSegment ;
+           sbeo:connectedTo ex:RE3 ,
+                            ex:WC1 ;
+           sbeo:accommodationCapacity 2 ;
+           sbeo:area "2.0"^^xsd:float .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3_HumanDetection_Sensor
+ex:WC1_RE3_HumanDetection_Sensor rdf:type owl:NamedIndividual ,
+                                          sosa:Sensor ;
+                                 sosa:observes ex:HumanDetection ;
+                                 sbeo:installedIn ex:WC1_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3_Humidity_Sensor
+ex:WC1_RE3_Humidity_Sensor rdf:type owl:NamedIndividual ,
+                                    sosa:Sensor ;
+                           sosa:observes ex:Humidity ;
+                           sbeo:installedIn ex:WC1_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3_Smoke_Sensor
+ex:WC1_RE3_Smoke_Sensor rdf:type owl:NamedIndividual ,
+                                 sosa:Sensor ;
+                        sosa:observes ex:Smoke ;
+                        sbeo:installedIn ex:WC1_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3_SpaceAccessibility_Sensor
+ex:WC1_RE3_SpaceAccessibility_Sensor rdf:type owl:NamedIndividual ,
+                                              sosa:Sensor ;
+                                     sosa:observes ex:SpaceAccessibility ;
+                                     sbeo:installedIn ex:WC1_RE3 .
+
+
+###  https://w3id.org/sbeo/example/officescenario#WC1_RE3_Temperature_Sensor
+ex:WC1_RE3_Temperature_Sensor rdf:type owl:NamedIndividual ,
+                                       sosa:Sensor ;
+                              sosa:observes ex:Temperature ;
+                              sbeo:installedIn ex:WC1_RE3 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#WC1_Smoke_Sensor

@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
-import com.hp.hpl.jena.rdf.model.Resource;
+
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 import helper.AutomatedOperations;
@@ -43,17 +43,16 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         float area;
         OutputStream out;
 
-        List<ODPair> odPairList = new ArrayList<>();
-        List<Space> spaceInfoList = new ArrayList<>();
+
         Scheduler scheduler = new Scheduler();
         List<String> personNeedToMoveODQueryResult;
 
-        try {
-            odPairList = AutomatedOperations.getCostOfAllODPairs(CareeInfModel.Instance().getInfModel());
-            spaceInfoList = AutomatedOperations.getSpaceInfo(CareeInfModel.Instance().getInfModel());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        /**
+         * TODO:
+         *      Put a resting motion status for each person once they finish  their journey.
+         *      It could be random staying status before it gets back to Standing again.
+         *      It might also be done after each time step.
+         */
 
         while (keepRunning) {
             System.out.println("Human Location Streamer Time Step No: " + count);
@@ -62,34 +61,37 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
                 personNeedToMoveODQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToMove.txt");
 
+
                 if (!personNeedToMoveODQueryResult.isEmpty()) {
 
                     String p;
                     String[] tokens;
                     String id;
-                    Map<String, Integer> spaceDensityMap = new HashMap<>();
+                    Map<String, Integer> spaceOccupancyMap = new HashMap<>();
                     PersonMovementTime pmt;
                     List<PersonMovementTime> personNeedToMove = new ArrayList<>();
-                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 3; i += 4) {
+                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 4; i += 5) {
 
                         p = personNeedToMoveODQueryResult.get(i);
                         tokens = personNeedToMoveODQueryResult.get(i + 1).split("\"");
                         id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
                         String origin = personNeedToMoveODQueryResult.get(i + 2);
                         String destination = personNeedToMoveODQueryResult.get(i + 3);
+//                        String edge = personNeedToMoveODQueryResult.get(i + 4);
+
 
                         // calculate required time
-                        Optional<ODPair> odPair = odPairList.stream()
+                        Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
                                 .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
 
                         if (odPair.isPresent()) {
-                            timeRequired = odPair.get().getValue() * 1000;
+                            timeRequired = odPair.get().getCost() * 1000;
                         } else {
                             throw new Exception("Origin and Destination not found in odPairList");
                         }
 
                         // calculate density of each space
-                        spaceDensityMap.merge(origin, 1, Integer::sum);
+                        spaceOccupancyMap.merge(origin, 1, Integer::sum);
 
                         pmt = new PersonMovementTime(p, timeRequired, 0, origin, destination, id);
                         personNeedToMove.add(pmt);
@@ -105,8 +107,8 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
                         if (!freeFlow) {
 
                             // find space area
-                            Optional<Space> space = spaceInfoList.stream()
-                                    .filter(x -> x.getSpace().equals(person.getOrigin())).findFirst();
+                            Optional<Space> space = HelpingVariables.spaceInfoList.stream()
+                                    .filter(x -> x.getName().equals(person.getOrigin())).findFirst();
                             if (space.isPresent()) {
                                 area = space.get().getArea();
                             } else {
@@ -114,7 +116,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
                             }
 
                             // get the space density status where the person is located
-                            Integer density = spaceDensityMap.get(person.getOrigin());
+                            Integer density = spaceOccupancyMap.get(person.getOrigin());
                             extraTime = MathOperations.getExtraTime(area, density, areaPerPersonM2);
                             if (extraTime > 0) {
                                 person.incrementTimeRequired(extraTime);
@@ -125,7 +127,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
                         // add person in the scheduler
                         scheduler.addMovingPerson(person);
                     }
-                    Files.write(Paths.get("data/output/O-DPairAreaSpecificNeededTime.txt"), sb.toString().getBytes(), StandardOpenOption.APPEND);
+//                    Files.write(Paths.get("data/output/O-DPairAreaSpecificNeededTime.txt"), sb.toString().getBytes(), StandardOpenOption.APPEND);
                 }
 
                 AutomatedOperations.updateModelBeforePersonMoves(scheduler.getMovingPersons());
@@ -151,7 +153,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         RdfQuadruple q;
         String timeNow = String.valueOf(System.currentTimeMillis());
         List<Person> pList = new ArrayList<>();
-        List<String> p = CareeInfModel.Instance().getQueryResult("data/queries/sparql/GetPersonHavingStandingMotionStatus.txt");
+        List<String> p = CareeInfModel.Instance().getQueryResult("data/queries/sparql/GetPersonHavingRestingMotionStatus.txt");
 
         for (int i = 0; i < p.size() - 2; i+=3) {
             String[] tokens = p.get(i+2).split("\"");

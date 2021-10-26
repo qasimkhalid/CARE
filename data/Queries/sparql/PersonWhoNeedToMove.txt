@@ -8,15 +8,32 @@ PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-select ?person ?space (sample(?space2) as ?nextSpace) ?val
+select distinct ?person ?origin (sample(?destination) as ?nextSpace) ?val (sample(?commonEdge) as ?edge)
 where {
         ?person a foaf:Person ;
-                sbeo:locatedIn ?space ;
+                sbeo:locatedIn ?origin ;
                 sbeo:id ?val .
-        ?space sbeo:connectedTo ?space2 .
-        FILTER (NOT EXISTS {?space2 sbeo:hasAvailabilityStatus  sbeo:UnAvailable}) .
-        FILTER (EXISTS {?person sbeo:hasMotionState ex:Standing}) .
-        FILTER (EXISTS {?person sbeo:hasActivityStatus ex:Evacuating}) .
+
+    FILTER (EXISTS {?person sbeo:hasMotionState ex:Standing}) .
+
+        ?origin sbeo:connectedTo ?destination  .
+    FILTER (NOT EXISTS {?destination  sbeo:hasAvailabilityStatus  sbeo:UnAvailable}) .
+
+        ?destination  a ?location .
+        {?location rdfs:subClassOf* sbeo:RoutePoint }
+    UNION
+        {?location rdfs:subClassOf* seas:Room }
+    UNION
+        {?location rdfs:subClassOf* seas:Hall}
+            
+            
+        ?origin sbeo:connectedTo ?commonEdge.    
+        ?destination  sbeo:connectedTo ?commonEdge.
+        
+        ?commonEdge a ?location2 .
+        ?location2 rdfs:subClassOf* sbeo:Passage .
+    FILTER (NOT EXISTS {?commonEdge  sbeo:hasAvailabilityStatus  sbeo:UnAvailable}) .
+
       }
-group by ?person ?space ?val
+group by ?person ?origin ?val
 ORDER By ASC(?person)

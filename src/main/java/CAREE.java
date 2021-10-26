@@ -4,8 +4,11 @@ CAREE: Context-AwaRe Emergency Evacuation Software
  Example: sbeo evaluation
 */
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import eu.larkc.csparql.common.utils.CsparqlUtils;
+import eu.larkc.csparql.core.engine.ConsoleFormatter;
 import eu.larkc.csparql.core.engine.CsparqlEngineImpl;
 import eu.larkc.csparql.core.engine.CsparqlQueryResultProxy;
 
@@ -13,6 +16,8 @@ import helper.AutomatedOperations;
 import helper.HelpingVariables;
 import helper.Output;
 import model.CareeInfModel;
+import model.ODPair;
+import model.Space;
 import streamers.HumanLocationStreamer;
 import streamers.SpaceSensorsStreamer;
 
@@ -21,25 +26,23 @@ public class CAREE {
 
     private final static long initialTime = System.currentTimeMillis();
 
-
     public static void main( String[] args ) throws Exception {
 
         //Initialization C-SPARQL engine with timestamp function.
         CsparqlEngineImpl engine = new CsparqlEngineImpl();
         engine.initialize(true);
 
-        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, true);
+        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, false, 2);
 
         //C-SPARQL query for to get the location of each person using their ID.
-        String streamQueryLocation = "REGISTER QUERY EachPersonLocation AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/humanDetectionInSpacesUsingTheirID.txt");
 
-        String streamQueryTemperatureSensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/TemperatureSensorValues.txt");
+        String streamQueryEdge = "REGISTER QUERY EachEdge AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/_m/edge_m.txt");
 
-        String streamQuerySmokeSensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/SmokeSensorValues.txt");
+        String streamQueryNode = "REGISTER QUERY EachNode AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/_m/node_m.txt");
 
-        String streamQueryHumiditySensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/HumiditySensorValues.txt");
+        String streamQueryPersonAtNode = "REGISTER QUERY PersonAtNode AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/queries/csparql/_m/locationOfEachPerson_m.txt");
 
-        String streamQuerySpaceAccessibilitySensors = "REGISTER QUERY ValueOfEachSensorInstalledInTheBuilding AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/Queries/csparql/SpaceAccessibilitySensorValues.txt");
+        String streamQueryEdgeExcludedForPerson = "REGISTER QUERY EdgeExcludedForPerson AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/queries/csparql/_m/edges_excluded_for_persons_m.txt");
 
         //inserting a static data (schema + data + inferred) in the C-SPARQL as a base model.
         StringWriter staticModel = new StringWriter();
@@ -60,18 +63,16 @@ public class CAREE {
         Thread ssStreamThread = new Thread(ssStream);
 
         //Creating an instance of the listener and registering the C-SPARQL query.
-        CsparqlQueryResultProxy personLocation = engine.registerQuery(streamQueryLocation, false);
-        CsparqlQueryResultProxy temperatureSensorValues = engine.registerQuery(streamQueryTemperatureSensors, false);
-        CsparqlQueryResultProxy smokeSensorValues = engine.registerQuery(streamQuerySmokeSensors, false);
-        CsparqlQueryResultProxy humiditySensorValues = engine.registerQuery(streamQueryHumiditySensors, false);
-        CsparqlQueryResultProxy spaceAccessibilitySensorValues = engine.registerQuery(streamQuerySpaceAccessibilitySensors, false);
+        CsparqlQueryResultProxy edge= engine.registerQuery(streamQueryEdge, false);
+        CsparqlQueryResultProxy node= engine.registerQuery(streamQueryNode, false);
+        CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
+        CsparqlQueryResultProxy edgeExcludedForPerson= engine.registerQuery(streamQueryEdgeExcludedForPerson, false);
 
         //Adding an observer to the instance of the listener
-        personLocation.addObserver(new Output("data/output/HumanLocationsBySpace.txt"));
-        temperatureSensorValues.addObserver(new Output("data/output/TemperatureSensorValueAfterEachTimeStep.txt"));
-        smokeSensorValues.addObserver(new Output("data/output/SmokeSensorValueAfterEachTimeStep.txt"));
-        humiditySensorValues.addObserver(new Output("data/output/HumiditySensorValueAfterEachTimeStep.txt"));
-        spaceAccessibilitySensorValues.addObserver(new Output("data/output/SpaceAccessiblitySensorValueAfterEachTimeStep.txt"));
+        edge.addObserver(new Output("data/output/_m/1.txt"));
+        node.addObserver(new Output("data/output/_m/2.txt"));
+        personAtNode.addObserver(new Output("data/output/_m/3.txt"));
+        edgeExcludedForPerson.addObserver(new Output("data/output/_m/4.txt"));
 
         //Starting all threads of streamers
         System.out.println("About to start the streaming threads...");

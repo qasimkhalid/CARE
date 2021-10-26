@@ -1,13 +1,30 @@
 package model;
 
-import java.util.List;
-
 public class ODPair {
 
     private String origin;
     private String destination;
-    private long value;
+    private Space space;
+    private long cost;
 
+    public ODPair( String origin, String destination, String cost) {
+        this.origin = origin;
+        this.destination = destination;
+//        this.value = Long.parseLong(value.substring(0, value.length() - 1).trim());
+        this.cost = Long.parseLong(cost.trim());
+    }
+
+    public ODPair(Space space) {
+        this.space = space;
+    }
+
+    public Space getSpace() {
+        return space;
+    }
+
+    public void setSpace(Space space) {
+        this.space = space;
+    }
 
     public String getOrigin() {
         return origin;
@@ -26,23 +43,11 @@ public class ODPair {
         this.destination = destination;
     }
 
-    public long getValue() {
-        return value;
+    public long getCost() {
+        return cost;
     }
 
-    public void setValue( long value ) {
-        this.value = value;
-    }
-
-    public ODPair( String origin, String destination, String value ) {
-        this.origin = origin;
-        this.destination = destination;
-//        this.value = Long.parseLong(value.substring(0, value.length() - 1).trim());
-        this.value = Long.parseLong(value.trim());
-    }
-
-    public ODPair( String origin, String destination) {
-        this.origin = origin;
-        this.destination = destination;
+    public void setCost(long cost) {
+        this.cost = cost;
     }
 }

@@ -1,0 +1,19 @@
+SELECT DISTINCT ?edge ?cost ?safetyVal ?capacity
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+        ?edge a ?location ;
+              sbeo:hasSafetyValue ?safetyVal ;
+              sbeo:accommodationCapacity ?capacity ;
+              sbeo:connectedTo ?origin ,
+                               ?destination .
+
+        {?location rdfs:subClassOf* sbeo:Passage }
+
+        ?distance a sbeo:Distance ;
+                sbeo:origin ?origin ;
+                sbeo:destination ?destination ;
+                sbeo:hasValue ?cost .
+
+}
+ORDER BY ASC(?space)

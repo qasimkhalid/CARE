@@ -14,7 +14,7 @@ import java.io.*;
 public class Output extends ConsoleFormatter {
 
     private String outputFileLocation;
-
+    private int timeStep = 1;
     public Output( String outputFileLocation ) {
         this.outputFileLocation = outputFileLocation;
     }
@@ -27,9 +27,14 @@ public class Output extends ConsoleFormatter {
         StringBuilder sb = new StringBuilder();
         RDFTable q = (RDFTable) arg;
         Iterator i$ = q.iterator();
+        sb.append("******"+timeStep+"******"+ "\n");
+
         while (i$.hasNext()) {
                 sb.append(i$.next().toString() + "\n");
         }
+
+        timeStep++;
+
         try {
             Files.write(Paths.get(outputFileLocation), sb.toString().getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {

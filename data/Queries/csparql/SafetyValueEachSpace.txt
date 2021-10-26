@@ -1,0 +1,12 @@
+SELECT DISTINCT ?space ?safetyVal
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+        ?space a ?location .
+        {?location rdfs:subClassOf* sbeo:RouteElement }
+        UNION
+        {?location rdfs:subClassOf* sbeo:Space }
+
+        ?space sbeo:hasSafetyValue ?safetyVal .
+}
+ORDER By ASC(?space)

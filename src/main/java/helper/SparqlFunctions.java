@@ -12,8 +12,13 @@ public class SparqlFunctions {
     public SparqlFunctions() {
     }
 
-    public static List<String> getSPARQLQueryResult( InfModel infModel, String path ) throws Exception {
-        String queryString = CsparqlUtils.fileToString(path);
+    public static List<String> getSPARQLQueryResult( InfModel infModel, String path ){
+        String queryString = null;
+        try {
+            queryString = CsparqlUtils.fileToString(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Query query = QueryFactory.create(queryString);
         QueryExecution qExec = QueryExecutionFactory.create(query, infModel);
         List<QuerySolution> resultRaw = ResultSetFormatter.toList(qExec.execSelect());

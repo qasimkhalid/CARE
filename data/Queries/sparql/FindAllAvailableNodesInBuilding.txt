@@ -7,14 +7,14 @@ PREFIX sbeo: <https://w3id.org/sbeo#>
 PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-
-SELECT DISTINCT ?space ?val ?val2
+SELECT DISTINCT ?node
 
 	WHERE {
-			?space a ?location ;
-			       sbeo:area ?val ;
-			       sbeo:accommodationCapacity ?val2 ;
-			{?location rdfs:subClassOf* sbeo:RouteElement }
-		UNION
-			{?location rdfs:subClassOf* sbeo:Space }
+			?node a ?location .
+			FILTER ( NOT EXISTS {?space sbeo:hasAvailabilityStatus sbeo:UnAvailable } )
+			{?location rdfs:subClassOf* sbeo:RoutePoint }
+        UNION
+            {?location rdfs:subClassOf* seas:Room}
+        UNION
+            {?location rdfs:subClassOf* seas:Hall}
 }

@@ -4,6 +4,10 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import model.CareeInfModel;
+import model.ODPair;
+import model.Space;
+
+import java.util.List;
 
 public class HelpingVariables {
 
@@ -29,18 +33,26 @@ public class HelpingVariables {
     public final static String kbIRI = "https://w3id.org/sbeo/example/officescenario";
 
     public final static Resource motionStateStanding = ResourceFactory.createResource(exPrefix + "Standing");
+    public final static Resource motionStateResting = ResourceFactory.createResource(exPrefix + "Resting");
     public final static Resource motionStateWalking = ResourceFactory.createResource(exPrefix + "Walking");
     public final static Resource activityStatusEvacuating = ResourceFactory.createResource(exPrefix + "Evacuating");
     public final static Resource unavailableInstance = CareeInfModel.Instance().getResource(sbeoPrefix + "UnAvailable");
     public final static Resource AvailableInstance = CareeInfModel.Instance().getResource(sbeoPrefix + "Available");
+
     public final static Resource personClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.foafPrefix + "Person");
+    public final static Resource NonMotorisedWheelchairPersonClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.sbeoPrefix + "NonMotorisedWheelchairPerson");
 
     public final static Property atTime = CareeInfModel.Instance().getProperty(sbeoPrefix + "atTime");
     public final static Property locatedIn= CareeInfModel.Instance().getProperty(sbeoPrefix + "locatedIn");
     public final static Property motionState= CareeInfModel.Instance().getProperty(HelpingVariables.sbeoPrefix + "hasMotionState");
-    public final static Property hasAvailabilityStatus = CareeInfModel.Instance().getProperty(sbeoPrefix + "hasAvailabilityStatus");
     public final static Property activityStatus = CareeInfModel.Instance().getInfModel().getProperty(HelpingVariables.sbeoPrefix + "hasActivityStatus");
+    public final static Property safetyValue = CareeInfModel.Instance().getInfModel().getProperty(HelpingVariables.sbeoPrefix + "hasSafetyValue");
+    public final static Property excludedFor = CareeInfModel.Instance().getInfModel().getProperty(HelpingVariables.sbeoPrefix + "excludedFor");
+    public final static Property hasAvailabilityStatus = CareeInfModel.Instance().getProperty(sbeoPrefix + "hasAvailabilityStatus");
     public final static Property id = CareeInfModel.Instance().getInfModel().getProperty(HelpingVariables.sbeoPrefix + "id");
     public final static Property rdfType = CareeInfModel.Instance().getInfModel().getProperty(HelpingVariables.rdfPrefix + "type");
+
+    public static List<ODPair> odPairList = AutomatedOperations.getCostOfAllODPairs(CareeInfModel.Instance().getInfModel());
+    public static List<Space> spaceInfoList =AutomatedOperations.getSpaceInfo(CareeInfModel.Instance().getInfModel(), odPairList);
 
 }

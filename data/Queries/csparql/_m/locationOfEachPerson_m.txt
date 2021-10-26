@@ -1,0 +1,26 @@
+SELECT DISTINCT ?person ?node
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+
+        ?node a ?location .
+
+        {?location rdfs:subClassOf* sbeo:RoutePoint }
+        UNION
+        {?location rdfs:subClassOf* seas:Room }
+        UNION
+        {?location rdfs:subClassOf* seas:Hall }
+
+        ?person a foaf:Person ;
+                sbeo:id ?id .
+
+        ?obs a sosa:Observation;
+             sosa:observedProperty ex:HumanDetection;
+             sosa:hasSimpleResult ?id ;
+             sosa:madeBySensor ?sensor .
+
+        ?sensor sbeo:installedIn ?node .
+}
+
+
+

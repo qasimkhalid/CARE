@@ -7,11 +7,20 @@ PREFIX sbeo: <https://w3id.org/sbeo#>
 PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+CONSTRUCT
+{?space sbeo:excludedFor ?person .}
 
-select ?person ?space ?val
-where {
-        ?person a foaf:Person ;
-                sbeo:locatedIn ?space ;
-                sbeo:id ?val .
-        FILTER (EXISTS {?person sbeo:hasMotionState ex:Standing}) .
-      }
+	WHERE {
+			?space a ?location .
+			{?location rdfs:subClassOf* sbeo:RouteElement }
+        UNION
+            {?location rdfs:subClassOf* seas:Space}
+
+            ?space sbeo:hasSafetyValue ?x .
+            FILTER(?x < "0.5"^^xsd:float) .
+
+           ?person a ?socialUnit .
+           {?socialUnit rdfs:subClassOf* sbeo:SocialUnit }
+
+
+}

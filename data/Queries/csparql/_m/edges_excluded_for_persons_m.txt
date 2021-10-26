@@ -1,0 +1,38 @@
+SELECT DISTINCT ?person ?edge
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+    {
+        SELECT DISTINCT (?person1 as ?person) ?edge
+        WHERE {
+                ?edge a ?location ;
+                      sbeo:hasSafetyValue ?safetyVal .
+                FILTER(?safetyVal <= 0.5) .
+                {?location rdfs:subClassOf* sbeo:Passage . }
+
+                ?person1 a foaf:Person .
+                Filter (
+                    EXISTS {
+                            ?person1 a ?p1 .
+                            ?p1 rdfs:subClassOf+ sbeo:MobilityWithWheelchairPerson .
+                            FILTER (?p1 != foaf:Person)
+                    }
+                )
+
+        }
+    }
+    UNION
+    {
+        SELECT DISTINCT (?person2 as ?person)
+        WHERE {
+                ?person2 a foaf:Person .
+                Filter (
+                    NOT EXISTS {
+                                ?person2 a ?p2 .
+                                ?p2 rdfs:subClassOf+ sbeo:MobilityWithWheelchairPerson .
+                                FILTER (?p2 != foaf:Person)
+                    }
+                )
+        }
+    }
+}

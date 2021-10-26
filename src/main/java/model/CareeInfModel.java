@@ -6,6 +6,7 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 
+import helper.HelpingVariables;
 import helper.SparqlFunctions;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
@@ -64,6 +65,10 @@ public class CareeInfModel {
 
     public synchronized void add(Resource resource1, Property property, Resource resource2) {
         _infModel.add(resource1, property, resource2);
+    }
+
+    public synchronized void addLiteral(Resource resource1, Property property, float literal) {
+        _infModel.addLiteral(resource1, property, literal);
     }
 
     public synchronized List<String> getQueryResult(String path) {

@@ -1,0 +1,143 @@
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******1******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******2******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******3******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******4******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******5******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******6******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******7******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******8******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******9******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******10******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******11******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******12******
+https://w3id.org/sbeo/example/officescenario#Person1	https://w3id.org/sbeo/example/officescenario#OE4	
+https://w3id.org/sbeo/example/officescenario#Person6	https://w3id.org/sbeo/example/officescenario#OE1	
+https://w3id.org/sbeo/example/officescenario#Person9	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person3	https://w3id.org/sbeo/example/officescenario#RE3	
+https://w3id.org/sbeo/example/officescenario#Person2	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person5	https://w3id.org/sbeo/example/officescenario#RE2	
+https://w3id.org/sbeo/example/officescenario#Person7	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person4	https://w3id.org/sbeo/example/officescenario#RE1	
+https://w3id.org/sbeo/example/officescenario#Person10	https://w3id.org/sbeo/example/officescenario#FE1	
+https://w3id.org/sbeo/example/officescenario#Person8	https://w3id.org/sbeo/example/officescenario#FE2	
+******13******

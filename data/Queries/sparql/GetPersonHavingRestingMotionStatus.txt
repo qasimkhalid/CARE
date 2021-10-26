@@ -8,13 +8,10 @@ PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-SELECT DISTINCT ?space ?val ?val2
-
-	WHERE {
-			?space a ?location ;
-			       sbeo:area ?val ;
-			       sbeo:accommodationCapacity ?val2 ;
-			{?location rdfs:subClassOf* sbeo:RouteElement }
-		UNION
-			{?location rdfs:subClassOf* sbeo:Space }
-}
+select ?person ?space ?val
+where {
+        ?person a foaf:Person ;
+                sbeo:locatedIn ?space ;
+                sbeo:id ?val .
+        FILTER (EXISTS {?person sbeo:hasMotionState ex:Resting}) .
+      }
