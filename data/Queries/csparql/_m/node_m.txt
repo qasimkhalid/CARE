@@ -1,11 +1,12 @@
-SELECT DISTINCT ?node ?safetyVal ?capacity (count(Distinct ?person) as ?numberOfPersonLocatedAtNode)
+SELECT DISTINCT ?node ?safetyVal ?capacity (count(Distinct ?person) as ?numberOfPersonLocatedAtNode) ?nodeId
 FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
 FROM <https://w3id.org/sbeo#>
 WHERE {
 
     ?node a ?location ;
           sbeo:hasSafetyValue ?safetyVal ;
-          sbeo:accommodationCapacity ?capacity .
+          sbeo:accommodationCapacity ?capacity ;
+          sbeo:id ?nodeId .
 
     {?location rdfs:subClassOf* sbeo:RoutePoint }
     UNION
@@ -26,7 +27,7 @@ WHERE {
             ?sensor sbeo:installedIn ?node .
         }
 }
-GROUP BY ?node ?safetyVal ?capacity
+GROUP BY ?node ?safetyVal ?capacity ?nodeId
 
 
 

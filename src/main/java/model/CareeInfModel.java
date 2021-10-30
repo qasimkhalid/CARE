@@ -67,7 +67,7 @@ public class CareeInfModel {
         _infModel.add(resource1, property, resource2);
     }
 
-    public synchronized void addLiteral(Resource resource1, Property property, float literal) {
+    public synchronized void addLiteral(Resource resource1, Property property, double literal) {
         _infModel.addLiteral(resource1, property, literal);
     }
 

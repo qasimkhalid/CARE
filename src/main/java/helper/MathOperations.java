@@ -19,7 +19,7 @@ final public class MathOperations
         return (int) Math.floor(Math.random()*(max-min+1)+min);
     }
 
-    public static float getRandomNumberInRange(float max, float min) {
+    public static double getRandomNumberInRange(double max, double min) {
         Random random = new Random();
         return min + random.nextFloat() * (max - min);
     }

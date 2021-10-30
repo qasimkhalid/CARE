@@ -5,11 +5,11 @@ public class Space {
 
     private float area;
     private String type;
-    private float safetyValue = 1f;
+    private double safetyValue = 1f;
     private int capacity;
-    private float humiditySensorValue;
-    private float temperatureSensorValue;
-    private float humanDetectionSensorValue;
+    private double humiditySensorValue;
+    private double temperatureSensorValue;
+    private double humanDetectionSensorValue;
     private boolean smokeExists;
     private boolean available;
 
@@ -24,7 +24,7 @@ public class Space {
         this.type = type;
     }
 
-    public Space(String name, float humiditySensorValue, float temperatureSensorValue, float humanDetectionSensorValue, boolean smokeExists, boolean available) {
+    public Space(String name, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
         this.name = name;
         this.humiditySensorValue = humiditySensorValue;
         this.temperatureSensorValue = temperatureSensorValue;
@@ -34,21 +34,21 @@ public class Space {
     }
 
 
-    public Space(String name, String area, String type, float safetyValue) {
+    public Space(String name, String area, String type, double safetyValue) {
         this.name = name;
         this.area = Float.parseFloat(area.trim().substring(1, area.length() - 12));
         this.type = type;
         this.safetyValue = safetyValue;
     }
 
-    public Space(String name, float humiditySensorValue, float temperatureSensorValue, boolean smokeExists) {
+    public Space(String name, double humiditySensorValue, double temperatureSensorValue, boolean smokeExists) {
         this.name = name;
         this.humiditySensorValue = humiditySensorValue;
         this.temperatureSensorValue = temperatureSensorValue;
         this.smokeExists = smokeExists;
     }
 
-    public Space(String name, float area, String type, float safetyValue, int capacity, float humiditySensorValue, float temperatureSensorValue, float humanDetectionSensorValue, boolean smokeExists, boolean available) {
+    public Space(String name, float area, String type, double safetyValue, int capacity, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
         this.name = name;
         this.area = area;
         this.type = type;
@@ -77,27 +77,27 @@ public class Space {
         this.capacity = capacity;
     }
 
-    public float getHumiditySensorValue() {
-        return humiditySensorValue;
+    public double getHumiditySensorValue() {
+        return Math.round(humiditySensorValue* 100d) / 100d;
     }
 
-    public void setHumiditySensorValue(float humiditySensorValue) {
+    public void setHumiditySensorValue(double humiditySensorValue) {
         this.humiditySensorValue = humiditySensorValue;
     }
 
-    public float getTemperatureSensorValue() {
-        return temperatureSensorValue;
+    public double getTemperatureSensorValue() {
+        return Math.round(temperatureSensorValue* 100d) / 100d;
     }
 
-    public void setTemperatureSensorValue(float temperatureSensorValue) {
+    public void setTemperatureSensorValue(double temperatureSensorValue) {
         this.temperatureSensorValue = temperatureSensorValue;
     }
 
-    public float getHumanDetectionSensorValue() {
-        return humanDetectionSensorValue;
+    public double getHumanDetectionSensorValue() {
+        return Math.round(humanDetectionSensorValue* 100d) / 100d;
     }
 
-    public void setHumanDetectionSensorValue(float humanDetectionSensorValue) {
+    public void setHumanDetectionSensorValue(double humanDetectionSensorValue) {
         this.humanDetectionSensorValue = humanDetectionSensorValue;
     }
 
@@ -117,11 +117,11 @@ public class Space {
         this.available = available;
     }
 
-    public float getSafetyValue() {
-        return safetyValue;
+    public double getSafetyValue() {
+        return  Math.round(safetyValue* 100d) / 100d;
     }
 
-    public void setSafetyValue(float safetyValue) {
+    public void setSafetyValue(double safetyValue) {
         this.safetyValue = safetyValue;
     }
 

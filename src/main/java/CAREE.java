@@ -44,6 +44,8 @@ public class CAREE {
 
         String streamQueryEdgeExcludedForPerson = "REGISTER QUERY EdgeExcludedForPerson AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/queries/csparql/_m/edges_excluded_for_persons_m.txt");
 
+        String streamQueryEdgePlusExcludedForPerson = "REGISTER QUERY EdgeExcludedForPerson AS " + HelpingVariables.prefixes + CsparqlUtils.fileToString("data/queries/csparql/_m/edge_plus_excluded_persons_m.txt");
+
         //inserting a static data (schema + data + inferred) in the C-SPARQL as a base model.
         StringWriter staticModel = new StringWriter();
         CareeInfModel.Instance().getInfModel().write(staticModel, "Turtle");
@@ -51,8 +53,8 @@ public class CAREE {
         engine.putStaticNamedModel(HelpingVariables.sbeoPrefix, result);
 
         // creating an instance of Random human location data stream.
-        HumanLocationStreamer hlStream = new HumanLocationStreamer(HelpingVariables.kbIRI, 1000, true, 1f);
-        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 1000);
+        HumanLocationStreamer hlStream = new HumanLocationStreamer(HelpingVariables.kbIRI, 3000, true, 1f);
+        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 3000);
 
         //Injecting the stream in the C-SPARQL engine.
         engine.registerStream(hlStream);
@@ -63,16 +65,18 @@ public class CAREE {
         Thread ssStreamThread = new Thread(ssStream);
 
         //Creating an instance of the listener and registering the C-SPARQL query.
-        CsparqlQueryResultProxy edge= engine.registerQuery(streamQueryEdge, false);
+//        CsparqlQueryResultProxy edge= engine.registerQuery(streamQueryEdge, false);
         CsparqlQueryResultProxy node= engine.registerQuery(streamQueryNode, false);
         CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
-        CsparqlQueryResultProxy edgeExcludedForPerson= engine.registerQuery(streamQueryEdgeExcludedForPerson, false);
+//        CsparqlQueryResultProxy edgeExcludedForPerson= engine.registerQuery(streamQueryEdgeExcludedForPerson, false);
+        CsparqlQueryResultProxy edgePlusExcludedForPerson= engine.registerQuery(streamQueryEdgePlusExcludedForPerson, false);
 
         //Adding an observer to the instance of the listener
-        edge.addObserver(new Output("data/output/_m/1.txt"));
-        node.addObserver(new Output("data/output/_m/2.txt"));
-        personAtNode.addObserver(new Output("data/output/_m/3.txt"));
-        edgeExcludedForPerson.addObserver(new Output("data/output/_m/4.txt"));
+//        edge.addObserver(new Output("data/output/_m/1.txt", "streamQueryEdge"));
+        node.addObserver(new Output("data/output/_m/2.txt", "streamQueryNode"));
+        personAtNode.addObserver(new Output("data/output/_m/3.txt", "streamQueryPersonAtNode"));
+//        edgeExcludedForPerson.addObserver(new Output("data/output/_m/4.txt", "streamQueryEdgeExcludedForPerson"));
+        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/5.txt", "streamQueryEdgePlusExcludedForPerson"));
 
         //Starting all threads of streamers
         System.out.println("About to start the streaming threads...");

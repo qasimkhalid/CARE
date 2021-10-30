@@ -1,0 +1,44 @@
+SELECT DISTINCT ?edge ?edgeId ?cost ?safetyVal ?capacity ?idPerson
+FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
+FROM <https://w3id.org/sbeo#>
+WHERE {
+        ?edge a ?location ;
+              sbeo:hasSafetyValue ?safetyVal ;
+              sbeo:accommodationCapacity ?capacity ;
+              sbeo:connectedTo ?origin ,
+                               ?destination .
+
+        {?location rdfs:subClassOf* sbeo:Passage }
+
+        ?distance a sbeo:Distance ;
+                sbeo:origin ?origin ;
+                sbeo:destination ?destination ;
+                sbeo:hasValue ?cost .
+
+
+        ?origin sbeo:id ?id1 .
+        ?destination sbeo:id ?id2 .
+
+        bind(concat(str(?id1) , ", ", str(?id2)) as ?edgeId)
+
+        OPTIONAL {
+                    {
+                        SELECT DISTINCT ?person ?edge ?idPerson
+                        WHERE {
+                                ?person a foaf:Person ;
+                                         sbeo:id ?idPerson .
+                                Filter (
+                                    EXISTS {
+                                            ?person a ?p1 .
+                                            ?p1 rdfs:subClassOf+ sbeo:MobilityWithWheelchairPerson .
+                                            FILTER (?p1 != foaf:Person)
+                                    }
+                                )
+                                ?edge sbeo:hasSafetyValue ?safetyVal .
+                                FILTER(?safetyVal <= 0.5) .
+                        }
+                        GROUP BY ?person ?edge ?idPerson
+                    }
+
+        }
+}

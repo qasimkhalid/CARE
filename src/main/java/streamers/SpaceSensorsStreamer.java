@@ -1,19 +1,14 @@
 package streamers;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.util.*;
 
-import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
-import eu.larkc.csparql.common.utils.CsparqlUtils;
+
 import helper.MathOperations;
 import helper.HelpingVariables;
 import model.CareeInfModel;
-import model.ODPair;
 import model.Sensor;
 import model.Space;
 
@@ -91,11 +86,10 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 Resource locationInstance = CareeInfModel.Instance().getResource(s.getName());
 
                 CareeInfModel.Instance().addLiteral(locationInstance, HelpingVariables.safetyValue, s.getSafetyValue());
-
                 q = new RdfQuadruple(
                         s.getName(),
                         HelpingVariables.safetyValue.toString(),
-                        String.valueOf(s.getSafetyValue())+"^^http://www.w3.org/2001/XMLSchema#float", System.currentTimeMillis());
+                        String.valueOf(s.getSafetyValue())+"^^http://www.w3.org/2001/XMLSchema#double", System.currentTimeMillis());
                 this.put(q);
 
 //                if (!s.isAvailable()) {
@@ -114,8 +108,9 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
 
     public void generateSensorValue( Sensor sensor, String time, Space space) {
-        float sensorValueNumber;
+        double sensorValueNumber;
         boolean sensorValueBoolean;
+        double safetyVal;
         RdfQuadruple q;
         String type = sensor.getObservationType();
 
@@ -135,13 +130,23 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                     this.put(q);
 
                 if(sensor.getValue() == null) {
-                    sensor.setValue(25f);
+                    sensor.setValue(25);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Float) sensor.getValue() + 5, (Float) sensor.getValue() - 2);
+                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 5, (Double) sensor.getValue() - 2);
+
+                if(sensorValueNumber < 10) sensorValueNumber = 10;
+                else if( sensorValueNumber > 100) sensorValueNumber = 100;
+
+                //applying an equation to get safety value of a space using temperature value
+                safetyVal = (-0.0131 * sensorValueNumber) + 1.3;
+                if(safetyVal < 0 ) space.setSafetyValue(0);
+                else if(safetyVal > 1) space.setSafetyValue(1);
+                else space.setSafetyValue(safetyVal);
+
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
                         HelpingVariables.sosaPrefix + "hasSimpleResult",
-                        sensorValueNumber  + "^^http://www.w3.org/2001/XMLSchema#float", System.currentTimeMillis());
+                        sensorValueNumber  + "^^http://www.w3.org/2001/XMLSchema#double", System.currentTimeMillis());
                     this.put(q);
 
                 q = new RdfQuadruple(
@@ -177,10 +182,10 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(false);
-                } else if(space.getTemperatureSensorValue() >= 50){ //check if the temperature of the same location is greater than 50
+                } else if(space.getTemperatureSensorValue() >= 55){ //check if the temperature of the same location is greater than 50
                     sensor.setValue(true);
-                    if(space.getSafetyValue() > 0.5f) space.setSafetyValue(0.5f);
                 }
+
                 sensorValueBoolean = (boolean) sensor.getValue();
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
@@ -221,15 +226,18 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         HelpingVariables.exPrefix + "Humidity", System.currentTimeMillis());
                     this.put(q);
 
-
                 if(sensor.getValue() == null) {
-                    sensor.setValue(0.4f);
+                    sensor.setValue(0.4);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Float) sensor.getValue() + .025f, (Float) sensor.getValue() - .025f);
+
+                //applying an equation to get safety value of a space using temperature value
+                sensorValueNumber =  ( -0.402 * Math.log(space.getTemperatureSensorValue()) ) + 1.8078;
+                if(sensorValueNumber < 0) sensorValueNumber = 0;
+
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
                         HelpingVariables.sosaPrefix + "hasSimpleResult",
-                        sensorValueNumber + "^^http://www.w3.org/2001/XMLSchema#float", System.currentTimeMillis());
+                        sensorValueNumber + "^^http://www.w3.org/2001/XMLSchema#double", System.currentTimeMillis());
                     this.put(q);
 
 
@@ -273,7 +281,6 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                     sensor.setValue(true);
                 } else if (space.getTemperatureSensorValue() >= 55 && space.isSmokeExists()){ //check if the temperature of the same location is greater than 50
                     sensor.setValue(false);
-                    space.setSafetyValue(0f);
                 }
                 sensorValueBoolean = (boolean) sensor.getValue();
                 q = new RdfQuadruple(

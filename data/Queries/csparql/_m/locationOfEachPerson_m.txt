@@ -1,9 +1,10 @@
-SELECT DISTINCT ?person ?node
+SELECT DISTINCT ?id ?nodeId
 FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
 FROM <https://w3id.org/sbeo#>
 WHERE {
 
-        ?node a ?location .
+        ?node a ?location ;
+                sbeo:id ?nodeId .
 
         {?location rdfs:subClassOf* sbeo:RoutePoint }
         UNION
@@ -21,6 +22,7 @@ WHERE {
 
         ?sensor sbeo:installedIn ?node .
 }
+ORDER BY ?person
 
 
 

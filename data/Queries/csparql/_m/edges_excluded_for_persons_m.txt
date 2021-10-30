@@ -1,16 +1,12 @@
-SELECT DISTINCT ?person ?edge
+SELECT DISTINCT ?person ?id ?edge ?edgeIDArbitrary
 FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
 FROM <https://w3id.org/sbeo#>
 WHERE {
     {
-        SELECT DISTINCT (?person1 as ?person) ?edge
+        SELECT DISTINCT (?person1 as ?person) ?edge (sample(?edgeId) as ?edgeIDArbitrary) (?idPerson1  as ?id)
         WHERE {
-                ?edge a ?location ;
-                      sbeo:hasSafetyValue ?safetyVal .
-                FILTER(?safetyVal <= 0.5) .
-                {?location rdfs:subClassOf* sbeo:Passage . }
-
-                ?person1 a foaf:Person .
+                ?person1 a foaf:Person ;
+                         sbeo:id ?idPerson1 .
                 Filter (
                     EXISTS {
                             ?person1 a ?p1 .
@@ -18,14 +14,34 @@ WHERE {
                             FILTER (?p1 != foaf:Person)
                     }
                 )
+                OPTIONAL {
+                            ?edge a ?location ;
+                                  sbeo:hasSafetyValue ?safetyVal ;
+
+                                  sbeo:connectedTo ?origin ,
+                                                   ?destination .
+
+                            ?origin sbeo:id ?id1 .
+                            ?destination sbeo:id ?id2 .
+                            FILTER(?origin != ?destination) .
+                            FILTER(?id1 != ?id2) .
+
+                            bind(concat(str(?id1) , ", ", str(?id2)) as ?edgeId)
+
+                            {?location rdfs:subClassOf* sbeo:Passage . }
+                            FILTER(?safetyVal <= 0.5) .
+                }
+
 
         }
+        GROUP BY ?person1 ?edge ?idPerson1
     }
     UNION
     {
-        SELECT DISTINCT (?person2 as ?person)
+        SELECT DISTINCT (?person2 as ?person) (?idPerson2  as ?id)
         WHERE {
-                ?person2 a foaf:Person .
+                ?person2 a foaf:Person ;
+                        sbeo:id ?idPerson2  .
                 Filter (
                     NOT EXISTS {
                                 ?person2 a ?p2 .

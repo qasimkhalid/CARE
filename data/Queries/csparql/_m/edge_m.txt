@@ -1,4 +1,4 @@
-SELECT DISTINCT ?edge ?cost ?safetyVal ?capacity
+SELECT DISTINCT ?edge ?edgeId ?cost ?safetyVal ?capacity
 FROM STREAM <https://w3id.org/sbeo/example/officescenario> [RANGE 1s TUMBLING]
 FROM <https://w3id.org/sbeo#>
 WHERE {
@@ -15,5 +15,11 @@ WHERE {
                 sbeo:destination ?destination ;
                 sbeo:hasValue ?cost .
 
+
+        ?origin sbeo:id ?id1 .
+        ?destination sbeo:id ?id2 .
+
+        bind(concat(str(?id1) , ", ", str(?id2)) as ?edgeId)
+
 }
-ORDER BY ASC(?space)
+ORDER BY ASC(?edgeId)

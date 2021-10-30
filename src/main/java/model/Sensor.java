@@ -17,7 +17,7 @@ public class Sensor {
         this.location = location;
     }
 
-    public Sensor( String sensorName, String observationType, String location, float value ) {
+    public Sensor( String sensorName, String observationType, String location, double value ) {
         this.sensorName = sensorName;
         this.observationType = observationType;
         this.location = location;
@@ -39,7 +39,7 @@ public class Sensor {
         }
     }
 
-    public void setValue( float value ) {
+    public void setValue( double value ) {
         this.value = value;
     }
 
