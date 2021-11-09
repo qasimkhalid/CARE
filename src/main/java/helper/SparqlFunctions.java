@@ -46,6 +46,6 @@ public class SparqlFunctions {
 }
 
 //        try {
-//            Files.write(Paths.get("data/output/1.txt"), quadruples.toString().getBytes(), StandardOpenOption.APPEND);
+//            Files.write(Paths.get("data/output/edges.txt"), quadruples.toString().getBytes(), StandardOpenOption.APPEND);
 //        }catch (IOException e) {
 //        }

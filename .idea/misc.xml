@@ -8,7 +8,7 @@
     </option>
   </component>
   <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/data/output/_m/1.txt" />
+    <file url="file://$PROJECT_DIR$/data/output/_m/edges.txt" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="false" project-jdk-name="openjdk-15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

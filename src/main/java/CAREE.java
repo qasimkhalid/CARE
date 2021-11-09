@@ -53,35 +53,37 @@ public class CAREE {
         engine.putStaticNamedModel(HelpingVariables.sbeoPrefix, result);
 
         // creating an instance of Random human location data stream.
-        HumanLocationStreamer hlStream = new HumanLocationStreamer(HelpingVariables.kbIRI, 3000, true, 1f);
-        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 3000);
+        HumanLocationStreamer hlStream = new HumanLocationStreamer(HelpingVariables.kbIRI, 1000, true, 1f);
+//        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 3000);
 
         //Injecting the stream in the C-SPARQL engine.
         engine.registerStream(hlStream);
-        engine.registerStream(ssStream);
+//        engine.registerStream(ssStream);
 
         //Binding the stream with a new thread.
         Thread hlStreamThread = new Thread(hlStream);
-        Thread ssStreamThread = new Thread(ssStream);
+//        Thread ssStreamThread = new Thread(ssStream);
 
         //Creating an instance of the listener and registering the C-SPARQL query.
 //        CsparqlQueryResultProxy edge= engine.registerQuery(streamQueryEdge, false);
-        CsparqlQueryResultProxy node= engine.registerQuery(streamQueryNode, false);
-        CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
 //        CsparqlQueryResultProxy edgeExcludedForPerson= engine.registerQuery(streamQueryEdgeExcludedForPerson, false);
-        CsparqlQueryResultProxy edgePlusExcludedForPerson= engine.registerQuery(streamQueryEdgePlusExcludedForPerson, false);
+
+//        CsparqlQueryResultProxy node= engine.registerQuery(streamQueryNode, false);
+        CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
+//        CsparqlQueryResultProxy edgePlusExcludedForPerson= engine.registerQuery(streamQueryEdgePlusExcludedForPerson, false);
 
         //Adding an observer to the instance of the listener
-//        edge.addObserver(new Output("data/output/_m/1.txt", "streamQueryEdge"));
-        node.addObserver(new Output("data/output/_m/2.txt", "streamQueryNode"));
-        personAtNode.addObserver(new Output("data/output/_m/3.txt", "streamQueryPersonAtNode"));
-//        edgeExcludedForPerson.addObserver(new Output("data/output/_m/4.txt", "streamQueryEdgeExcludedForPerson"));
-        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/5.txt", "streamQueryEdgePlusExcludedForPerson"));
+//        edge.addObserver(new Output("data/output/_m/edges.txt", "streamQueryEdge"));
+//        edgeExcludedForPerson.addObserver(new Output("data/output/_m/edges_not_apt_for_evacuation.txt", "streamQueryEdgeExcludedForPerson"));
+
+//        node.addObserver(new Output("data/output/_m/nodes.txt", "streamQueryNode"));
+        personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
+//        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons_.txt", "streamQueryEdgePlusExcludedForPerson"));
 
         //Starting all threads of streamers
         System.out.println("About to start the streaming threads...");
         hlStreamThread.start();
-        ssStreamThread.start();
+//        ssStreamThread.start();
 
 
         System.out.println("First thread about to go to sleep for long time...");
@@ -94,9 +96,9 @@ public class CAREE {
 
         System.out.println("About to stop the thread and unregistering the stream");
         hlStream.stop();
-        ssStream.stop();
+//        ssStream.stop();
         engine.unregisterStream(hlStream.getIRI());
-        engine.unregisterStream(ssStream.getIRI());
+//        engine.unregisterStream(ssStream.getIRI());
 
         System.out.println("About to exit");
         System.exit(0);

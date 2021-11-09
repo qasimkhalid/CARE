@@ -35,7 +35,12 @@ public class Output extends ConsoleFormatter {
         RDFTable q = (RDFTable) arg;
         Iterator i$ = q.iterator();
 
-        sb.append("****** "+timeStep+" ******"+ "\n");
+        sb.append("\n")
+                .append("\n")
+                .append("****** ")
+                .append(timeStep)
+                .append(" ******")
+                .append("\n");
 
         switch(type){
             case "streamQueryEdge":
@@ -99,7 +104,9 @@ public class Output extends ConsoleFormatter {
                     }
                     edge = "";
                 }
-                map.entrySet().forEach(entry -> sb.append(entry.getKey() + " " + entry.getValue())
+                map.entrySet().forEach(entry -> sb.append(entry.getKey())
+                        .append(" ")
+                        .append(entry.getValue())
                         .append("\n"));
 
             break;
@@ -134,18 +141,19 @@ public class Output extends ConsoleFormatter {
                             .append(entry.getValue().get(1))
                             .append("\t")
                             .append(entry.getValue().get(2))
-                            .append("\t");
+                            .append("\t")
+                            .append("[ ");
                     if(entry.getValue().size() > 3) {
 
                         Set<String> personSet = new HashSet<>(entry.getValue().subList(3, entry.getValue().size()));
-                        sb.append("[ ");
+
                         for (String p : personSet) {
                             sb.append(p)
                                     .append(" ");
                         }
-                        sb.append("]");
                     }
-                    sb.append("\n");
+                    sb.append("]")
+                            .append("\n");
                 }
             break;
 

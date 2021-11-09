@@ -1,9 +1,6 @@
 package streamers;
 
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import eu.larkc.csparql.cep.api.RdfQuadruple;
@@ -44,100 +41,71 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         OutputStream out;
 
 
-        Scheduler scheduler = new Scheduler();
-        List<String> personNeedToMoveODQueryResult;
-
-        /*
-         * TODO:
-         *      Put a resting motion status for each person once they finish  their journey.
-         *      It could be random staying status before it gets back to Standing again.
-         *      It might also be done after each time step.
-         */
+        Scheduler personMovementScheduler = new Scheduler();
+        Scheduler personRestingScheduler = new Scheduler();
 
         while (keepRunning) {
             System.out.println("Human Location Streamer Time Step No: " + count);
             try {
-//                deltaTime = System.currentTimeMillis() - initialTime;
+                deltaTime = System.currentTimeMillis() - initialTime;
 
-//                personNeedToMoveODQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToMove.txt");
+                //Making people to rest for a specific Time Interval (which is chosen randomly between (e.g., 1 and 10)), before making a move again.
+                AutomatedOperations.computeRestingPhase(deltaTime, personRestingScheduler);
+
+                List<String> personNeedToMoveODQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToMove.txt");
+                if (!personNeedToMoveODQueryResult.isEmpty()) {
+                    Map<String, Integer> spaceOccupancyMap = new HashMap<>();
+                    List<PersonTimerInformation> personNeedToMove = new ArrayList<>();
+                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 4; i += 5) {
+                        String p = personNeedToMoveODQueryResult.get(i);
+                        String[] tokens = personNeedToMoveODQueryResult.get(i + 1).split("\"");
+                        String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
+                        String origin = personNeedToMoveODQueryResult.get(i + 2);
+                        String destination = personNeedToMoveODQueryResult.get(i + 3);
+
+                        // calculate required time
+                        Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
+                                .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
+
+                        if (odPair.isPresent()) {
+                            timeRequired = odPair.get().getCost() * 1000;
+                        } else {
+                            throw new Exception("Origin and Destination not found in odPairList");
+                        }
+
+                        // Calculating instantaneous occupancy status of each space.
+                        spaceOccupancyMap.merge(origin, 1, Integer::sum);
+
+                        PersonTimerInformation pti = new PersonTimerInformation(p, timeRequired, 0, origin, destination, id);
+                        personNeedToMove.add(pti);
+
+                    }
+
+                    // Finding extra time needed for each person if the total number of persons exceeds the provided limit (area per person) in any space.
+                    for (PersonTimerInformation pti : personNeedToMove) {
+
+                        // Checking if the movement of persons is free flow or space occupancy dependent.
+                        // If its space occupancy dependent, then extra time is added to the previously computed free-flow cost for each person.
+                        if (!freeFlow) {
+                            AutomatedOperations.ComputeAndAddExtraTime(spaceOccupancyMap, pti, areaPerPersonM2);
+                        }
+
+                        // Adding person in the personMovementScheduler.
+                        personMovementScheduler.addMovingPerson(pti);
+                    }
+                }
+                //Updating the model before the persons start their movements.
+                AutomatedOperations.updateModelBeforePersonMoves(personMovementScheduler.getMovingPersons());
+
+                List<PersonTimerInformation> personWhoFinished = personMovementScheduler.updatePersonMovement(deltaTime, personMovementScheduler.getMovingPersons());
+                if (!personWhoFinished.isEmpty()) {
+
+                    //Updating the model if someone completes his/her movement.
+                    AutomatedOperations.updateModelWhenPersonFinishedMoving(personWhoFinished);
+                }
 
 
-//                if (!personNeedToMoveODQueryResult.isEmpty()) {
-//
-//                    String p;
-//                    String[] tokens;
-//                    String id;
-//                    Map<String, Integer> spaceOccupancyMap = new HashMap<>();
-//                    PersonMovementTime pmt;
-//                    List<PersonMovementTime> personNeedToMove = new ArrayList<>();
-//                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 4; i += 5) {
-//
-//                        p = personNeedToMoveODQueryResult.get(i);
-//                        tokens = personNeedToMoveODQueryResult.get(i + 1).split("\"");
-//                        id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
-//                        String origin = personNeedToMoveODQueryResult.get(i + 2);
-//                        String destination = personNeedToMoveODQueryResult.get(i + 3);
-////                        String edge = personNeedToMoveODQueryResult.get(i + 4);
-//
-//
-//                        // calculate required time
-//                        Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
-//                                .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
-//
-//                        if (odPair.isPresent()) {
-//                            timeRequired = odPair.get().getCost() * 1000;
-//                        } else {
-//                            throw new Exception("Origin and Destination not found in odPairList");
-//                        }
-//
-//                        // calculate density of each space
-//                        spaceOccupancyMap.merge(origin, 1, Integer::sum);
-//
-//                        pmt = new PersonMovementTime(p, timeRequired, 0, origin, destination, id);
-//                        personNeedToMove.add(pmt);
-//
-//                    }
-//
-//                    StringBuilder sb = new StringBuilder();
-//                    // Finding extra time needed for each person if the total number of persons exceeds the provided limit (area per person) in any space.
-//                    for (PersonMovementTime person : personNeedToMove) {
-//
-//                        // Checking if the movement of persons is free flow or density dependent.
-//                        // If its density dependent, then extra time is added to the required time for each person.
-//                        if (!freeFlow) {
-//
-//                            // find space area
-//                            Optional<Space> space = HelpingVariables.spaceInfoList.stream()
-//                                    .filter(x -> x.getName().equals(person.getOrigin())).findFirst();
-//                            if (space.isPresent()) {
-//                                area = space.get().getArea();
-//                            } else {
-//                                throw new Exception("Origin of person not found in spaceInfoList");
-//                            }
-//
-//                            // get the space density status where the person is located
-//                            Integer density = spaceOccupancyMap.get(person.getOrigin());
-//                            extraTime = MathOperations.getExtraTime(area, density, areaPerPersonM2);
-//                            if (extraTime > 0) {
-//                                person.incrementTimeRequired(extraTime);
-//                            }
-//                        }
-//                        sb.append(initialTime + "\t" + person.toString() + "\n");
-//
-//                        // add person in the scheduler
-//                        scheduler.addMovingPerson(person);
-//                    }
-////                    Files.write(Paths.get("data/output/O-DPairAreaSpecificNeededTime.txt"), sb.toString().getBytes(), StandardOpenOption.APPEND);
-//                }
-
-//                AutomatedOperations.updateModelBeforePersonMoves(scheduler.getMovingPersons());
-//
-//                List<PersonMovementTime> personWhoFinished = scheduler.update(deltaTime, scheduler.getMovingPersons());
-//                if (!personWhoFinished.isEmpty()) {
-//                    AutomatedOperations.updateModelWhenPersonFinishedMoving(personWhoFinished);
-//                }
-
-                detectPersonLocationUsingId();
+                detectPersonLocationUsingIdQuadrupleGenerator();
 
                 this.initialTime = System.currentTimeMillis();
                 count++;
@@ -149,7 +117,11 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
     }
 
-    private void detectPersonLocationUsingId(){
+
+
+
+
+    private void detectPersonLocationUsingIdQuadrupleGenerator(){
         RdfQuadruple q;
         String timeNow = String.valueOf(System.currentTimeMillis());
         List<Person> pList = new ArrayList<>();

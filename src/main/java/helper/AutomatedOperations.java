@@ -3,17 +3,11 @@ package helper;
 import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import model.CareeInfModel;
-import model.ODPair;
-import model.PersonMovementTime;
-import model.Space;
+import model.*;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,21 +50,13 @@ public class AutomatedOperations {
             e.printStackTrace();
         }
         List<ODPair> list = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
         ODPair odp;
         for(int i=0; i < odPairQueryResult.size()-2; i+=3) {
             odp = new ODPair(odPairQueryResult.get(i), odPairQueryResult.get(i+1), odPairQueryResult.get(i+2));
             list.add(odp);
-            sb.append(odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i+2) + "\n");
             odp = new ODPair(odPairQueryResult.get(i+1), odPairQueryResult.get(i), odPairQueryResult.get(i+2));
-            sb.append(odPairQueryResult.get(i+1) + "\t" + odPairQueryResult.get(i) + "\t" + odPairQueryResult.get(i+2) + "\n");
             list.add(odp);
         }
-//        try {
-//            Files.write(Paths.get("data/output/O-DPairDistance.txt"), sb.toString().getBytes(), StandardOpenOption.WRITE);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         return list;
     }
 
@@ -96,10 +82,8 @@ public class AutomatedOperations {
             if(allPersonMove)
                 infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
             else if (MathOperations.getRandomBoolean())
-                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
-//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
             else infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
-//                infModel.add(personInstance, HelpingVariables.activityStatus, HelpingVariables.activityStatusEvacuating);
 
             //Choosing a random space as a person location
             String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
@@ -109,33 +93,64 @@ public class AutomatedOperations {
         }
     }
 
-    public static List<String> getAvailableSpaces( InfModel infModel ) throws Exception {
+    public static List<String> getAvailableSpaces( InfModel infModel ) {
         return SparqlFunctions.getSPARQLQueryResult(infModel, "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
     }
 
-    public static List<String> getAvailableNodes( InfModel infModel ) throws Exception {
+    public static List<String> getAvailableNodes( InfModel infModel ) {
         return SparqlFunctions.getSPARQLQueryResult(infModel, "data/queries/sparql/FindAllAvailableNodesInBuilding.txt");
     }
 
-    public static void updateModelWhenPersonFinishedMoving(List<PersonMovementTime> list) {
+    public static void updateModelWhenPersonFinishedMoving(List<PersonTimerInformation> list) {
         Resource personInstance;
-        for (PersonMovementTime personMovementTime : list) {
-            personInstance = CareeInfModel.Instance().getResource(personMovementTime.getPerson());
-            Resource destinationInstance = CareeInfModel.Instance().getResource(personMovementTime.getDestination());
+        for (PersonTimerInformation personTimerInformation : list) {
+            personInstance = CareeInfModel.Instance().getResource(personTimerInformation.getPerson());
+            Resource destinationInstance = CareeInfModel.Instance().getResource(personTimerInformation.getDestination());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
-            CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
+            CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
         }
     }
 
-    public static void updateModelBeforePersonMoves(List<PersonMovementTime> list) {
+    public static void updateModelBeforePersonMoves(List<PersonTimerInformation> list) {
         Resource personInstance;
-        for (PersonMovementTime t : list) {
+        for (PersonTimerInformation t : list) {
             personInstance = CareeInfModel.Instance().getResource(t.getPerson());
             Resource originInstance = CareeInfModel.Instance().getResource(t.getOrigin());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
+        }
+    }
+
+    public static void computeRestingPhase(long deltaTime, Scheduler personRestingScheduler) {
+        List<String> personNeedToRestQueryResult;
+        personRestingScheduler.updatePersonResting(deltaTime, personRestingScheduler.getRestingPersons());
+        personNeedToRestQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToRest.txt");
+        if (!personNeedToRestQueryResult.isEmpty()) {
+            for (int i = 0; i < personNeedToRestQueryResult.size() - 1; i += 2) {
+                personRestingScheduler.addRestingPerson(personNeedToRestQueryResult.get(i));
+            }
+        }
+    }
+
+    public static void ComputeAndAddExtraTime(Map<String, Integer> spaceOccupancyMap, PersonTimerInformation person, float areaPerPersonM2) throws Exception {
+        float area;
+        long extraTime;
+        // find space area
+        Optional<Space> space = HelpingVariables.spaceInfoList.stream()
+                .filter(x -> x.getName().equals(person.getOrigin())).findFirst();
+        if (space.isPresent()) {
+            area = space.get().getArea();
+        } else {
+            throw new Exception("Origin of person not found in spaceInfoList");
+        }
+
+        // get the space occupancy status where the person is located
+        Integer SpaceOccupancy = spaceOccupancyMap.get(person.getOrigin());
+        extraTime = MathOperations.getExtraTime(area, SpaceOccupancy, areaPerPersonM2);
+        if (extraTime > 0) {
+            person.incrementTimeRequired(extraTime);
         }
     }
 }

@@ -1,6 +1,6 @@
 package model;
 
-public class PersonMovementTime {
+public class PersonTimerInformation {
 
     private String person;
     private long timeRequired;
@@ -10,13 +10,21 @@ public class PersonMovementTime {
     private String id;
 
 
-    public PersonMovementTime( String person, long timeRequired, long timeElapsed ) {
+    public PersonTimerInformation(String person, long timeRequired, long timeElapsed ) {
         this.person = person;
         this.timeRequired = timeRequired;
         this.timeElapsed = timeElapsed;
     }
 
-    public PersonMovementTime( String person, long timeRequired, long timeElapsed, String origin, String destination, String id ) {
+    public PersonTimerInformation(String person, long timeRequired, long timeElapsed, String origin, String id ) {
+        this.person = person;
+        this.timeRequired = timeRequired;
+        this.timeElapsed = timeElapsed;
+        this.origin = origin;
+        this.id = id;
+    }
+
+    public PersonTimerInformation(String person, long timeRequired, long timeElapsed, String origin, String destination, String id ) {
         this.person = person;
         this.timeRequired = timeRequired;
         this.timeElapsed = timeElapsed;
@@ -25,7 +33,7 @@ public class PersonMovementTime {
         this.id = id;
     }
 
-    public PersonMovementTime(String person, String origin, String id) {
+    public PersonTimerInformation(String person, String origin, String id) {
         this.person = person;
         this.origin = origin;
         this.id = id;

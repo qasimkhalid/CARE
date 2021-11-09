@@ -35,7 +35,7 @@ WHERE {
                                     }
                                 )
                                 ?edge sbeo:hasSafetyValue ?safetyVal .
-                                FILTER(?safetyVal <= 0.5) .
+                                FILTER(?safetyVal < 0.5) .
                         }
                         GROUP BY ?person ?edge ?idPerson
                     }

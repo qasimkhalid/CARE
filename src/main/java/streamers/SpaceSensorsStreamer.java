@@ -77,9 +77,8 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
             }
 
             /*
-            Making a space unavailable in the model if it has become unavailable because of fire scenario (Temperature > 50 and Smoke is true).
-            By doing so, this specific space is no longer considered as a destination of a person.
-             */
+            Iterating all the spaces (i.e., nodes & edges)
+            */
             RdfQuadruple q;
             for (String key : allSensorsValueAtSpecificLocationList.keySet()) {
                 Space s = allSensorsValueAtSpecificLocationList.get(key);
@@ -259,9 +258,6 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 sensor.setValue(sensorValueNumber);
                 break;
 
-            case HelpingVariables.exPrefix + "HumanDetection":
-                break;
-
             case HelpingVariables.exPrefix + "SpaceAccessibility":
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
@@ -279,7 +275,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(true);
-                } else if (space.getTemperatureSensorValue() >= 55 && space.isSmokeExists()){ //check if the temperature of the same location is greater than 50
+                } else if (space.getTemperatureSensorValue() >=60 && space.isSmokeExists() && space.getHumiditySensorValue() <= 0.2){ //making a space inaccessible using a specific constraint
                     sensor.setValue(false);
                 }
                 sensorValueBoolean = (boolean) sensor.getValue();
@@ -303,8 +299,10 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         ""+ sensor.getSensorName(), System.currentTimeMillis());
                 this.put(q);
 
-
                 space.setAvailable(sensorValueBoolean);
+                break;
+
+            case HelpingVariables.exPrefix + "HumanDetection":
                 break;
 
             default:
