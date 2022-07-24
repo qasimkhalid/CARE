@@ -4,7 +4,6 @@ import com.hp.hpl.jena.rdf.model.InfModel;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import model.*;
-import model.scheduler.RestingScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,8 +86,7 @@ public class AutomatedOperations {
             else infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
 
             //Choosing a random space as a person location
-//            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
-            String rs = "https://w3id.org/sbeo/example/officescenario#Office1";
+            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
             spaceInstance = ResourceFactory.createResource(rs);
             infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
             infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
@@ -103,66 +101,52 @@ public class AutomatedOperations {
         return SparqlFunctions.getSPARQLQueryResult(infModel, "data/queries/sparql/FindAllAvailableNodesInBuilding.txt");
     }
 
-    public static void updateModelWhenPersonFinishesRoute(List<PersonMovementInformation> list) {
+    public static void updateModelWhenPersonFinishedMoving(List<PersonTimerInformation> list) {
         Resource personInstance;
-        for (PersonMovementInformation personMovementInformation : list) {
-            personInstance = CareeInfModel.Instance().getResource(personMovementInformation.getPerson());
-            Resource destinationInstance = CareeInfModel.Instance().getResource(personMovementInformation.getCurrentDestination());
+        for (PersonTimerInformation personTimerInformation : list) {
+            personInstance = CareeInfModel.Instance().getResource(personTimerInformation.getPerson());
+            Resource destinationInstance = CareeInfModel.Instance().getResource(personTimerInformation.getDestination());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
         }
     }
 
-
-    public static void updateModelWhenPersonFinishesStepBasedMovement(List<PersonMovementInformation> list) {
+    public static void updateModelBeforePersonMoves(List<PersonTimerInformation> list) {
         Resource personInstance;
-        for (PersonMovementInformation personMovementInformation : list) {
-            personInstance = CareeInfModel.Instance().getResource(personMovementInformation.getPerson());
-            Resource destinationInstance = CareeInfModel.Instance().getResource(personMovementInformation.getCurrentDestination());
-            CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
-        }
-    }
-
-    public static void updateModelBeforePersonStartsToFollowRoute(List<PersonMovementInformation> list) {
-        Resource personInstance;
-        for (PersonMovementInformation t : list) {
+        for (PersonTimerInformation t : list) {
             personInstance = CareeInfModel.Instance().getResource(t.getPerson());
-            Resource originInstance = CareeInfModel.Instance().getResource(t.getCurrentOrigin());
+            Resource originInstance = CareeInfModel.Instance().getResource(t.getOrigin());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateWalking);
         }
     }
 
-
-    public static void updateModelBeforePersonStartsStepBasedMovement(List<PersonMovementInformation> list) {
-        Resource personInstance;
-        for (PersonMovementInformation t : list) {
-            personInstance = CareeInfModel.Instance().getResource(t.getPerson());
-            Resource originInstance = CareeInfModel.Instance().getResource(t.getCurrentOrigin());
-            CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
-        }
-    }
-
-
-
-    public static void computeRestingPhase(long deltaTime, RestingScheduler personRestingScheduler) {
+    public static void computeRestingPhase(long deltaTime, Scheduler personRestingScheduler) {
+        List<String> personNeedToRestQueryResult;
         personRestingScheduler.updatePersonResting(deltaTime, personRestingScheduler.getRestingPersons());
-        List<String> personNeedToRestQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToRest.txt");
+        personNeedToRestQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToRest.txt");
         if (!personNeedToRestQueryResult.isEmpty()) {
             for (int i = 0; i < personNeedToRestQueryResult.size() - 1; i += 2) {
-                personRestingScheduler.addRestingPerson(personNeedToRestQueryResult.get(i));
+
+                String personNeedToRest = personNeedToRestQueryResult.get(i);
+                Optional<PersonTimerInformation> personAlreadyResting = personRestingScheduler.getRestingPersons().stream()
+                        .filter(x -> x.getPerson().equals(personNeedToRest)).findFirst();
+
+                if (!personAlreadyResting.isPresent()) {
+                    personRestingScheduler.addRestingPerson(personNeedToRest);
+                }
             }
         }
     }
 
-    public static void ComputeAndAddExtraTime(Map<String, Integer> spaceOccupancyMap, PersonMovementInformation person, float areaPerPersonM2) throws Exception {
+    public static void ComputeAndAddExtraTime(Map<String, Integer> spaceOccupancyMap, PersonTimerInformation person, float areaPerPersonM2) throws Exception {
         float area;
         long extraTime;
         // find space area
         Optional<Space> space = HelpingVariables.spaceInfoList.stream()
-                .filter(x -> x.getName().equals(person.getCurrentOrigin())).findFirst();
+                .filter(x -> x.getName().equals(person.getOrigin())).findFirst();
         if (space.isPresent()) {
             area = space.get().getArea();
         } else {
@@ -170,21 +154,10 @@ public class AutomatedOperations {
         }
 
         // get the space occupancy status where the person is located
-        Integer SpaceOccupancy = spaceOccupancyMap.get(person.getCurrentOrigin());
+        Integer SpaceOccupancy = spaceOccupancyMap.get(person.getOrigin());
         extraTime = MathOperations.getExtraTime(area, SpaceOccupancy, areaPerPersonM2);
         if (extraTime > 0) {
             person.incrementTimeRequired(extraTime);
-        }
-    }
-
-    public static long getODPairCostInSeconds(String origin, String destination) throws Exception {
-        Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
-                .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
-
-        if (odPair.isPresent()) {
-            return odPair.get().getCost() * 1000;
-        } else {
-            throw new Exception("Origin and Destination not found in odPairList");
         }
     }
 }
