@@ -6,11 +6,9 @@ import java.util.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 import helper.AutomatedOperations;
+import helper.MathOperations;
 import helper.HelpingVariables;
 import model.*;
-import model.scheduler.MovementScheduler;
-import model.scheduler.RestingScheduler;
-import model.scheduler.RouteFollowingScheduler;
 
 public class HumanLocationStreamer extends RdfStream implements Runnable {
 
@@ -37,260 +35,91 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
         int count = 1;
         long deltaTime;
+        long timeRequired;
+        long extraTime;
+        float area;
         OutputStream out;
 
 
-        int MoveToConnectedArbitrarySpace = 0;
-        int FollowARoute = 1;
-
-        int type = FollowARoute;
-
-        MovementScheduler movementScheduler = new MovementScheduler();
-        RestingScheduler restingScheduler = new RestingScheduler();
-        RouteFollowingScheduler personFollowingRouteScheduler = new RouteFollowingScheduler();
-
-//        Map<String, List<String>> routeMap = new HashMap<>();
-        List<Route> routesInformationList = new ArrayList<>();
-
-        Map<String, PersonController> personsMap = new HashMap<String, PersonController>();
-
-        getAvailableAndPresetRoutes(routesInformationList);
+        Scheduler personMovementScheduler = new Scheduler();
+        Scheduler personRestingScheduler = new Scheduler();
 
         while (keepRunning) {
             System.out.println("Human Location Streamer Time Step No: " + count);
-
-            deltaTime = System.currentTimeMillis() - initialTime;
-
-            // it will setup persons map, add new persons if missing as well
-            SetupPersonsMap(personsMap);
-
-            // update personMap with routes information
-            assignRouteToPersonsWhoAreReadyToMove(routesInformationList, personsMap);
-
-            for (String key : personsMap.keySet()) {
-                PersonController person = personsMap.get(key);
-                if (!person.isResting())
-                    person.Update(deltaTime);
-            }
-
-            detectPersonLocationUsingIdQuadrupleGenerator();
-
-            this.initialTime = System.currentTimeMillis();
-            count++;
-
             try {
+                deltaTime = System.currentTimeMillis() - initialTime;
+
+                //Making people to rest for a specific Time Interval (which is chosen randomly between (e.g., 1 and 10)), before making a move again.
+                AutomatedOperations.computeRestingPhase(deltaTime, personRestingScheduler);
+
+                List<String> personNeedToMoveODQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToMove.txt");
+                if (!personNeedToMoveODQueryResult.isEmpty()) {
+                    Map<String, Integer> spaceOccupancyMap = new HashMap<>();
+                    List<PersonTimerInformation> personNeedToMove = new ArrayList<>();
+                    for (int i = 0; i < personNeedToMoveODQueryResult.size() - 4; i += 5) {
+                        String p = personNeedToMoveODQueryResult.get(i);
+                        String[] tokens = personNeedToMoveODQueryResult.get(i + 1).split("\"");
+                        String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
+                        String origin = personNeedToMoveODQueryResult.get(i + 2);
+                        String destination = personNeedToMoveODQueryResult.get(i + 3);
+
+                        // calculate required time
+                        Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
+                                .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
+
+                        if (odPair.isPresent()) {
+                            timeRequired = odPair.get().getCost() * 1000;
+                        } else {
+                            throw new Exception("Origin and Destination not found in odPairList");
+                        }
+
+                        // Calculating instantaneous occupancy status of each space.
+                        spaceOccupancyMap.merge(origin, 1, Integer::sum);
+
+                        PersonTimerInformation pti = new PersonTimerInformation(p, timeRequired, 0, origin, destination, id);
+                        personNeedToMove.add(pti);
+
+                    }
+
+                    // Finding extra time needed for each person if the total number of persons exceeds the provided limit (area per person) in any space.
+                    for (PersonTimerInformation pti : personNeedToMove) {
+
+                        // Checking if the movement of persons is free flow or space occupancy dependent.
+                        // If its space occupancy dependent, then extra time is added to the previously computed free-flow cost for each person.
+                        if (!freeFlow) {
+                            AutomatedOperations.ComputeAndAddExtraTime(spaceOccupancyMap, pti, areaPerPersonM2);
+                        }
+
+                        // Adding person in the personMovementScheduler.
+                        personMovementScheduler.addMovingPerson(pti);
+                    }
+                }
+                //Updating the model before the persons start their movements.
+                AutomatedOperations.updateModelBeforePersonMoves(personMovementScheduler.getMovingPersons());
+
+                List<PersonTimerInformation> personWhoFinished = personMovementScheduler.updatePersonMovement(deltaTime, personMovementScheduler.getMovingPersons());
+                if (!personWhoFinished.isEmpty()) {
+
+                    //Updating the model if someone completes his/her movement.
+                    AutomatedOperations.updateModelWhenPersonFinishedMoving(personWhoFinished);
+                }
+
+
+                detectPersonLocationUsingIdQuadrupleGenerator();
+
+                this.initialTime = System.currentTimeMillis();
+                count++;
                 Thread.sleep(timeStep);
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-//        while (keepRunning) {
-//            System.out.println("Human Location Streamer Time Step No: " + count);
-//
-//            deltaTime = System.currentTimeMillis() - initialTime;
-//
-//            //Making people to rest for a specific Time Interval (which is chosen randomly between (e.g., 1 and 10)), before making a move again.
-//            AutomatedOperations.computeRestingPhase(deltaTime, restingScheduler);
-//
-//            getAllPersons(personMovementInformationMap, personMovementInformationList);
-//
-//
-//            switch (type) {
-//
-//                case 0:
-//                    List<String> personNeedToMoveToConnectedArbitrarySpaceQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToMove.txt");
-//                    Map<String, Integer> spaceOccupancyMap = new HashMap<>();
-//                    List<PersonMovementInformation> personNeedToMove = new ArrayList<>();
-//                    try {
-//                        computeTimeRequiredForPersonFromOriginToDestination(personNeedToMoveToConnectedArbitrarySpaceQueryResult, personNeedToMove, spaceOccupancyMap);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    // Finding extra time needed for each person if the total number of persons exceeds the provided limit (area per person) in any space.
-//                    for (PersonMovementInformation pti : personNeedToMove) {
-//                        // Checking if the movement of persons is free flow or space occupancy dependent.
-//                        // If its space occupancy dependent, then extra time is added to the previously computed free-flow cost for each person.
-//                        try {
-//                            AutomatedOperations.ComputeAndAddExtraTime(spaceOccupancyMap, pti, areaPerPersonM2);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                        // Adding person in the personMovementScheduler.
-//                        movementScheduler.addMovingPerson(pti);
-//
-//                        // Updating the model before the persons start their movements.
-//                        AutomatedOperations.updateModelBeforePersonStartsStepBasedMovement(movementScheduler.getMovingPersons());
-//
-//                        List<PersonMovementInformation> personWhoFinishedStepBasedMovement = movementScheduler.updatePersonMovement(deltaTime, movementScheduler.getMovingPersons());
-//
-//                        //Updating the model if someone completes his/her movement.
-//                        AutomatedOperations.updateModelWhenPersonFinishesStepBasedMovement(personWhoFinishedStepBasedMovement);
-//
-//                    }
-//                    break;
-//
-//                case 1:
-//
-//
-//                    /*
-//                    Todo: find unavailable routes and remove from the route list.
-//                     */
-//
-//                    assignRouteToPersonsWhoAreReadyToMove(routesInformationList, personMovementInformationMap);
-//
-//
-////                    for (PersonMovementInformation pmi : personMovementInformationList) {
-////                        if(pmi.getRouteCompletedSoFar().isEmpty()){
-////
-////                            String origin = pmi.getRouteAssigned().get(0);
-////                            String destination = pmi.getRouteAssigned().get(1);
-////
-////                            try {
-////                                pmi.setStepBasedTimeRequired(AutomatedOperations.getODPairCostInSeconds(origin, destination));
-////                            } catch (Exception e) {
-////                                e.printStackTrace();
-////                            }
-////
-////                            pmi.getRouteCompletedSoFar().add(origin);
-////                            pmi.getRouteCompletedSoFar().add(destination);
-////                            movementScheduler.addMovingPerson(pmi);
-////
-////                        } else if(!pmi.getRouteCompletedSoFar().isEmpty() && pmi.getRouteCompletedSoFar().size() < pmi.getRouteAssigned().size()){
-////
-////                            String origin = pmi.getRouteCompletedSoFar().get(pmi.getRouteCompletedSoFar().size() - 1);
-////                            String destination = pmi.getRouteAssigned().get(pmi.getRouteCompletedSoFar().size());
-////
-////                            try {
-////                                pmi.setStepBasedTimeRequired(AutomatedOperations.getODPairCostInSeconds(origin, destination));
-////                            } catch (Exception e) {
-////                                e.printStackTrace();
-////                            }
-////                            movementScheduler.addMovingPerson(pmi);
-////                            pmi.getRouteCompletedSoFar().add(destination);
-////
-////
-////                        } else if(pmi.getRouteCompletedSoFar().size() == pmi.getRouteAssigned().size()){
-////                            int z =0;
-////                        }
-////
-////                    }
-//
-//                    //(D) Use a query to find the route from the location where the person is located.
-//                    //(D) Put that route as assigned route for that person.
-//                    //(D) find the cumulative required time (cost) for the route.
-//                    //(D) check the routeCovered property and match with assignedRoute. (empty, equal, or less)
-//
-//                    // Initiate the route
-//                    // keep updating Elapsed time.
-//                    // keep updating cumulative Elapsed time.
-//                    // Choose first two elements of the route. Mark them origin and destination.
-//                    // Once a person finishes reaching destination.
-//                    // check the routeCovered property and match with assignedRoute.
-//                    // take the other next pair from assignedRoute.
-//                    // if the route is completes, give a person resting time.
-//
-//                    // If any emergency is detected,
-//                    // Another while loop should be started.
-//                    // The persons should be assigned the routes and the same process should be done as above.
-//
-//
-//
-//                    break;
-//
-//                default: System.out.println("Type not found!");
-//            }
-//
-//
-//
-//
-//            detectPersonLocationUsingIdQuadrupleGenerator();
-//
-//            this.initialTime = System.currentTimeMillis();
-//            count++;
-//
-//            try {
-//                Thread.sleep(timeStep);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
     }
 
 
-    private void assignRouteToPersonsWhoAreReadyToMove(List<Route> availableRoutes, Map<String, PersonController> personsMap) {
-        List<String> getEachPersonLocationQueryResult = CareeInfModel.Instance().getQueryResult("data/queries/sparql/GetPersonsLocationWhoAreStanding(ReadyToMove).txt");
-
-        if(!getEachPersonLocationQueryResult.isEmpty()) {
-
-            for (int i = 0; i < getEachPersonLocationQueryResult.size() - 1; i += 2) {
-                String person = getEachPersonLocationQueryResult.get(i);
-                String location = getEachPersonLocationQueryResult.get(i + 1);
-
-                Optional<Route> r = availableRoutes.stream()
-                        .filter(x -> x.getRoute().get(0).equals(location)).findFirst();
-
-                if (r.isPresent()) {
-                    // todo: add conditional assignment, dont assign if previous route is not finished
-                    personsMap.get(person).assignRoute(r.get().getRoute());
-                } else {
-                    System.out.println("Route Starting from person's location has not been found in RouteMap");
-                }
-            }
-        }
-    }
-
-    private void SetupPersonsMap(Map<String, PersonController> personControllerMap) {
-        List<String> getAllPersonQueryResult = CareeInfModel.Instance().getQueryResult("data/queries/sparql/GetAllPersons.txt");
-        for (int i = 0; i < getAllPersonQueryResult.size() - 1; i+=2) {
-            String person = getAllPersonQueryResult.get(i);
-            if(!personControllerMap.containsKey(person)){
-                PersonController p = new PersonController(person, getAllPersonQueryResult.get(i+1));
-                personControllerMap.put(person, p);
-            }
-        }
-    }
-
-    private void computeTimeRequiredForPersonFromOriginToDestination(List<String> personWithOD, List<PersonMovementInformation> personMovementInformation, Map<String, Integer> spaceOccupancyMap) throws Exception {
-        long timeRequired;
-        for (int i = 0; i < personWithOD.size() - 4; i += 5) {
-            String p = personWithOD.get(i);
-            String[] tokens = personWithOD.get(i + 1).split("\"");
-            String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
-            String origin = personWithOD.get(i + 2);
-            String destination = personWithOD.get(i + 3);
-
-            timeRequired = AutomatedOperations.getODPairCostInSeconds(origin, destination);
-            PersonMovementInformation pti = new PersonMovementInformation(p, timeRequired, 0, origin, destination, id);
-            personMovementInformation.add(pti);
-
-            //*No being used for the moment*
-            // Calculating instantaneous occupancy status of each space.
-//            spaceOccupancyMap.merge(origin, 1, Integer::sum);
-        }
-    }
 
 
-    private void getAvailableAndPresetRoutes(List<Route> routesInformationList) {
-        List<String> getAvailableRoutesQueryResult = CareeInfModel.Instance().getQueryResult("data/queries/sparql/FindAllRoutesWithTheirElements.txt");
-        Map<String, List<String>> routeMap = new HashMap<>();
-        if (!getAvailableRoutesQueryResult.isEmpty()) {
-            for (int i = 0; i < getAvailableRoutesQueryResult.size() - 2; i += 3) {
-                String routeName = getAvailableRoutesQueryResult.get(i);
-                String routeElementIndex = getAvailableRoutesQueryResult.get(i+1);
-                String routeElement = getAvailableRoutesQueryResult.get(i+2);
-                if (!routeMap.containsKey(routeName)) {
-                    routeMap.put(routeName, new ArrayList<>());
-                }
-                routeMap.get(routeName).add(routeElement);
-            }
-        }
-        for (Map.Entry<String, List<String>> entry : routeMap.entrySet()) {
-            routesInformationList.add(new Route(entry.getKey(), entry.getValue()));
-        }
-    }
 
     private void detectPersonLocationUsingIdQuadrupleGenerator(){
         RdfQuadruple q;
