@@ -32,7 +32,7 @@ public class CAREE {
         CsparqlEngineImpl engine = new CsparqlEngineImpl();
         engine.initialize(true);
 
-        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, false, 2);
+        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, true, 2);
 
         //C-SPARQL query for to get the location of each person using their ID.
 
@@ -69,7 +69,7 @@ public class CAREE {
 //        CsparqlQueryResultProxy edgeExcludedForPerson= engine.registerQuery(streamQueryEdgeExcludedForPerson, false);
 
 //        CsparqlQueryResultProxy node= engine.registerQuery(streamQueryNode, false);
-        CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
+//        CsparqlQueryResultProxy personAtNode= engine.registerQuery(streamQueryPersonAtNode, false);
 //        CsparqlQueryResultProxy edgePlusExcludedForPerson= engine.registerQuery(streamQueryEdgePlusExcludedForPerson, false);
 
         //Adding an observer to the instance of the listener
@@ -77,7 +77,7 @@ public class CAREE {
 //        edgeExcludedForPerson.addObserver(new Output("data/output/_m/edges_not_apt_for_evacuation.txt", "streamQueryEdgeExcludedForPerson"));
 
 //        node.addObserver(new Output("data/output/_m/nodes.txt", "streamQueryNode"));
-        personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
+//        personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
 //        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons_.txt", "streamQueryEdgePlusExcludedForPerson"));
 
         //Starting all threads of streamers

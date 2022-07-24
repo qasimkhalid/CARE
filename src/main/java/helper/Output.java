@@ -157,7 +157,7 @@ public class Output extends ConsoleFormatter {
                 }
             break;
 
-            default:System.out.println("Output type not found!");
+            default: System.out.println("Output type not found!");
         }
 
         timeStep++;
