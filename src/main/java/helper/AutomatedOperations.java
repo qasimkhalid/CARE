@@ -129,7 +129,14 @@ public class AutomatedOperations {
         personNeedToRestQueryResult = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonWhoNeedToRest.txt");
         if (!personNeedToRestQueryResult.isEmpty()) {
             for (int i = 0; i < personNeedToRestQueryResult.size() - 1; i += 2) {
-                personRestingScheduler.addRestingPerson(personNeedToRestQueryResult.get(i));
+
+                String personNeedToRest = personNeedToRestQueryResult.get(i);
+                Optional<PersonTimerInformation> personAlreadyResting = personRestingScheduler.getRestingPersons().stream()
+                        .filter(x -> x.getPerson().equals(personNeedToRest)).findFirst();
+
+                if (!personAlreadyResting.isPresent()) {
+                    personRestingScheduler.addRestingPerson(personNeedToRest);
+                }
             }
         }
     }

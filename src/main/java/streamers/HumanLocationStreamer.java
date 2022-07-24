@@ -1,14 +1,13 @@
 package streamers;
 
-import java.io.OutputStream;
-import java.util.*;
-
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 import helper.AutomatedOperations;
-import helper.MathOperations;
 import helper.HelpingVariables;
 import model.*;
+
+import java.io.OutputStream;
+import java.util.*;
 
 public class HumanLocationStreamer extends RdfStream implements Runnable {
 
@@ -118,9 +117,6 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
     }
 
 
-
-
-
     private void detectPersonLocationUsingIdQuadrupleGenerator(){
         RdfQuadruple q;
         String timeNow = String.valueOf(System.currentTimeMillis());
@@ -173,27 +169,3 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
