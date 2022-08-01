@@ -73,7 +73,7 @@ public class CAREE {
 
         node.addObserver(new Output("data/output/_m/nodes.txt", "streamQueryNode"));
         personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
-        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons_.txt", "streamQueryEdgePlusExcludedForPerson"));
+        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons.txt", "streamQueryEdgePlusExcludedForPerson"));
 
         //Starting all threads of streamers
         System.out.println("About to start the streaming threads...");
@@ -81,7 +81,7 @@ public class CAREE {
         ssStreamThread.start();
 
 
-        System.out.println("Thread about to go to sleep for long time...");
+        System.out.println("Threads about to go to sleep for long time...");
         try {
             Thread.sleep(200000);
         } catch (InterruptedException e) {
