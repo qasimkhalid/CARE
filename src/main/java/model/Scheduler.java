@@ -9,51 +9,51 @@ import java.util.List;
 
 public class Scheduler {
 
-    private List<PersonTimerInformation> movingPersons = new ArrayList<>();
-    private List<PersonTimerInformation> restingPersons = new ArrayList<>();
+    private List<PersonMovementInformation> movingPersons = new ArrayList<>();
+    private List<PersonMovementInformation> restingPersons = new ArrayList<>();
 
     public Scheduler() {
     }
 
-    public List<PersonTimerInformation> getMovingPersons() {
+    public List<PersonMovementInformation> getMovingPersons() {
         return movingPersons;
     }
 
-    public void setMovingPersons( List<PersonTimerInformation> movingPersons ) {
+    public void setMovingPersons( List<PersonMovementInformation> movingPersons ) {
         this.movingPersons = movingPersons;
     }
 
-    public List<PersonTimerInformation> getRestingPersons() {
+    public List<PersonMovementInformation> getRestingPersons() {
         return restingPersons;
     }
 
-    public void setRestingPersons( List<PersonTimerInformation> restingPersons ) {
+    public void setRestingPersons( List<PersonMovementInformation> restingPersons ) {
         this.restingPersons = restingPersons;
     }
 
     public void addMovingPerson(String person, long timeRequired, long timeElapsed, String origin, String destination, String id){
-        PersonTimerInformation m = new PersonTimerInformation(person, timeRequired, timeElapsed, origin, destination, id);
+        PersonMovementInformation m = new PersonMovementInformation(person, timeRequired, timeElapsed, origin, destination, id);
         this.movingPersons.add(m);
     }
 
-    public void addMovingPerson( PersonTimerInformation person ) {
+    public void addMovingPerson( PersonMovementInformation person ) {
         this.movingPersons.add(person);
     }
 
-    public void removeMovingPerson(List<PersonTimerInformation> list){
-        for(PersonTimerInformation l :list){
+    public void removeMovingPerson(List<PersonMovementInformation> list){
+        for(PersonMovementInformation l :list){
             this.movingPersons.remove(l);
         }
     }
 
     public void addRestingPerson(String person){
-        PersonTimerInformation m = new PersonTimerInformation(person, MathOperations.getRandomNumberInRange(10, 1) * 1000L, 0);
+        PersonMovementInformation m = new PersonMovementInformation(person, MathOperations.getRandomNumberInRange(10, 1) * 1000L, 0);
         this.restingPersons.add(m);
     }
 
-    public void removeRestingPerson(List<PersonTimerInformation> list){
+    public void removeRestingPerson(List<PersonMovementInformation> list){
         Resource personInstance;
-        for(PersonTimerInformation l :list){
+        for(PersonMovementInformation l :list){
             this.restingPersons.remove(l);
             personInstance = CareeInfModel.Instance().getResource(l.getPerson());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
@@ -61,23 +61,23 @@ public class Scheduler {
         }
     }
 
-    public List<PersonTimerInformation> updatePersonMovement(long deltaTime, List<PersonTimerInformation> list){
-        List<PersonTimerInformation> personWhoFinishedMovement = processElapsedTime(deltaTime, list);
+    public List<PersonMovementInformation> updatePersonMovement(long deltaTime, List<PersonMovementInformation> list){
+        List<PersonMovementInformation> personWhoFinishedMovement = processElapsedTime(deltaTime, list);
         removeMovingPerson(personWhoFinishedMovement);
         return personWhoFinishedMovement;
     }
 
-    public void updatePersonResting(long deltaTime, List<PersonTimerInformation> list){
-        List<PersonTimerInformation> personWhoFinishedResting = processElapsedTime(deltaTime, list);
+    public void updatePersonResting(long deltaTime, List<PersonMovementInformation> list){
+        List<PersonMovementInformation> personWhoFinishedResting = processElapsedTime(deltaTime, list);
         removeRestingPerson(personWhoFinishedResting);
     }
 
 
-    private List<PersonTimerInformation> processElapsedTime(long deltaTime, List<PersonTimerInformation> list) {
-        List<PersonTimerInformation> personWhoseTimeFinished = new ArrayList<>();
+    private List<PersonMovementInformation> processElapsedTime(long deltaTime, List<PersonMovementInformation> list) {
+        List<PersonMovementInformation> personWhoseTimeFinished = new ArrayList<>();
         long getPersonTimeElapsed;
         long getPersonTimeRequired;
-        for(PersonTimerInformation pti : list){
+        for(PersonMovementInformation pti : list){
             getPersonTimeElapsed = pti.getTimeElapsed();
             getPersonTimeRequired = pti.getTimeRequired();
             if (getPersonTimeRequired > getPersonTimeElapsed){

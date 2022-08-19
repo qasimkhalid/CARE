@@ -246,9 +246,11 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         List<String> getAllPersonQueryResult = CareeInfModel.Instance().getQueryResult("data/queries/sparql/GetAllPersons.txt");
         for (int i = 0; i < getAllPersonQueryResult.size() - 1; i+=2) {
             String person = getAllPersonQueryResult.get(i);
+            String personId = getAllPersonQueryResult.get(i+1);
             if(!personControllerMap.containsKey(person)){
-                PersonController p = new PersonController(person, getAllPersonQueryResult.get(i+1));
-                personControllerMap.put(person, p);
+                Person p = new Person(person, personId); // Person object is being created
+                PersonController pc = new PersonController(p); // PersonController object is being created using a person object
+                personControllerMap.put(person, pc);
             }
         }
     }
@@ -266,7 +268,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
             PersonMovementInformation pti = new PersonMovementInformation(p, timeRequired, 0, origin, destination, id);
             personMovementInformation.add(pti);
 
-            //*No being used for the moment*
+            // *No being used for the moment*
             // Calculating instantaneous occupancy status of each space.
 //            spaceOccupancyMap.merge(origin, 1, Integer::sum);
         }

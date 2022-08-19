@@ -117,7 +117,7 @@ public class AutomatedOperations {
         for (PersonMovementInformation personMovementInformation : list) {
             personInstance = CareeInfModel.Instance().getResource(personMovementInformation.getPerson());
             Resource destinationInstance = CareeInfModel.Instance()
-                    .getResource(personMovementInformation.getCurrentDestination());
+                    .getResource(personMovementInformation.getDestination());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState,
                     HelpingVariables.motionStateWalking);
             CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
@@ -136,13 +136,13 @@ public class AutomatedOperations {
      * This method assumes the person has been updated in the model with its
      * newLocation
      *
-     * @param person
+     * @param personName
      */
     public static void updateModelWhenPersonCompletesPath(String personName) {
         Resource personResource = CareeInfModel.Instance().getResource(personName);
-        CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState,
+        CareeInfModel.Instance().remove(personResource, HelpingVariables.motionState,
                 HelpingVariables.motionStateWalking);
-        CareeInfModel.Instance().add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
+        CareeInfModel.Instance().add(personResource, HelpingVariables.motionState, HelpingVariables.motionStateResting);
     }
 
     public static void updateModelWhenPersonFinishesStepBasedMovement(List<PersonMovementInformation> list) {
@@ -150,7 +150,7 @@ public class AutomatedOperations {
         for (PersonMovementInformation personMovementInformation : list) {
             personInstance = CareeInfModel.Instance().getResource(personMovementInformation.getPerson());
             Resource destinationInstance = CareeInfModel.Instance()
-                    .getResource(personMovementInformation.getCurrentDestination());
+                    .getResource(personMovementInformation.getDestination());
             CareeInfModel.Instance().add(personInstance, HelpingVariables.locatedIn, destinationInstance);
         }
     }
@@ -159,7 +159,7 @@ public class AutomatedOperations {
         Resource personInstance;
         for (PersonMovementInformation t : list) {
             personInstance = CareeInfModel.Instance().getResource(t.getPerson());
-            Resource originInstance = CareeInfModel.Instance().getResource(t.getCurrentOrigin());
+            Resource originInstance = CareeInfModel.Instance().getResource(t.getOrigin());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.motionState,
                     HelpingVariables.motionStateStanding);
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
@@ -172,7 +172,7 @@ public class AutomatedOperations {
         Resource personInstance;
         for (PersonMovementInformation t : list) {
             personInstance = CareeInfModel.Instance().getResource(t.getPerson());
-            Resource originInstance = CareeInfModel.Instance().getResource(t.getCurrentOrigin());
+            Resource originInstance = CareeInfModel.Instance().getResource(t.getOrigin());
             CareeInfModel.Instance().remove(personInstance, HelpingVariables.locatedIn, originInstance);
         }
     }
@@ -185,7 +185,7 @@ public class AutomatedOperations {
             for (int i = 0; i < personNeedToRestQueryResult.size() - 1; i += 2) {
 
                 String personNeedToRest = personNeedToRestQueryResult.get(i);
-                Optional<PersonTimerInformation> personAlreadyResting = personRestingScheduler.getRestingPersons().stream()
+                Optional<PersonMovementInformation> personAlreadyResting = personRestingScheduler.getRestingPersons().stream()
                         .filter(x -> x.getPerson().equals(personNeedToRest)).findFirst();
 
                 if (!personAlreadyResting.isPresent()) {
@@ -201,7 +201,7 @@ public class AutomatedOperations {
         long extraTime;
         // find space area
         Optional<Space> space = HelpingVariables.spaceInfoList.stream()
-                .filter(x -> x.getName().equals(person.getCurrentOrigin())).findFirst();
+                .filter(x -> x.getName().equals(person.getOrigin())).findFirst();
         if (space.isPresent()) {
             area = space.get().getArea();
         } else {
@@ -209,7 +209,7 @@ public class AutomatedOperations {
         }
 
         // get the space occupancy status where the person is located
-        Integer SpaceOccupancy = spaceOccupancyMap.get(person.getCurrentOrigin());
+        Integer SpaceOccupancy = spaceOccupancyMap.get(person.getOrigin());
         extraTime = MathOperations.getExtraTime(area, SpaceOccupancy, areaPerPersonM2);
         if (extraTime > 0) {
             person.incrementTimeRequired(extraTime);
