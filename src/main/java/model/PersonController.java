@@ -74,5 +74,14 @@ public class PersonController {
 
         // Check logic for resting phase, if his rest is over,
         // set resting state to some other state. and isResting should be false
+
+        // not part of person controller, just discussion
+        // MainAbbu
+        // Abbu ne bachay ko order dia k rest kr yan nikal ja
+        // ab bachay k zimay yehi do kaam haen, agar bachay se in
+        // me se koi b kam nahi hua kisi na-gahani afat ki waja se
+        // to wo abu ko btae ga, k abu g i am interrupted!!!
+        // ab abu janay k wo is bachay ka kya krtay haen yan is se
+        // kya kaam lete haen
     }
 }
