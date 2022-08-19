@@ -2,8 +2,7 @@ package model;
 
 import helper.AutomatedOperations;
 
-public class Edge
-{
+public class Edge {
     private final String start;
     private final String end;
     private long cost;

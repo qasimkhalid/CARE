@@ -12,7 +12,7 @@ public class Person {
         this.id = id;
     }
 
-    public String getPerson() {
+    public String getName() {
         return person;
     }
 

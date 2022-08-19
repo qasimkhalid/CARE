@@ -5,69 +5,58 @@ import helper.AutomatedOperations;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class PathTraversal {
 
     private List<String> path = new ArrayList<>();
     private Edge currentEdge;
-    private long requiredCumulativeCurrentEdgeCost = 0;
+    private long cumulativeEdgeTraversalTime = 0;
     private long timeElapsed = 0;
     private int index = 0; // index shows current edge's destination node's index A-B-C
-    private boolean edgeTraversed = false;
 
     public boolean isResting = false;
 
-
     public abstract void onEdgeTraversed(String destination);
 
-    public abstract void onLeavingLastDestination();
+    public abstract void onPathInterrupt();
 
-    public abstract void onPathTraversed();
+    public abstract void onPathComplete();
 
-    public PathTraversal(List<String> path)
-    {
+    public PathTraversal(List<String> path) {
         this.path = path;
     }
 
-    public void move(long dt)
-    {
+    public void move(long dt) {
         if (this.isResting) {
             return;
         }
 
-        if (this.edgeTraversed)
-        {
-            this.edgeTraversed = false;
-            this.onLeavingLastDestination();
-        }
-
         this.timeElapsed += dt;
 
-        if (this.timeElapsed >= this.requiredCumulativeCurrentEdgeCost)
-        {
+        if (this.timeElapsed >= this.cumulativeEdgeTraversalTime) {
+            this.onEdgeTraversed(this.currentEdge.getDestination());
+
             if (this.hasNextNode()) {
+
+                if (this.IsPathInterrupt()) {
+                    this.onPathInterrupt();
+                }
                 this.currentEdge = new Edge(path.get(this.index), path.get(this.index + 1));
-                this.requiredCumulativeCurrentEdgeCost += this.currentEdge.getCost();
+                this.cumulativeEdgeTraversalTime += this.currentEdge.getCost();
                 this.index++;
-                this.onEdgeTraversed(this.currentEdge.getDestination());
-                this.edgeTraversed = true;
             } else {
                 this.isResting = true;
-                this.onPathTraversed();
+                this.onPathComplete();
             }
         }
     }
 
-    private long getCurrentEdgeCost() {
-        try {
-            return AutomatedOperations.getODPairCostInSeconds(currentEdge.getOrigin(), currentEdge.getDestination());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
     private boolean hasNextNode() {
         return this.path.size() - 1 > this.index;
+    }
+
+    private boolean IsPathInterrupt() {
+        // Todo: write logic here to check if the current path has been interrupted or
+        // not!
+        return false;
     }
 }
