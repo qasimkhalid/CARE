@@ -344,27 +344,3 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
