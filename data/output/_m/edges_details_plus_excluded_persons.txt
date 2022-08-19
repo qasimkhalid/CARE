@@ -1,0 +1,1 @@
+edge: (node#, node#) | cost (freeflow crossing time, e.g. [sec]) | safety value in range in the domain [0,...,1] | edge capacity [Max. No. of people that can pass through an edge per sec.] | not apt for evacuation for persons [person #]
