@@ -8,7 +8,9 @@ public class PersonController {
 
     private final Person person;
     private PathTraversal pathTraversal;
-    private boolean isPathInterrupt = false;
+    private boolean pathInterrupted = false;
+    private long restDuration;
+    private long restStartTime;
 
     public PersonController(Person person) {
         this.person = person;
@@ -22,11 +24,22 @@ public class PersonController {
         return this.person.getName();
     }
 
-    public boolean IsPathInterrupt() {
-        return this.isPathInterrupt;
+    public boolean isPathInterrupt() {
+        return this.pathInterrupted;
     }
 
-    public void assignRoute(List<String> routeAssigned) {
+    public void restUntil(long startTime, long duration) {
+        this.restDuration = duration;
+        this.restStartTime = startTime;
+    }
+
+    public void followRoute(List<String> routeAssigned) {
+
+        // everytime whenever a path is assigned, it means it should start working on
+        // that path
+        // which implies that pathInterrupted should be set to false
+        this.pathInterrupted = false;
+
         this.pathTraversal = new PathTraversal(routeAssigned) {
             @Override
             public void onEdgeTraversed(String newLocation) {
@@ -45,9 +58,9 @@ public class PersonController {
             @Override
             public void onPathInterrupt() {
                 // here you should do any operations to your model using AutomatedOperations
-                // after operation we will set isPathInterrupt to true, which will be consumed
+                // after operation we will set pathInterrupted to true, which will be consumed
                 // by respective schedular to decide another path
-                isPathInterrupt = true;
+                pathInterrupted = true;
             }
         };
     }
@@ -57,6 +70,12 @@ public class PersonController {
     }
 
     public void Update(long deltaTime) {
+
+        if (this.pathInterrupted == true) {
+            // if path interrupt, don't do anything, just wait for next instructions
+            return;
+        }
+
         updateMovementPhase(deltaTime);
         updateRestingPhase(deltaTime);
     }
@@ -72,6 +91,10 @@ public class PersonController {
         if (this.isResting() == false)
             return;
 
+        if (deltaTime >= this.restStartTime + this.restDuration) {
+            // this means resting has ended for that particular duration
+            // Todo: what should we do here?
+        }
         // Check logic for resting phase, if his rest is over,
         // set resting state to some other state. and isResting should be false
 
