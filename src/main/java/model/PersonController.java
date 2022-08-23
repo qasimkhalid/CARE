@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import helper.AutomatedOperations;
+import helper.Time;
 
 public class PersonController {
 
@@ -11,6 +12,7 @@ public class PersonController {
     private boolean pathInterrupted = false;
     private long restDuration;
     private long restStartTime;
+    private boolean isResting = false;
 
     public PersonController(Person person) {
         this.person = person;
@@ -31,6 +33,8 @@ public class PersonController {
     public void restUntil(long startTime, long duration) {
         this.restDuration = duration;
         this.restStartTime = startTime;
+        this.isResting = true;
+        // inform your model about this new state!
     }
 
     public void followRoute(List<String> routeAssigned) {
@@ -53,6 +57,7 @@ public class PersonController {
                 // update destination of person with personId -> as he
                 // has completed the path
                 AutomatedOperations.updateModelWhenPersonCompletesPath(getName());
+                this.isResting = true;
             }
 
             @Override
@@ -61,12 +66,13 @@ public class PersonController {
                 // after operation we will set pathInterrupted to true, which will be consumed
                 // by respective schedular to decide another path
                 pathInterrupted = true;
+                this.isResting = true;
             }
         };
     }
 
     public boolean isResting() {
-        return this.pathTraversal.isResting;
+        return this.isResting;
     }
 
     public void Update(long deltaTime) {
@@ -76,8 +82,11 @@ public class PersonController {
             return;
         }
 
-        updateMovementPhase(deltaTime);
-        updateRestingPhase(deltaTime);
+        if (this.isResting) {
+            updateRestingPhase(deltaTime);
+        } else {
+            updateMovementPhase(deltaTime);
+        }
     }
 
     private void updateMovementPhase(long deltaTime) {
@@ -88,12 +97,9 @@ public class PersonController {
     }
 
     private void updateRestingPhase(long deltaTime) {
-        if (this.isResting() == false)
-            return;
 
-        if (deltaTime >= this.restStartTime + this.restDuration) {
-            // this means resting has ended for that particular duration
-            // Todo: what should we do here?
+        if (Time.currentTime() >= this.restStartTime + this.restDuration) {
+            // inform your model about this new state!
         }
         // Check logic for resting phase, if his rest is over,
         // set resting state to some other state. and isResting should be false
