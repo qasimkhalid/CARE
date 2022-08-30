@@ -3,6 +3,7 @@ package helper;
 import eu.larkc.csparql.core.engine.ConsoleFormatter;
 
 import eu.larkc.csparql.common.RDFTable;
+import streamers.HumanLocationStreamer;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -50,6 +51,7 @@ public class Output extends ConsoleFormatter {
                         sb.append("******Caution: Fire Event in this time Step******")
                                 .append("\n");
                         fireCheck = true;
+                        HumanLocationStreamer.hazardFound();
                     }
 
                     sb.append("(")
@@ -69,6 +71,7 @@ public class Output extends ConsoleFormatter {
                         sb.append("******Caution: Fire Event in this time Step******")
                                 .append("\n");
                         fireCheck = true;
+                        HumanLocationStreamer.hazardFound();
                     }
 
                     sb.append(tokens[11].trim()).append("\t")

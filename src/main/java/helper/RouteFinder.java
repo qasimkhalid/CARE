@@ -10,6 +10,11 @@ public class RouteFinder {
         public Node Parent;
         public List<Node> Childs;
 
+        /**
+         *
+         * @param id - id of the node
+         * @param parent - parent of the node whose id is given as a first argument
+         */
         public Node(String id, Node parent) {
             Parent = parent;
             Id = id;
@@ -18,6 +23,10 @@ public class RouteFinder {
 
     private List<String> visitedNodes = new ArrayList<>();
 
+    /**
+     *
+     * @param p - find
+     */
     public void find(Node p) {
         List<Node> neighbors = getSortedNeighborsByWeights(p);
         for (Node n : neighbors) {
@@ -33,6 +42,11 @@ public class RouteFinder {
         }
     }
 
+    /**
+     *
+     * @param n - node whose neighbours are supposed to be found
+     * @return list of neighbours of node n in a sorted manner
+     */
     private List<Node> getSortedNeighborsByWeights(Node n) {
         // Read data of that particular space name and its connected
         // spaces from you model

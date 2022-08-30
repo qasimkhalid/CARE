@@ -13,7 +13,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AutomatedOperations {
-
+    /**
+     * This methods runs a Sparql query and filters out the nodes and edges, along with their other characteristics,
+     * such as area, and accommodation capacity.
+     * @param infModel - Inference Model
+     * @param odPairList - List of ODPair objects (already loaded)
+     * @return List of Space objects.
+     */
     public static List<Space> getSpaceInfo(InfModel infModel, List<ODPair> odPairList) {
         List<String> spaceInfoQueryResult = SparqlFunctions.getSPARQLQueryResult(infModel,
                 "data/Queries/sparql/GetSpaceInfo.txt");
@@ -48,6 +54,12 @@ public class AutomatedOperations {
         return list;
     }
 
+    /**
+     * This methods returns a list of OD Pairs (i.e., edges), along with their other characteristics, such as cost,
+     * corresponding space, both nodes (i.e., origin and destination) to which it is connected.
+     * @param infModel - Inference Model
+     * @return list of ODPair objects
+     */
     public static List<ODPair> getCostOfAllODPairs(InfModel infModel) {
         List<String> odPairQueryResult = null;
         try {
@@ -66,8 +78,16 @@ public class AutomatedOperations {
         return list;
     }
 
+    /**
+     * This method sets up the persons in the building who might later be used as a moving agents
+     * @param infModel - Inference Model
+     * @param personsCount - Total number of persons.
+     * @param allPersonMove - flag that expresses either all number of persons will be moving or some of them will be
+     *                      chosen (randomly) to be in the resting state.
+     * @param personsWithWheelChair - Number of persons having a mobility impairment
+     */
     public static void setPeopleInBuilding(InfModel infModel, int personsCount, boolean allPersonMove,
-            int personsWithWheelChair) throws Exception {
+            int personsWithWheelChair) {
         long initialTime = System.currentTimeMillis();
         int personsWithWheelChairCounter = 0;
         Resource personInstance;
@@ -102,11 +122,22 @@ public class AutomatedOperations {
         }
     }
 
+    /**
+     * This method returns a list of available spaces in the building.
+     * @param infModel - Inference Model
+     * @return A list of strings having all available spaces. It needs to be processed before using it.
+     */
     public static List<String> getAvailableSpaces(InfModel infModel) {
         return SparqlFunctions.getSPARQLQueryResult(infModel,
                 "data/Queries/sparql/FindAllAvailableSpacesInBuilding.txt");
     }
 
+    /**
+     * This method returns a list of available nodes in the graph.
+     * THIS METHOD IS AS SAME AS getAvailableSpaces method, but a bit better in terms of results.
+     * @param infModel - Inference Model
+     * @return A list of strings having all available nodes (i.e., spaces). It needs to be processed before using it.
+     */
     public static List<String> getAvailableNodes(InfModel infModel) {
         return SparqlFunctions.getSPARQLQueryResult(infModel,
                 "data/queries/sparql/FindAllAvailableNodesInBuilding.txt");
@@ -133,9 +164,7 @@ public class AutomatedOperations {
     }
 
     /**
-     * This method assumes the person has been updated in the model with its
-     * newLocation
-     *
+     * This method assumes the person has been updated in the model with its newLocation
      * @param personName
      */
     public static void updateModelWhenPersonCompletesPath(String personName) {

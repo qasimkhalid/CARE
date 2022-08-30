@@ -1,26 +1,31 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Space {
     private String name;
 
     private float area;
     private String type;
     private double safetyValue = 1f;
-    private int capacity;
+    private int accommodationCapacity;
+    private int currentOccupancyRatio;
     private double humiditySensorValue;
     private double temperatureSensorValue;
     private double humanDetectionSensorValue;
     private boolean smokeExists;
     private boolean available;
+    private final List<Space> adjacentSpaces = new ArrayList<>();
 
     public Space(String name) {
         this.name = name;
     }
 
-    public Space(String name, String area, String capacity, String type ) {
+    public Space(String name, String area, String accommodationCapacity, String type ) {
         this.name = name;
         this.area = Float.parseFloat(area.trim().substring(1, area.length() - 12));
-        this.capacity = Integer.parseInt(capacity.trim());
+        this.accommodationCapacity = Integer.parseInt(accommodationCapacity.trim());
         this.type = type;
     }
 
@@ -48,12 +53,12 @@ public class Space {
         this.smokeExists = smokeExists;
     }
 
-    public Space(String name, float area, String type, double safetyValue, int capacity, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
+    public Space(String name, float area, String type, double safetyValue, int accommodationCapacity, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
         this.name = name;
         this.area = area;
         this.type = type;
         this.safetyValue = safetyValue;
-        this.capacity = capacity;
+        this.accommodationCapacity = accommodationCapacity;
         this.humiditySensorValue = humiditySensorValue;
         this.temperatureSensorValue = temperatureSensorValue;
         this.humanDetectionSensorValue = humanDetectionSensorValue;
@@ -70,11 +75,11 @@ public class Space {
     }
 
     public int getCapacity() {
-        return capacity;
+        return accommodationCapacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity(int accommodationCapacity) {
+        this.accommodationCapacity = accommodationCapacity;
     }
 
     public double getHumiditySensorValue() {
@@ -139,6 +144,26 @@ public class Space {
 
     public void setArea( float area ) {
         this.area = area;
+    }
+
+    public int getCurrentOccupancyRatio() {
+        return currentOccupancyRatio;
+    }
+
+    public void setCurrentOccupancyRatio(int currentOccupancyRatio) {
+        this.currentOccupancyRatio = currentOccupancyRatio;
+    }
+
+    public int getAccommodationCapacity() {
+        return accommodationCapacity;
+    }
+
+    public void setAccommodationCapacity(int accommodationCapacity) {
+        this.accommodationCapacity = accommodationCapacity;
+    }
+
+    public List<Space> getAdjacentSpaces() {
+        return adjacentSpaces;
     }
 }
 
