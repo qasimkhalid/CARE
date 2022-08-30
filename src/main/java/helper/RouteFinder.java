@@ -11,8 +11,7 @@ public class RouteFinder {
         public List<Node> Childs;
 
         /**
-         *
-         * @param id - id of the node
+         * @param id     - id of the node
          * @param parent - parent of the node whose id is given as a first argument
          */
         public Node(String id, Node parent) {

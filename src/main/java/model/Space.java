@@ -22,14 +22,15 @@ public class Space {
         this.name = name;
     }
 
-    public Space(String name, String area, String accommodationCapacity, String type ) {
+    public Space(String name, String area, String accommodationCapacity, String type) {
         this.name = name;
         this.area = Float.parseFloat(area.trim().substring(1, area.length() - 12));
         this.accommodationCapacity = Integer.parseInt(accommodationCapacity.trim());
         this.type = type;
     }
 
-    public Space(String name, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
+    public Space(String name, double humiditySensorValue, double temperatureSensorValue,
+            double humanDetectionSensorValue, boolean smokeExists, boolean available) {
         this.name = name;
         this.humiditySensorValue = humiditySensorValue;
         this.temperatureSensorValue = temperatureSensorValue;
@@ -37,7 +38,6 @@ public class Space {
         this.smokeExists = smokeExists;
         this.available = available;
     }
-
 
     public Space(String name, String area, String type, double safetyValue) {
         this.name = name;
@@ -53,7 +53,9 @@ public class Space {
         this.smokeExists = smokeExists;
     }
 
-    public Space(String name, float area, String type, double safetyValue, int accommodationCapacity, double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue, boolean smokeExists, boolean available) {
+    public Space(String name, float area, String type, double safetyValue, int accommodationCapacity,
+            double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue,
+            boolean smokeExists, boolean available) {
         this.name = name;
         this.area = area;
         this.type = type;
@@ -83,7 +85,7 @@ public class Space {
     }
 
     public double getHumiditySensorValue() {
-        return Math.round(humiditySensorValue* 100d) / 100d;
+        return Math.round(humiditySensorValue * 100d) / 100d;
     }
 
     public void setHumiditySensorValue(double humiditySensorValue) {
@@ -91,7 +93,7 @@ public class Space {
     }
 
     public double getTemperatureSensorValue() {
-        return Math.round(temperatureSensorValue* 100d) / 100d;
+        return Math.round(temperatureSensorValue * 100d) / 100d;
     }
 
     public void setTemperatureSensorValue(double temperatureSensorValue) {
@@ -99,7 +101,7 @@ public class Space {
     }
 
     public double getHumanDetectionSensorValue() {
-        return Math.round(humanDetectionSensorValue* 100d) / 100d;
+        return Math.round(humanDetectionSensorValue * 100d) / 100d;
     }
 
     public void setHumanDetectionSensorValue(double humanDetectionSensorValue) {
@@ -123,7 +125,7 @@ public class Space {
     }
 
     public double getSafetyValue() {
-        return  Math.round(safetyValue* 100d) / 100d;
+        return Math.round(safetyValue * 100d) / 100d;
     }
 
     public void setSafetyValue(double safetyValue) {
@@ -142,7 +144,7 @@ public class Space {
         return area;
     }
 
-    public void setArea( float area ) {
+    public void setArea(float area) {
         this.area = area;
     }
 
@@ -166,4 +168,3 @@ public class Space {
         return adjacentSpaces;
     }
 }
-
