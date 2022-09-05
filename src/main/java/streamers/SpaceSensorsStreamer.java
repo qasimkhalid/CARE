@@ -6,6 +6,8 @@ import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 
+import helper.EvacuationController;
+import helper.IEvacuationPlan;
 import helper.MathOperations;
 import helper.HelpingVariables;
 import model.CareeInfModel;
@@ -16,10 +18,14 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
     private final long timeStep;
     private boolean keepRunning = true;
+    private final int SEED;
+    private final double allowedSafetyValue;
 
-    public SpaceSensorsStreamer( final String iri, long timeStep) {
+    public SpaceSensorsStreamer( final String iri, long timeStep, double allowedSafetyValue, int seed) {
         super(iri);
         this.timeStep = timeStep;
+        this.SEED = seed;
+        this.allowedSafetyValue = allowedSafetyValue;
     }
 
     public void stop() {
@@ -30,24 +36,34 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     public void run() {
 
         int count = 1;
+
+        //List of Sensor objects
         List<Sensor> sensorDetailsList = new ArrayList<>();
+
+        //Mapping of SpaceName with respect to the Space objects
         Map<String, Space> allSensorsValueAtSpecificLocationList = new HashMap<>();
         List<String> sparqlQueryAllSensorsList;
         String timeNow;
 
         try {
+
+            //Sparql query to find all the sensors, along with their type and the space where they are installed.
             sparqlQueryAllSensorsList = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/FindAllSensorsInTheBuildingAlongWithTheirSpace.txt");
 
             if(!sparqlQueryAllSensorsList.isEmpty()) {
-
-                Sensor sensor;
                 timeNow = String.valueOf(System.currentTimeMillis());
 
+                //Organizing the results of the Sparql query
                 for (int i = 0; i < sparqlQueryAllSensorsList.size() - 2; i += 3) {
+                    String sensorName = sparqlQueryAllSensorsList.get(i);
+                    String observationType =  sparqlQueryAllSensorsList.get(i + 2);
                     String locationName = sparqlQueryAllSensorsList.get(i + 1);
-                    sensor = new Sensor(sparqlQueryAllSensorsList.get(i), sparqlQueryAllSensorsList.get(i + 2), locationName);
+
+                    //Creating a new Sensor object and adding it in a Sensors List
+                    Sensor sensor = new Sensor(sensorName, observationType, locationName);
                     sensorDetailsList.add(sensor);
 
+                    //
                     if(!allSensorsValueAtSpecificLocationList.containsKey(locationName)){
                         Optional<Space> space = HelpingVariables.spaceInfoList.stream()
                                 .filter(x -> x.getName().equals(locationName))
@@ -77,12 +93,28 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
             }
 
             /*
-            Iterating all the spaces (i.e., nodes & edges)
+            Iterating all the spaces (i.e., nodes & edges) to get their safety value after each time step.
             */
             RdfQuadruple q;
             for (String key : allSensorsValueAtSpecificLocationList.keySet()) {
                 Space s = allSensorsValueAtSpecificLocationList.get(key);
                 Resource locationInstance = CareeInfModel.Instance().getResource(s.getName());
+
+                /*
+                * An interruption in the existing routing plan could be raised from here if the safety value reduces
+                * from a specific value.
+                * Multiple types of interruptions could be raised here such as depending on the type of persons.
+                */
+
+                //If Space Safety decreases from the allowed safety
+                if (s.getSafetyValue() < allowedSafetyValue) {
+                    //Interruption of plan for mobility impaired people
+                    if (HumanLocationStreamer.isEvacuationStarted()) {
+                        HumanLocationStreamer.interruptionWhileEvacuating();
+                    } else {
+                        HumanLocationStreamer.hazardFoundToInitiateEvacuation();
+                    }
+                }
 
                 CareeInfModel.Instance().addLiteral(locationInstance, HelpingVariables.safetyValue, s.getSafetyValue());
                 q = new RdfQuadruple(
@@ -131,7 +163,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 if(sensor.getValue() == null) {
                     sensor.setValue(25);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 5, (Double) sensor.getValue() - 2);
+                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 5, (Double) sensor.getValue() - 2, SEED);
 
                 if(sensorValueNumber < 10) sensorValueNumber = 10;
                 else if( sensorValueNumber > 100) sensorValueNumber = 100;

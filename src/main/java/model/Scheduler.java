@@ -46,10 +46,10 @@ public class Scheduler {
         }
     }
 
-    public void addRestingPerson(String person){
-        PersonMovementInformation m = new PersonMovementInformation(person, MathOperations.getRandomNumberInRange(10, 1) * 1000L, 0);
-        this.restingPersons.add(m);
-    }
+//    public void addRestingPerson(String person){
+//        PersonMovementInformation m = new PersonMovementInformation(person, MathOperations.getRandomNumberInRange(10, 1) * 1000L, 0);
+//        this.restingPersons.add(m);
+//    }
 
     public void removeRestingPerson(List<PersonMovementInformation> list){
         Resource personInstance;

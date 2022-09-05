@@ -17,20 +17,6 @@ public class Sensor {
         this.location = location;
     }
 
-    public Sensor( String sensorName, String observationType, String location, double value ) {
-        this.sensorName = sensorName;
-        this.observationType = observationType;
-        this.location = location;
-        this.value = value;
-    }
-
-    public Sensor( String sensorName, String observationType, String location, boolean value ) {
-        this.sensorName = sensorName;
-        this.observationType = observationType;
-        this.location = location;
-        this.value = value;
-    }
-
     public Object getValue() {
         if (Objects.isNull(value) ){
             return null;

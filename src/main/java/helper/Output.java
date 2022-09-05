@@ -51,7 +51,6 @@ public class Output extends ConsoleFormatter {
                         sb.append("******Caution: Fire Event in this time Step******")
                                 .append("\n");
                         fireCheck = true;
-                        HumanLocationStreamer.hazardFound();
                     }
 
                     sb.append("(")
@@ -71,7 +70,6 @@ public class Output extends ConsoleFormatter {
                         sb.append("******Caution: Fire Event in this time Step******")
                                 .append("\n");
                         fireCheck = true;
-                        HumanLocationStreamer.hazardFound();
                     }
 
                     sb.append(tokens[11].trim()).append("\t")

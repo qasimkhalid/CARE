@@ -15,12 +15,12 @@ final public class MathOperations
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
     }
 
-    public static int getRandomNumberInRange(int max, int min) {
-        return (int) Math.floor(Math.random()*(max-min+1)+min);
-    }
+//    public static int getRandomNumberInRange(int max, int min) {
+//        return (int) Math.floor(Math.random()*(max-min+1)+min);
+//    }
 
-    public static double getRandomNumberInRange(double max, double min) {
-        Random random = new Random();
+    public static double getRandomNumberInRange(double max, double min, int seed) {
+        Random random = new Random(seed);
         return min + random.nextFloat() * (max - min);
     }
 
@@ -29,8 +29,8 @@ final public class MathOperations
         return random.nextBoolean();
     }
 
-    public static int getRandomNumber(int size) {
-        Random random = new Random();
+    public static int getRandomNumber(int size, int seed) {
+        Random random = new Random(seed);
         return random.nextInt(size);
     }
 

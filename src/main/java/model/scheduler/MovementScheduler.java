@@ -26,12 +26,12 @@ public class MovementScheduler {
         }
     }
 
-    public List<PersonController> updatePersonMovement(long deltaTime, List<PersonController> list) {
-
-        for (PersonController p : this.movingPersons) {
-            p.Update(deltaTime);
-        }
-
-        return personWhoFinishedMovement;
-    }
+//    public List<PersonController> updatePersonMovement(long deltaTime, List<PersonController> list) {
+//
+//        for (PersonController p : this.movingPersons) {
+//            p.Update(deltaTime);
+//        }
+//
+//        return personWhoFinishedMovement;
+//    }
 }

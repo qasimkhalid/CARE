@@ -5,16 +5,25 @@ public class Person {
     private String person;
     private String location;
     private String id;
+    private String type;
 
-    public Person(String person, String location, String id) {
-        this.person = person;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Person(String location, String id) {
         this.location = location;
         this.id = id;
     }
 
-    public Person(String person, String id) {
+    public Person(String person, String id, String type) {
         this.person = person;
         this.id = id;
+        this.type = type;
     }
 
     public String getName() {

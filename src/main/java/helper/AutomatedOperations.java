@@ -82,12 +82,9 @@ public class AutomatedOperations {
      * This method sets up the persons in the building who might later be used as a moving agents
      * @param infModel - Inference Model
      * @param personsCount - Total number of persons.
-     * @param allPersonMove - flag that expresses either all number of persons will be moving or some of them will be
-     *                      chosen (randomly) to be in the resting state.
      * @param personsWithWheelChair - Number of persons having a mobility impairment
      */
-    public static void setPeopleInBuilding(InfModel infModel, int personsCount, boolean allPersonMove,
-            int personsWithWheelChair) {
+    public static void setPeopleInBuilding(InfModel infModel, int personsCount, int personsWithWheelChair, int seed) {
         long initialTime = System.currentTimeMillis();
         int personsWithWheelChairCounter = 0;
         Resource personInstance;
@@ -106,21 +103,62 @@ public class AutomatedOperations {
                 infModel.add(personInstance, HelpingVariables.rdfType, HelpingVariables.personClass);
             }
             infModel.addLiteral(personInstance, HelpingVariables.id, i);
-
-            if (allPersonMove)
-                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
-            else if (MathOperations.getRandomBoolean())
-                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
-            else
-                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
+            infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
 
             // Choosing a random space as a person location
-            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
+            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size(), seed));
             spaceInstance = ResourceFactory.createResource(rs);
             infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
             infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
         }
     }
+
+
+
+
+//    /**
+//     * This method sets up the persons in the building who might later be used as a moving agents
+//     * @param infModel - Inference Model
+//     * @param personsCount - Total number of persons.
+//     * @param allPersonMove - flag that expresses either all number of persons will be moving or some of them will be
+//     *                      chosen (randomly) to be in the resting state.
+//     * @param personsWithWheelChair - Number of persons having a mobility impairment
+//     */
+//    public static void setPeopleInBuilding(InfModel infModel, int personsCount, boolean allPersonMove,
+//            int personsWithWheelChair) {
+//        long initialTime = System.currentTimeMillis();
+//        int personsWithWheelChairCounter = 0;
+//        Resource personInstance;
+//        Resource spaceInstance;
+//
+//        List<String> availableSpaces = getAvailableNodes(infModel);
+//
+//        for (int i = 1; i <= personsCount; i++) {
+//            personInstance = ResourceFactory.createResource(HelpingVariables.exPrefix + "Person" + i);
+//
+//            if (personsWithWheelChairCounter < personsWithWheelChair) {
+//                infModel.add(personInstance, HelpingVariables.rdfType,
+//                        HelpingVariables.NonMotorisedWheelchairPersonClass);
+//                personsWithWheelChairCounter++;
+//            } else {
+//                infModel.add(personInstance, HelpingVariables.rdfType, HelpingVariables.personClass);
+//            }
+//            infModel.addLiteral(personInstance, HelpingVariables.id, i);
+//
+//            if (allPersonMove)
+//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+//            else if (MathOperations.getRandomBoolean())
+//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
+//            else
+//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
+//
+//            // Choosing a random space as a person location
+//            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
+//            spaceInstance = ResourceFactory.createResource(rs);
+//            infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
+//            infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
+//        }
+//    }
 
     /**
      * This method returns a list of available spaces in the building.
@@ -218,7 +256,7 @@ public class AutomatedOperations {
                         .filter(x -> x.getPerson().equals(personNeedToRest)).findFirst();
 
                 if (!personAlreadyResting.isPresent()) {
-                    personRestingScheduler.addRestingPerson(personNeedToRest);
+//                    personRestingScheduler.addRestingPerson(personNeedToRest);
                 }
             }
         }

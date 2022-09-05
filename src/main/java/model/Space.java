@@ -5,67 +5,24 @@ import java.util.List;
 
 public class Space {
     private String name;
-
     private float area;
-    private String type;
-    private double safetyValue = 1f;
     private int accommodationCapacity;
+    private String type;
+    private final List<Space> adjacentSpaces = new ArrayList<>();
+
+    private double safetyValue = 1f;
     private int currentOccupancyRatio;
     private double humiditySensorValue;
     private double temperatureSensorValue;
     private double humanDetectionSensorValue;
     private boolean smokeExists;
     private boolean available;
-    private final List<Space> adjacentSpaces = new ArrayList<>();
-
-    public Space(String name) {
-        this.name = name;
-    }
 
     public Space(String name, String area, String accommodationCapacity, String type) {
         this.name = name;
         this.area = Float.parseFloat(area.trim().substring(1, area.length() - 12));
         this.accommodationCapacity = Integer.parseInt(accommodationCapacity.trim());
         this.type = type;
-    }
-
-    public Space(String name, double humiditySensorValue, double temperatureSensorValue,
-            double humanDetectionSensorValue, boolean smokeExists, boolean available) {
-        this.name = name;
-        this.humiditySensorValue = humiditySensorValue;
-        this.temperatureSensorValue = temperatureSensorValue;
-        this.humanDetectionSensorValue = humanDetectionSensorValue;
-        this.smokeExists = smokeExists;
-        this.available = available;
-    }
-
-    public Space(String name, String area, String type, double safetyValue) {
-        this.name = name;
-        this.area = Float.parseFloat(area.trim().substring(1, area.length() - 12));
-        this.type = type;
-        this.safetyValue = safetyValue;
-    }
-
-    public Space(String name, double humiditySensorValue, double temperatureSensorValue, boolean smokeExists) {
-        this.name = name;
-        this.humiditySensorValue = humiditySensorValue;
-        this.temperatureSensorValue = temperatureSensorValue;
-        this.smokeExists = smokeExists;
-    }
-
-    public Space(String name, float area, String type, double safetyValue, int accommodationCapacity,
-            double humiditySensorValue, double temperatureSensorValue, double humanDetectionSensorValue,
-            boolean smokeExists, boolean available) {
-        this.name = name;
-        this.area = area;
-        this.type = type;
-        this.safetyValue = safetyValue;
-        this.accommodationCapacity = accommodationCapacity;
-        this.humiditySensorValue = humiditySensorValue;
-        this.temperatureSensorValue = temperatureSensorValue;
-        this.humanDetectionSensorValue = humanDetectionSensorValue;
-        this.smokeExists = smokeExists;
-        this.available = available;
     }
 
     public String getName() {

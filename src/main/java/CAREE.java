@@ -1,7 +1,7 @@
 /*
 CAREE: Context-AwaRe Emergency Evacuation Software
 
- Example: sbeo evaluation
+ Example Name:
 */
 
 import eu.larkc.csparql.common.utils.CsparqlUtils;
@@ -20,6 +20,7 @@ import java.io.StringWriter;
 public class CAREE {
 
     private final static long initialTime = System.currentTimeMillis();
+    private static final int SEED = 12;
 
     public static void main( String[] args ) throws Exception {
 
@@ -27,7 +28,9 @@ public class CAREE {
         CsparqlEngineImpl engine = new CsparqlEngineImpl();
         engine.initialize(true);
 
-        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, false, 2);
+//        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, false, 2);
+
+        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, 2, SEED);
 
         //C-SPARQL queries.
 
@@ -49,7 +52,8 @@ public class CAREE {
 
         //Creating the instances of data stream.
         HumanLocationStreamer hlStream = new HumanLocationStreamer(HelpingVariables.kbIRI, 2000, true, 1f);
-        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 2000);
+        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 2000, 0.5, SEED);
+
 
         //Injecting the stream in the C-SPARQL engine.
         engine.registerStream(hlStream);

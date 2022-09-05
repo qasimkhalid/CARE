@@ -14,6 +14,10 @@ public class PersonController {
     private long restStartTime;
     private boolean isResting = false;
 
+    public Person getPerson() {
+        return person;
+    }
+
     public PersonController(Person person) {
         this.person = person;
     }

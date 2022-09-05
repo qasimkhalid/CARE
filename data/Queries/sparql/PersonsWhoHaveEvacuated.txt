@@ -8,12 +8,10 @@ PREFIX seas: <https://w3id.org/seas/>
 PREFIX sosa: <http://www.w3.org/ns/sosa/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
-select distinct ?person ?val ?type
+select distinct ?person
 where {
-        ?person a ?type ;
-                sbeo:id ?val .
-        {?type rdfs:subClassOf foaf:Person}
-        UNION
-        {?type rdfs:subClassOf sbeo:NonMotorisedWheelchairPersonClass}
-      }
-Order By ?person
+        ?person a foaf:Person ;
+                sbeo:locatedIn ?space .
+
+	    ?space a sbeo:FloorExit .
+}

@@ -12,13 +12,13 @@ public class CommonOperations {
         long getPersonTimeElapsed;
         long getPersonTimeRequired;
         for(PersonMovementInformation pti : list){
-            getPersonTimeElapsed = pti.getStepBasedTimeElapsed();
-            getPersonTimeRequired = pti.getStepBasedTimeRequired();
-            if (getPersonTimeRequired > getPersonTimeElapsed){
-                pti.setStepBasedTimeElapsed(getPersonTimeElapsed + deltaTime);
-            } else {
-                personWhoseTimeFinished.add(pti);
-            }
+//            getPersonTimeElapsed = pti.getStepBasedTimeElapsed();
+//            getPersonTimeRequired = pti.getStepBasedTimeRequired();
+//            if (getPersonTimeRequired > getPersonTimeElapsed){
+//                pti.setStepBasedTimeElapsed(getPersonTimeElapsed + deltaTime);
+//            } else {
+//                personWhoseTimeFinished.add(pti);
+//            }
         }
         return personWhoseTimeFinished;
     }
