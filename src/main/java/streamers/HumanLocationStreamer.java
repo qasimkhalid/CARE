@@ -284,13 +284,14 @@ New Algorithm for CAREE that handles one shortest path algorithm including inter
 12: An interruption call checks:
     a: People whose status is in Moving.
     b: Check the assign routes of everyone.
-    c: Filter the people who have that space whose safety value got decreased.
-    d: Run 7b.
+    c: Filter the people who have that space (left in the assigned route) whose safety value got decreased.
+    d: Run 7b until 10.
 
 13: Some persons who are following a path will only be shown upon the completion of each node traversal of their given path.
     How to reassign them a new path?
     a: Maybe we can get people using there movement status, i.e., Moving?
-    b: Then getting the current traversing node and perform
+    b: Then getting the current traversing node and perform 12c, and then 12d.
+
 
 
 
