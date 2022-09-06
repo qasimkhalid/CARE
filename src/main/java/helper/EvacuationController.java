@@ -29,22 +29,14 @@ public class EvacuationController {
 
     public void start() throws InterruptedException {
 
-        this.personControllers.forEach(initializeEvacuation);
+        this.personControllers.forEach(p -> p.evacuate());
 
         while (inProgress()) {
             EventTimer.Instance().doTimeStep(this.timestep);
             Thread.sleep(this.timestep);
+            EventTimer.Instance().doPostTimeStep(this.timestep);
         }
     }
-
-    private Consumer<? super PersonController> initializeEvacuation = new Consumer<PersonController>() {
-
-        @Override
-        public void accept(PersonController t) {
-            EventTimer.Instance().addTimeStepListener(t.listener);
-            t.evacuate();
-        }
-    };
 
     private boolean inProgress() {
         // Todo: put the logic here for checking in progress logic
