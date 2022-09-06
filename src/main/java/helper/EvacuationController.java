@@ -1,11 +1,9 @@
 package helper;
 
-import helper.plans.*;
 import model.PersonController;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Controller has a set of evacuating algorithms of type IRouteFinder
@@ -21,51 +19,35 @@ import java.util.Map;
  */
 
 public class EvacuationController {
-    private Map<String, PersonController> personControllerMap;
     private long timestep;
+    private List<PersonController> personControllers;
 
-    public EvacuationController (Map<String, PersonController> personControllerMap, long timestep){
-        this.personControllerMap = personControllerMap;
+    public EvacuationController(List<PersonController> personControllers, long timestep) {
+        this.personControllers = personControllers;
         this.timestep = timestep;
     }
 
-    private List<IEvacuationPlan> routeFinderAlgorithms = Arrays.asList(
-//            new AStarPlan(),
-//            new DFSPlan(),
-//            new BFSPlan(),
-//            new BestFirstSearch(),
-//            new ChannelBasedPlan()
-            new DijkstraPlan()
-            );
+    public void start() throws InterruptedException {
 
-    private IEvacuationPlan currentPlan = null;
+        this.personControllers.forEach(initializeEvacuation);
 
-    public void start() {
-        for (IEvacuationPlan plan : routeFinderAlgorithms) {
-            currentPlan = plan;
-            EvacuateUsingFinder(plan);
+        while (inProgress()) {
+            EventTimer.Instance().doTimeStep(this.timestep);
+            Thread.sleep(this.timestep);
         }
     }
 
-    private void EvacuateUsingFinder(IEvacuationPlan plan) {
-        // here do all the rubish and play with finder to evacuate all persons
-        plan.Execute();
-        while (plan.inProgress(personControllerMap.size())) {
+    private Consumer<? super PersonController> initializeEvacuation = new Consumer<PersonController>() {
 
-            // wait until next timestep
-            plan.Update(timestep);
-
-            // SomelogicToDetectInterrupt();
-            // based on a flag if interrupt happens
-            plan.Interrupt();
-
-            try {
-                long ts = timestep;
-                Thread.sleep(ts);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+        @Override
+        public void accept(PersonController t) {
+            EventTimer.Instance().addTimeStepListener(t.listener);
+            t.evacuate();
         }
+    };
+
+    private boolean inProgress() {
+        // Todo: put the logic here for checking in progress logic
+        return false;
     }
 }

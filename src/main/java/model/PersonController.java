@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import helper.AutomatedOperations;
+import helper.ITimeStepListener;
 import helper.Time;
 
 public class PersonController {
@@ -13,6 +14,15 @@ public class PersonController {
     private long restDuration;
     private long restStartTime;
     private boolean isResting = false;
+
+    public ITimeStepListener listener = new ITimeStepListener() {
+
+        @Override
+        public void onTimeStep(long timeStep) {
+            // TODO Auto-generated method stub
+
+        }
+    };
 
     public Person getPerson() {
         return person;

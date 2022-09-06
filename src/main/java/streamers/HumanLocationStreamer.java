@@ -41,7 +41,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         HumanLocationStreamer.areaPerPersonM2 = areaPerPersonM2;
     }
 
-    //Flag to stop the streamer
+    // Flag to stop the streamer
     public void stop() {
         keepRunning = false;
     }
@@ -57,56 +57,54 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
     @Override
     public void run() {
 
-
         long deltaTime;
 
         Map<String, PersonController> personsMap = new HashMap<>();
         // it will set up persons in a map, add new persons if missing as well
         SetupPersonsMap(personsMap);
-        EvacuationController ec = new EvacuationController(personsMap, timeStep);
+
+        List<PersonController> personControllers = HumanLocationStreamer.GetAllPersonControllers();
+        EvacuationController ec = new EvacuationController(personControllers, timeStep);
 
         // Getting preset routes for pre-emergency phase
-//        List<Route> routesInformationList = new ArrayList<>();
-//        getAvailableAndPresetRoutes(routesInformationList);
+        // List<Route> routesInformationList = new ArrayList<>();
+        // getAvailableAndPresetRoutes(routesInformationList);
 
         while (keepRunning) {
 
-            if(evacuationStarted){
+            if (evacuationStarted) {
                 ec.start();
             }
 
-            if (interruptionWhileEvacuation){
-
-
-            }
-
+            if (interruptionWhileEvacuation) {
 
             }
 
-
-            System.out.println("Human Movement Simulation Streamer Time Step No: " + stepCount);
-            deltaTime = System.currentTimeMillis() - initialTime;
-
-            for (String key : personsMap.keySet()) {
-                PersonController person = personsMap.get(key);
-                if (!person.isResting())
-                    person.Update(deltaTime);
-            }
-
-            detectPersonLocationUsingIdQuadrupleGenerator();
-
-            this.initialTime = System.currentTimeMillis();
-            stepCount++;
-
-            try {
-                Thread.sleep(timeStep);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
 
+        System.out.println("Human Movement Simulation Streamer Time Step No: " + stepCount);
+        deltaTime = System.currentTimeMillis() - initialTime;
+
+        for (String key : personsMap.keySet()) {
+            PersonController person = personsMap.get(key);
+            if (!person.isResting())
+                person.Update(deltaTime);
+        }
+
+        detectPersonLocationUsingIdQuadrupleGenerator();
+
+        this.initialTime = System.currentTimeMillis();
+        stepCount++;
+
+        try {
+            Thread.sleep(timeStep);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void assignRouteToPersonsWhoAreReadyToMove(List<Route> availableRoutes,
-                                                       Map<String, PersonController> personsMap) {
+            Map<String, PersonController> personsMap) {
         List<String> getEachPersonLocationQueryResult = CareeInfModel.Instance()
                 .getQueryResult("data/queries/sparql/GetPersonsLocationWhoAreStanding(ReadyToMove).txt");
 
@@ -122,7 +120,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
                 if (r.isPresent()) {
                     // todo: add conditional assignment, dont assign if previous route is not
                     // finished
-//                    personsMap.get(person).assignRoute(r.get().getRoute());
+                    // personsMap.get(person).assignRoute(r.get().getRoute());
                 } else {
                     System.out.println("Route Starting from person's location has not been found in RouteMap");
                 }
@@ -135,20 +133,27 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
                 .getQueryResult("data/queries/sparql/GetAllPersons.txt");
         for (int i = 0; i < getAllPersonQueryResult.size() - 2; i += 3) {
             String person = getAllPersonQueryResult.get(i);
-            String type = getAllPersonQueryResult.get(i+1);
-            String personId = getAllPersonQueryResult.get(i+2);
+            String type = getAllPersonQueryResult.get(i + 1);
+            String personId = getAllPersonQueryResult.get(i + 2);
             if (!personControllerMap.containsKey(person)) {
                 Person p = new Person(person, personId, type); // Person object is being created
                 PersonController pc = new PersonController(p); // PersonController object is being created using a
                 // person object
                 personControllerMap.put(person, pc);
             }
-            // handling the issue of transitive memory model in which whole tree is associated with a person mobility impairment
+            // handling the issue of transitive memory model in which whole tree is
+            // associated with a person mobility impairment
             // updating the type of the person
-            else if (type.equals("https://w3id.org/sbeo#NonMotorisedWheelchairPerson")){
+            else if (type.equals("https://w3id.org/sbeo#NonMotorisedWheelchairPerson")) {
                 personControllerMap.get(person).getPerson().setType(type);
             }
         }
+    }
+
+    public static List<PersonController> GetAllPersonControllers() {
+        Map<String, PersonController> personsMap = new HashMap<>();
+        SetupPersonsMap(personsMap);
+        return new ArrayList<>(personsMap.values());
     }
 
     private void computeTimeRequiredForPersonFromOriginToDestination(List<String> personWithOD,
@@ -168,7 +173,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
             // *No being used for the moment*
             // Calculating instantaneous occupancy status of each space.
-//             spaceOccupancyMap.merge(origin, 1, Integer::sum);
+            // spaceOccupancyMap.merge(origin, 1, Integer::sum);
         }
     }
 
@@ -245,57 +250,61 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
 }
 
-
-
-
-
-
-
 /*
-New Algorithm for CAREE that handles one shortest path algorithm including interruptions
-
-1: After each timestep, the location of each person is updated in the system.
-2: After each timestep, the location of each person is also printed using a C-SPARQL query.
-3: After each timestep, the value of each sensor is updated in the system.
-4: After each timestep, the value of each sensor is also printed using a C-SPARQL query.
-
-
-
-5: As soon as the safety value decreases that the allowed safety value:
-    a: The evacuation starts
-    b: If the evacuation was already started, generate an interruption.
-6: If the safety value of one space gets below the allowed safety, it'll be checked on each timestep
-    a: Is it necessary or should we avoid it?
-        i: We can't skip to check it safety value as it might unavailable for everyone (equal to 0) in the next step.
-
-
-7: Once the evacuation process starts.
-    a: Get the location of each person.
-    b: Find a route for each person from his location to the nearest exit using the latest graph composed of only available nodes and edges
-    c: Shortlist and assign the shortest path to the person.
-8: Once the routes have been assigned to people. They must start following those routes.
-9: Route-traversing strategy has been implemented separately.
-10: Once a person traverses his assigned route successfully. His motion status must set to Resting.
-
-11: At any time step, if the safety value of any space gets lower than the allowed capacity of any space, and it doesn't exist in a list data structure.
-    a: Initiate an interruption call.
-
-
-12: An interruption call checks:
-    a: People whose status is in Moving.
-    b: Check the assign routes of everyone.
-    c: Filter the people who have that space (left in the assigned route) whose safety value got decreased.
-    d: Run 7b until 10.
-
-13: Some persons who are following a path will only be shown upon the completion of each node traversal of their given path.
-    How to reassign them a new path?
-    a: Maybe we can get people using there movement status, i.e., Moving?
-    b: Then getting the current traversing node and perform 12c, and then 12d.
-
-
-
-
-
-
+ * New Algorithm for CAREE that handles one shortest path algorithm including
+ * interruptions
+ *
+ * 1: After each timestep, the location of each person is updated in the system.
+ * 2: After each timestep, the location of each person is also printed using a
+ * C-SPARQL query.
+ * 3: After each timestep, the value of each sensor is updated in the system.
+ * 4: After each timestep, the value of each sensor is also printed using a
+ * C-SPARQL query.
+ *
+ *
+ *
+ * 5: As soon as the safety value decreases than the allowed safety value:
+ * a: The evacuation starts
+ * b: If the evacuation was already started, generate an interruption.
+ * 6: If the safety value of one space gets below the allowed safety, it'll be
+ * checked on each timestep
+ * a: Is it necessary or should we avoid it?
+ * i: We can't skip to check it safety value as it might unavailable for
+ * everyone (equal to 0) in the next step.
+ *
+ *
+ * 7: Once the evacuation process starts.
+ * a: Get the location of each person.
+ * b: Find a route for each person from his location to the nearest exit using
+ * the latest graph composed of only available nodes and edges
+ * c: Shortlist and assign the shortest path to the person.
+ * 8: Once the routes have been assigned to people. They must start following
+ * those routes.
+ * 9: Route-traversing strategy has been implemented separately.
+ * 10: Once a person traverses his assigned route successfully. His motion
+ * status must set to Resting.
+ *
+ * 11: At any time step, if the safety value of any space gets lower than the
+ * allowed capacity of any space, and it doesn't exist in a list data structure.
+ * a: Initiate an interruption call.
+ *
+ *
+ * 12: An interruption call checks:
+ * a: People whose status is in Moving.
+ * b: Check the assign routes of everyone.
+ * c: Filter the people who have that space (left in the assigned route) whose
+ * safety value got decreased.
+ * d: Run 7b until 10.
+ *
+ * 13: Some persons who are following a path will only be shown upon the
+ * completion of each node traversal of their given path.
+ * How to reassign them a new path?
+ * a: Maybe we can get people using there movement status, i.e., Moving?
+ * b: Then getting the current traversing node and perform 12c, and then 12d.
+ *
+ *
+ *
+ *
+ *
+ *
  */
-

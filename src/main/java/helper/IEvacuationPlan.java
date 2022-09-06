@@ -1,27 +1,26 @@
 package helper;
 
 import model.CareeInfModel;
-import model.PersonController;
 
-import java.util.ArrayList;
 import java.util.List;
+
 public abstract class IEvacuationPlan {
 
     // Calls only once
     public abstract void Execute();
 
-
     // Calls every time step
-    public void Update(long timeStep){
+    public void Update(long timeStep) {
 
     }
 
-
     // returns true if this plan is still in progress
     public boolean inProgress(int totalPersons) {
-        // a query that returns all the persons located in the building other than the exits
+        // a query that returns all the persons located in the building other than the
+        // exits
         /* e.g. return BuildingUtils.hasAnyPerson(); */
-        List<String> personsWhoHaveNotEvacuated = CareeInfModel.Instance().getQueryResult("data/Queries/sparql/PersonsWhoHaveEvacuated.txt");
+        List<String> personsWhoHaveNotEvacuated = CareeInfModel.Instance()
+                .getQueryResult("data/Queries/sparql/PersonsWhoHaveEvacuated.txt");
         return personsWhoHaveNotEvacuated.size() != totalPersons;
     }
 
