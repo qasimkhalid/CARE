@@ -1,6 +1,6 @@
 package model;
 
-import helper.AutomatedOperations;
+import helper.TimeStepListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,50 +13,45 @@ public abstract class PathTraversal {
     private long timeElapsed = 0;
     private int index = 0; // index shows current edge's destination node's index A-B-C
 
-    public boolean isResting = false;
-
     public abstract void onEdgeTraversed(String destination);
+
+    public abstract boolean isNodeSafe(String string);
 
     public abstract void onPathInterrupt();
 
     public abstract void onPathComplete();
 
-    public PathTraversal(List<String> path) {
-        this.path = path;
-    }
+    public TimeStepListener listener = new TimeStepListener() {
 
-    public void move(long dt) {
-        if (this.isResting) {
-            return;
-        }
+        @Override
+        public void onTimeStep(long timeStep) {
 
-        this.timeElapsed += dt;
+            timeElapsed += timeStep;
 
-        if (this.timeElapsed >= this.cumulativeEdgeTraversalTime) {
-            this.onEdgeTraversed(this.currentEdge.getDestination());
+            if (timeElapsed >= cumulativeEdgeTraversalTime) {
+                onEdgeTraversed(currentEdge.getDestination());
 
-            if (this.hasNextNode()) {
+                if (hasNextNode()) {
 
-                if (this.IsPathInterrupt()) {
-                    this.onPathInterrupt();
+                    currentEdge = new Edge(path.get(index), path.get(index + 1));
+                    if (isNodeSafe(currentEdge.getDestination()) == false) {
+                        onPathInterrupt();
+                    } else {
+                        cumulativeEdgeTraversalTime += currentEdge.getCost();
+                        index++;
+                    }
+                } else {
+                    onPathComplete();
                 }
-                this.currentEdge = new Edge(path.get(this.index), path.get(this.index + 1));
-                this.cumulativeEdgeTraversalTime += this.currentEdge.getCost();
-                this.index++;
-            } else {
-                this.isResting = true;
-                this.onPathComplete();
             }
         }
+    };
+
+    public void SetPath(List<String> path) {
+        this.path = path;
     }
 
     private boolean hasNextNode() {
         return this.path.size() - 1 > this.index;
-    }
-
-    private boolean IsPathInterrupt() {
-        // Todo: write logic here to check if the current path has been interrupted or
-        // not!
-        return false;
     }
 }

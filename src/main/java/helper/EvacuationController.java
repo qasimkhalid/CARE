@@ -33,7 +33,7 @@ public class EvacuationController {
 
     public void start() throws InterruptedException {
 
-        this.personControllers.forEach(initializeEvacuation);
+        this.personControllers.forEach(p -> p.evacuate());
 
         while (inProgress(personControllers.size())) {
             EventTimer.Instance().doTimeStep(this.timestep);
@@ -42,6 +42,7 @@ public class EvacuationController {
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
 
             Thread.sleep(this.timestep);
+            EventTimer.Instance().doPostTimeStep(this.timestep);
         }
     }
 
@@ -50,7 +51,7 @@ public class EvacuationController {
         @Override
         public void accept(PersonController t) {
             EventTimer.Instance().addTimeStepListener(t.listener);
-//            t.evacuate();
+            t.evacuate();
         }
     };
 

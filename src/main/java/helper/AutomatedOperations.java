@@ -14,9 +14,11 @@ import java.util.stream.Collectors;
 
 public class AutomatedOperations {
     /**
-     * This methods runs a Sparql query and filters out the nodes and edges, along with their other characteristics,
+     * This methods runs a Sparql query and filters out the nodes and edges, along
+     * with their other characteristics,
      * such as area, and accommodation capacity.
-     * @param infModel - Inference Model
+     * 
+     * @param infModel   - Inference Model
      * @param odPairList - List of ODPair objects (already loaded)
      * @return List of Space objects.
      */
@@ -55,8 +57,11 @@ public class AutomatedOperations {
     }
 
     /**
-     * This methods returns a list of OD Pairs (i.e., edges), along with their other characteristics, such as cost,
-     * corresponding space, both nodes (i.e., origin and destination) to which it is connected.
+     * This methods returns a list of OD Pairs (i.e., edges), along with their other
+     * characteristics, such as cost,
+     * corresponding space, both nodes (i.e., origin and destination) to which it is
+     * connected.
+     * 
      * @param infModel - Inference Model
      * @return list of ODPair objects
      */
@@ -79,9 +84,11 @@ public class AutomatedOperations {
     }
 
     /**
-     * This method sets up the persons in the building who might later be used as a moving agents
-     * @param infModel - Inference Model
-     * @param personsCount - Total number of persons.
+     * This method sets up the persons in the building who might later be used as a
+     * moving agents
+     * 
+     * @param infModel              - Inference Model
+     * @param personsCount          - Total number of persons.
      * @param personsWithWheelChair - Number of persons having a mobility impairment
      */
     public static void setPeopleInBuilding(InfModel infModel, int personsCount, int personsWithWheelChair, int seed) {
@@ -113,57 +120,66 @@ public class AutomatedOperations {
         }
     }
 
-
-
-
-//    /**
-//     * This method sets up the persons in the building who might later be used as a moving agents
-//     * @param infModel - Inference Model
-//     * @param personsCount - Total number of persons.
-//     * @param allPersonMove - flag that expresses either all number of persons will be moving or some of them will be
-//     *                      chosen (randomly) to be in the resting state.
-//     * @param personsWithWheelChair - Number of persons having a mobility impairment
-//     */
-//    public static void setPeopleInBuilding(InfModel infModel, int personsCount, boolean allPersonMove,
-//            int personsWithWheelChair) {
-//        long initialTime = System.currentTimeMillis();
-//        int personsWithWheelChairCounter = 0;
-//        Resource personInstance;
-//        Resource spaceInstance;
-//
-//        List<String> availableSpaces = getAvailableNodes(infModel);
-//
-//        for (int i = 1; i <= personsCount; i++) {
-//            personInstance = ResourceFactory.createResource(HelpingVariables.exPrefix + "Person" + i);
-//
-//            if (personsWithWheelChairCounter < personsWithWheelChair) {
-//                infModel.add(personInstance, HelpingVariables.rdfType,
-//                        HelpingVariables.NonMotorisedWheelchairPersonClass);
-//                personsWithWheelChairCounter++;
-//            } else {
-//                infModel.add(personInstance, HelpingVariables.rdfType, HelpingVariables.personClass);
-//            }
-//            infModel.addLiteral(personInstance, HelpingVariables.id, i);
-//
-//            if (allPersonMove)
-//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
-//            else if (MathOperations.getRandomBoolean())
-//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateStanding);
-//            else
-//                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
-//
-//            // Choosing a random space as a person location
-//            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
-//            spaceInstance = ResourceFactory.createResource(rs);
-//            infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
-//            infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
-//        }
-//    }
+    // /**
+    // * This method sets up the persons in the building who might later be used as
+    // a moving agents
+    // * @param infModel - Inference Model
+    // * @param personsCount - Total number of persons.
+    // * @param allPersonMove - flag that expresses either all number of persons
+    // will be moving or some of them will be
+    // * chosen (randomly) to be in the resting state.
+    // * @param personsWithWheelChair - Number of persons having a mobility
+    // impairment
+    // */
+    // public static void setPeopleInBuilding(InfModel infModel, int personsCount,
+    // boolean allPersonMove,
+    // int personsWithWheelChair) {
+    // long initialTime = System.currentTimeMillis();
+    // int personsWithWheelChairCounter = 0;
+    // Resource personInstance;
+    // Resource spaceInstance;
+    //
+    // List<String> availableSpaces = getAvailableNodes(infModel);
+    //
+    // for (int i = 1; i <= personsCount; i++) {
+    // personInstance = ResourceFactory.createResource(HelpingVariables.exPrefix +
+    // "Person" + i);
+    //
+    // if (personsWithWheelChairCounter < personsWithWheelChair) {
+    // infModel.add(personInstance, HelpingVariables.rdfType,
+    // HelpingVariables.NonMotorisedWheelchairPersonClass);
+    // personsWithWheelChairCounter++;
+    // } else {
+    // infModel.add(personInstance, HelpingVariables.rdfType,
+    // HelpingVariables.personClass);
+    // }
+    // infModel.addLiteral(personInstance, HelpingVariables.id, i);
+    //
+    // if (allPersonMove)
+    // infModel.add(personInstance, HelpingVariables.motionState,
+    // HelpingVariables.motionStateStanding);
+    // else if (MathOperations.getRandomBoolean())
+    // infModel.add(personInstance, HelpingVariables.motionState,
+    // HelpingVariables.motionStateStanding);
+    // else
+    // infModel.add(personInstance, HelpingVariables.motionState,
+    // HelpingVariables.motionStateResting);
+    //
+    // // Choosing a random space as a person location
+    // String rs =
+    // availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
+    // spaceInstance = ResourceFactory.createResource(rs);
+    // infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
+    // infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
+    // }
+    // }
 
     /**
      * This method returns a list of available spaces in the building.
+     * 
      * @param infModel - Inference Model
-     * @return A list of strings having all available spaces. It needs to be processed before using it.
+     * @return A list of strings having all available spaces. It needs to be
+     *         processed before using it.
      */
     public static List<String> getAvailableSpaces(InfModel infModel) {
         return SparqlFunctions.getSPARQLQueryResult(infModel,
@@ -172,9 +188,12 @@ public class AutomatedOperations {
 
     /**
      * This method returns a list of available nodes in the graph.
-     * THIS METHOD IS AS SAME AS getAvailableSpaces method, but a bit better in terms of results.
+     * THIS METHOD IS AS SAME AS getAvailableSpaces method, but a bit better in
+     * terms of results.
+     * 
      * @param infModel - Inference Model
-     * @return A list of strings having all available nodes (i.e., spaces). It needs to be processed before using it.
+     * @return A list of strings having all available nodes (i.e., spaces). It needs
+     *         to be processed before using it.
      */
     public static List<String> getAvailableNodes(InfModel infModel) {
         return SparqlFunctions.getSPARQLQueryResult(infModel,
@@ -195,14 +214,16 @@ public class AutomatedOperations {
         }
     }
 
-    public static void updateModelWhenPersonTraverseSingleEdge(String personName, String newLocation) {
+    public static void updatePersonLocation(String personName, String newLocation) {
         Resource personResource = CareeInfModel.Instance().getResource(personName);
         Resource locationResource = CareeInfModel.Instance().getResource(newLocation);
         CareeInfModel.Instance().add(personResource, HelpingVariables.locatedIn, locationResource);
     }
 
     /**
-     * This method assumes the person has been updated in the model with its newLocation
+     * This method assumes the person has been updated in the model with its
+     * newLocation
+     * 
      * @param personName
      */
     public static void updateModelWhenPersonCompletesPath(String personName) {
@@ -252,11 +273,12 @@ public class AutomatedOperations {
             for (int i = 0; i < personNeedToRestQueryResult.size() - 1; i += 2) {
 
                 String personNeedToRest = personNeedToRestQueryResult.get(i);
-                Optional<PersonMovementInformation> personAlreadyResting = personRestingScheduler.getRestingPersons().stream()
+                Optional<PersonMovementInformation> personAlreadyResting = personRestingScheduler.getRestingPersons()
+                        .stream()
                         .filter(x -> x.getPerson().equals(personNeedToRest)).findFirst();
 
                 if (!personAlreadyResting.isPresent()) {
-//                    personRestingScheduler.addRestingPerson(personNeedToRest);
+                    // personRestingScheduler.addRestingPerson(personNeedToRest);
                 }
             }
         }

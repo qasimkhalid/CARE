@@ -95,9 +95,9 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
             String personId = getAllPersonQueryResult.get(i + 2);
             if (!personControllerMap.containsKey(person)) {
                 Person p = new Person(person, personId, type); // Person object is being created
-                PersonController pc = new PersonController(p); // PersonController object is being created using a
+                PersonController pc = new PersonController(p, 0.0f); // PersonController object is being created using a
                 // Using Person object as a key of personController
-                // it might be optimized by just using a String)
+                // *** it might be optimized by just using a String ***
                 personControllerMap.put(person, pc);
             }
             // handling the issue of transitive memory model in which whole tree of classes is
@@ -105,6 +105,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
             // updating the type of the person
             else if (type.equals("https://w3id.org/sbeo#NonMotorisedWheelchairPerson")) {
                 personControllerMap.get(person).getPerson().setType(type);
+                personControllerMap.get(person).setAllowedSafetyValue(0.5f);
             }
         }
     }
