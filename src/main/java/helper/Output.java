@@ -3,7 +3,6 @@ package helper;
 import eu.larkc.csparql.core.engine.ConsoleFormatter;
 
 import eu.larkc.csparql.common.RDFTable;
-import streamers.HumanLocationStreamer;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

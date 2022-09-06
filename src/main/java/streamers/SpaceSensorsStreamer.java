@@ -6,10 +6,9 @@ import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 
-import helper.EvacuationController;
-import helper.IEvacuationPlan;
 import helper.MathOperations;
 import helper.HelpingVariables;
+import model.CareeCsparqlEngineImpl;
 import model.CareeInfModel;
 import model.Sensor;
 import model.Space;
@@ -17,18 +16,24 @@ import model.Space;
 public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
     private final long timeStep;
-    private boolean keepRunning = true;
+    private static boolean keepRunning = true;
     private final int SEED;
     private final double allowedSafetyValue;
+    private boolean hazardDetectionFlag;
+    private static String streamIRI;
 
     public SpaceSensorsStreamer( final String iri, long timeStep, double allowedSafetyValue, int seed) {
         super(iri);
+        streamIRI = iri;
         this.timeStep = timeStep;
         this.SEED = seed;
         this.allowedSafetyValue = allowedSafetyValue;
     }
+    public static String getStreamIRI(){
+        return streamIRI;
+    }
 
-    public void stop() {
+    public static void stop() {
         keepRunning = false;
     }
 
@@ -106,13 +111,13 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 * Multiple types of interruptions could be raised here such as depending on the type of persons.
                 */
 
-                //If Space Safety decreases from the allowed safety
-                if (s.getSafetyValue() < allowedSafetyValue) {
-                    //Interruption of plan for mobility impaired people
-                    if (HumanLocationStreamer.isEvacuationStarted()) {
-                        HumanLocationStreamer.interruptionWhileEvacuating();
-                    } else {
-                        HumanLocationStreamer.hazardFoundToInitiateEvacuation();
+                //This condition only runs once to trigger the evacuation
+                if (!hazardDetectionFlag) {
+                    if (s.getSafetyValue() < allowedSafetyValue) {
+                        System.out.println(s.getName() + " has Safety Value" +  s.getSafetyValue());
+                        InitializeEvacuationStreamer();
+                        System.out.println("hazardDetectionFlag = true");
+                        hazardDetectionFlag = true;
                     }
                 }
 
@@ -129,12 +134,20 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
             }
             count ++;
             try {
+                //Space Sensor going to sleep
                 Thread.sleep(timeStep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
+    }
+
+    private void InitializeEvacuationStreamer() {
+        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 2000, true, 1f);
+        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
+        Thread evacuationStreamThread = new Thread(evacuationStream);
+        evacuationStreamThread.start();
     }
 
 

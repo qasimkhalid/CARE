@@ -1,6 +1,10 @@
 package helper;
 
+import model.CareeCsparqlEngineImpl;
+import model.CareeInfModel;
 import model.PersonController;
+import streamers.EvacuationStreamer;
+import streamers.SpaceSensorsStreamer;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -19,8 +23,8 @@ import java.util.function.Consumer;
  */
 
 public class EvacuationController {
-    private long timestep;
-    private List<PersonController> personControllers;
+    private final long timestep;
+    private final List<PersonController> personControllers;
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
         this.personControllers = personControllers;
@@ -31,8 +35,12 @@ public class EvacuationController {
 
         this.personControllers.forEach(initializeEvacuation);
 
-        while (inProgress()) {
+        while (inProgress(personControllers.size())) {
             EventTimer.Instance().doTimeStep(this.timestep);
+
+            // Printing the Location of persons (Fix it)
+//            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
+
             Thread.sleep(this.timestep);
         }
     }
@@ -42,12 +50,16 @@ public class EvacuationController {
         @Override
         public void accept(PersonController t) {
             EventTimer.Instance().addTimeStepListener(t.listener);
-            t.evacuate();
+//            t.evacuate();
         }
     };
 
-    private boolean inProgress() {
-        // Todo: put the logic here for checking in progress logic
-        return false;
+    private boolean inProgress(int totalPersons) {
+        // a query that returns all the persons located in the building other than the
+        // exits
+        /* e.g. return BuildingUtils.hasAnyPerson(); */
+        List<String> personsWhoHaveNotEvacuated = CareeInfModel.Instance()
+                .getQueryResult("data/Queries/sparql/PersonsWhoHaveEvacuated.txt");
+        return personsWhoHaveNotEvacuated.size() != totalPersons;
     }
 }

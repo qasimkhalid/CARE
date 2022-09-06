@@ -5,53 +5,21 @@ import eu.larkc.csparql.cep.api.RdfStream;
 import helper.AutomatedOperations;
 import helper.EvacuationController;
 import helper.HelpingVariables;
-import helper.IEvacuationPlan;
 import model.*;
-import model.scheduler.MovementScheduler;
-import model.scheduler.RestingScheduler;
-import model.scheduler.RouteFollowingScheduler;
 
-import java.io.OutputStream;
 import java.util.*;
 
-public class HumanLocationStreamer extends RdfStream implements Runnable {
+public class EvacuationStreamer extends RdfStream implements Runnable {
 
     private final long timeStep;
-    private boolean keepRunning = true;
-    private long initialTime;
-    private static float areaPerPersonM2 = 1f;
+    private float areaPerPersonM2 = 1f;
     private final boolean freeFlow;
-    private static boolean evacuationStarted;
-    private static boolean interruptionWhileEvacuation;
-    private int stepCount = 1;
 
-    public static boolean isEvacuationStarted() {
-        return evacuationStarted;
-    }
-
-    public static void setEvacuationStarted(boolean evacuationStarted) {
-        HumanLocationStreamer.evacuationStarted = evacuationStarted;
-    }
-
-    public HumanLocationStreamer(final String iri, long timeStep, boolean freeFlow, float areaPerPersonM2) {
+    public EvacuationStreamer(final String iri, long timeStep, boolean freeFlow, float areaPerPersonM2) {
         super(iri);
         this.timeStep = timeStep;
-        this.initialTime = System.currentTimeMillis();
         this.freeFlow = freeFlow;
-        HumanLocationStreamer.areaPerPersonM2 = areaPerPersonM2;
-    }
-
-    // Flag to stop the streamer
-    public void stop() {
-        keepRunning = false;
-    }
-
-    public static void hazardFoundToInitiateEvacuation() {
-        evacuationStarted = true;
-    }
-
-    public static void interruptionWhileEvacuating() {
-        interruptionWhileEvacuation = true;
+        this.areaPerPersonM2 = areaPerPersonM2;
     }
 
     @Override
@@ -59,49 +27,39 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
 
         long deltaTime;
 
-        Map<String, PersonController> personsMap = new HashMap<>();
-        // it will set up persons in a map, add new persons if missing as well
-        SetupPersonsMap(personsMap);
-
-        List<PersonController> personControllers = HumanLocationStreamer.GetAllPersonControllers();
+        // Get All Persons
+        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
         EvacuationController ec = new EvacuationController(personControllers, timeStep);
 
-        // Getting preset routes for pre-emergency phase
-        // List<Route> routesInformationList = new ArrayList<>();
-        // getAvailableAndPresetRoutes(routesInformationList);
-
-        while (keepRunning) {
-
-            if (evacuationStarted) {
-                ec.start();
-            }
-
-            if (interruptionWhileEvacuation) {
-
-            }
-
-        }
-
-        System.out.println("Human Movement Simulation Streamer Time Step No: " + stepCount);
-        deltaTime = System.currentTimeMillis() - initialTime;
-
-        for (String key : personsMap.keySet()) {
-            PersonController person = personsMap.get(key);
-            if (!person.isResting())
-                person.Update(deltaTime);
-        }
-
-        detectPersonLocationUsingIdQuadrupleGenerator();
-
-        this.initialTime = System.currentTimeMillis();
-        stepCount++;
-
         try {
-            Thread.sleep(timeStep);
+            ec.start();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            // As soon the evacuation has been completed, close the application
+            closeApplication();
         }
+
+
     }
+
+
+
+
+
+    private void closeApplication() {
+        System.out.println("SpaceSensorsStreamer.stop()");
+        SpaceSensorsStreamer.stop();
+
+        System.out.println("Successfully unregistered Evacuation Stream from the engine");
+        CareeCsparqlEngineImpl.Instance().unregisterStream(getIRI());
+        System.out.println("Successfully unregistered Space Sensors Stream from the engine");
+        CareeCsparqlEngineImpl.Instance().unregisterStream(SpaceSensorsStreamer.getStreamIRI());
+
+        System.out.println("About to exit");
+        System.exit(0);
+    }
+
 
     private void assignRouteToPersonsWhoAreReadyToMove(List<Route> availableRoutes,
             Map<String, PersonController> personsMap) {
@@ -138,10 +96,11 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
             if (!personControllerMap.containsKey(person)) {
                 Person p = new Person(person, personId, type); // Person object is being created
                 PersonController pc = new PersonController(p); // PersonController object is being created using a
-                // person object
+                // Using Person object as a key of personController
+                // it might be optimized by just using a String)
                 personControllerMap.put(person, pc);
             }
-            // handling the issue of transitive memory model in which whole tree is
+            // handling the issue of transitive memory model in which whole tree of classes is
             // associated with a person mobility impairment
             // updating the type of the person
             else if (type.equals("https://w3id.org/sbeo#NonMotorisedWheelchairPerson")) {
@@ -197,7 +156,7 @@ public class HumanLocationStreamer extends RdfStream implements Runnable {
         }
     }
 
-    private void detectPersonLocationUsingIdQuadrupleGenerator() {
+    public void detectPersonLocationUsingIdQuadrupleGenerator() {
         RdfQuadruple q;
         String timeNow = String.valueOf(System.currentTimeMillis());
         List<Person> pList = new ArrayList<>();
