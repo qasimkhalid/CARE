@@ -1,9 +1,30 @@
 package helper;
 
+import algorithm.Dijkstra;
+import algorithm.Node;
+import model.Route;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RouteFinder {
+
+    //public static Graph
+
+    public static Route findPath(String personLocation, String exit) {
+        // jadu giri
+
+        return null;
+    }
+
+    public class Graph {
+        private final Map<String, List<algorithm.Node>> nodes;
+
+        public Graph() {
+            this.nodes = Dijkstra.createAdjacentMatrix();
+        }
+    }
 
     public class Node {
         public String Id;

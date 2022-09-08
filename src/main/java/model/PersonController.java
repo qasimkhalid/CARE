@@ -1,9 +1,11 @@
 package model;
 
-import java.util.List;
+import java.util.*;
 
 import helper.AutomatedOperations;
 import helper.EventTimer;
+import helper.RouteFinder;
+import streamers.SpaceSensorsStreamer;
 
 public class PersonController {
 
@@ -57,7 +59,32 @@ public class PersonController {
     private List<String> findRoute() {
         // find route, write algorithm that will return a path in the form of
         // list<string>
-        return null;
+        String personLocation = person.getLocation();
+        List<String> availableExits = getAvailableExits();
+
+        Route minRoute = null;
+        for (String exit : availableExits) {
+            Route route = RouteFinder.findPath(personLocation, exit);
+            if (minRoute == null || minRoute.getCost() > route.getCost()) {
+                minRoute = route;
+            }
+        }
+
+        return minRoute.getPath();
+    }
+
+    private List<String> getAvailableExits() {
+        List<String> exits = AutomatedOperations.getExits();
+        List<String> availableExits = new ArrayList<>();
+
+        // Check every exit in space streamer
+        for (String exit : exits) {
+            if (SpaceSensorsStreamer.getSpacesInfo().get(exit).getSafetyValue() >= allowedSafetyValue){
+                availableExits.add(exit);
+            }
+        }
+
+        return availableExits;
     }
 
     public void followRoute(List<String> routeAssigned) {

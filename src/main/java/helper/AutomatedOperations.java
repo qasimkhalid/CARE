@@ -315,4 +315,9 @@ public class AutomatedOperations {
             throw new Exception("Origin and Destination not found in odPairList");
         }
     }
+
+    public static List<String> getExits() {
+        return SparqlFunctions.getSPARQLQueryResult(infModel,
+                "data/queries/sparql/GetExits.txt");
+    }
 }
