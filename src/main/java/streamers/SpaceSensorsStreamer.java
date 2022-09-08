@@ -18,19 +18,26 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     private final long timeStep;
     private static boolean keepRunning = true;
     private final int SEED;
-    private final double allowedSafetyValue;
+    private final double evacuationTriggerSafetyValue;
     private boolean hazardDetectionFlag;
     private static String streamIRI;
+    private static Map<String, Space> allSensorsValueAtSpecificLocationList;
+    private List<Space> normalPeopleInterruptedSpace = new ArrayList<>();
+    private List<Space> handicapPeopleInterruptedSpace = new ArrayList<>();
 
-    public SpaceSensorsStreamer( final String iri, long timeStep, double allowedSafetyValue, int seed) {
+    public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue, int seed) {
         super(iri);
         streamIRI = iri;
         this.timeStep = timeStep;
         this.SEED = seed;
-        this.allowedSafetyValue = allowedSafetyValue;
+        this.evacuationTriggerSafetyValue = evacuationTriggerSafetyValue;
     }
     public static String getStreamIRI(){
         return streamIRI;
+    }
+
+    public static Map<String, Space> getSpacesInfo(){
+        return allSensorsValueAtSpecificLocationList;
     }
 
     public static void stop() {
@@ -46,7 +53,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
         List<Sensor> sensorDetailsList = new ArrayList<>();
 
         //Mapping of SpaceName with respect to the Space objects
-        Map<String, Space> allSensorsValueAtSpecificLocationList = new HashMap<>();
+        allSensorsValueAtSpecificLocationList = new HashMap<>();
         List<String> sparqlQueryAllSensorsList;
         String timeNow;
 
@@ -100,10 +107,10 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
             /*
             Iterating all the spaces (i.e., nodes & edges) to get their safety value after each time step.
             */
-            RdfQuadruple q;
+//            RdfQuadruple q;
             for (String key : allSensorsValueAtSpecificLocationList.keySet()) {
                 Space s = allSensorsValueAtSpecificLocationList.get(key);
-                Resource locationInstance = CareeInfModel.Instance().getResource(s.getName());
+//                Resource locationInstance = CareeInfModel.Instance().getResource(s.getName());
 
                 /*
                 * An interruption in the existing routing plan could be raised from here if the safety value reduces
@@ -112,21 +119,26 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 */
 
                 //This condition only runs once to trigger the evacuation
-                if (!hazardDetectionFlag) {
-                    if (s.getSafetyValue() < allowedSafetyValue) {
+                if (s.getSafetyValue() < evacuationTriggerSafetyValue) {
+                    if (!hazardDetectionFlag) {
                         System.out.println(s.getName() + " has Safety Value" +  s.getSafetyValue());
                         InitializeEvacuationStreamer();
                         System.out.println("hazardDetectionFlag = true");
                         hazardDetectionFlag = true;
                     }
+//
+//
+//
                 }
 
-                CareeInfModel.Instance().addLiteral(locationInstance, HelpingVariables.safetyValue, s.getSafetyValue());
-                q = new RdfQuadruple(
-                        s.getName(),
-                        HelpingVariables.safetyValue.toString(),
-                        String.valueOf(s.getSafetyValue())+"^^http://www.w3.org/2001/XMLSchema#double", System.currentTimeMillis());
-                this.put(q);
+
+
+//                CareeInfModel.Instance().addLiteral(locationInstance, HelpingVariables.safetyValue, s.getSafetyValue());
+//                q = new RdfQuadruple(
+//                        s.getName(),
+//                        HelpingVariables.safetyValue.toString(),
+//                        String.valueOf(s.getSafetyValue())+"^^http://www.w3.org/2001/XMLSchema#double", System.currentTimeMillis());
+//                this.put(q);
 
 //                if (!s.isAvailable()) {
 //                    CareeInfModel.Instance().add(locationInstance, HelpingVariables.hasAvailabilityStatus, HelpingVariables.unavailableInstance);
@@ -320,9 +332,12 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(true);
-                } else if (space.getTemperatureSensorValue() >=60 && space.isSmokeExists() && space.getHumiditySensorValue() <= 0.2){ //making a space inaccessible using a specific constraint
+                } else if(space.getSafetyValue() == 0){
                     sensor.setValue(false);
                 }
+//                else if (space.getTemperatureSensorValue() >=60 && space.isSmokeExists() && space.getHumiditySensorValue() <= 0.2){ //making a space inaccessible using a specific constraint
+//                    sensor.setValue(false);
+//                }
                 sensorValueBoolean = (boolean) sensor.getValue();
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",

@@ -46,14 +46,14 @@ public class EvacuationController {
         }
     }
 
-    private Consumer<? super PersonController> initializeEvacuation = new Consumer<PersonController>() {
-
-        @Override
-        public void accept(PersonController t) {
-            EventTimer.Instance().addTimeStepListener(t.listener);
-            t.evacuate();
-        }
-    };
+//    private Consumer<? super PersonController> initializeEvacuation = new Consumer<PersonController>() {
+//
+//        @Override
+//        public void accept(PersonController t) {
+//            EventTimer.Instance().addTimeStepListener(t.listener);
+//            t.evacuate();
+//        }
+//    };
 
     private boolean inProgress(int totalPersons) {
         // a query that returns all the persons located in the building other than the
