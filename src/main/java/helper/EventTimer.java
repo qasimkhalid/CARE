@@ -6,7 +6,7 @@ import java.util.List;
 public class EventTimer {
     private static EventTimer instance;
     private final List<TimeStepListener> listeners = new ArrayList<>();
-    private final List<TimeStepListener> listenersToRemove = new ArrayList<>();
+    private List<TimeStepListener> listenersToRemove = new ArrayList<>();
 
     /**
      * Restrict it from creating an instance outside this class scope
@@ -44,5 +44,12 @@ public class EventTimer {
         for (TimeStepListener listener : listeners) {
             listener.onTimeStep(timeStep);
         }
+
+        for (TimeStepListener listener : listenersToRemove) {
+            listeners.remove(listener);
+        }
+        listenersToRemove = new ArrayList<>();
+
+
     }
 }

@@ -187,7 +187,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 if(sensor.getValue() == null) {
                     sensor.setValue(25);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 5, (Double) sensor.getValue() - 2, SEED);
+                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 2, (Double) sensor.getValue() - 2, SEED);
 
                 if(sensorValueNumber < 10) sensorValueNumber = 10;
                 else if( sensorValueNumber > 100) sensorValueNumber = 100;
@@ -240,7 +240,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                 if(sensor.getValue() == null) {
                     sensor.setValue(false);
-                } else if(space.getTemperatureSensorValue() >= 55){ //check if the temperature of the same location is greater than 50
+                } else if(space.getTemperatureSensorValue() >= 55){ //check if the temperature of the same location is greater than 55
                     sensor.setValue(true);
                 }
 

@@ -6,7 +6,7 @@ import java.util.Random;
 
 final public class MathOperations
 {
-    private static final Random random = new Random(7548);
+    private static final Random random = new Random(897);
     public static long getExtraTime(float area, Integer density, float areaPerPerson) {
         return (long) (areaPerPerson * density - area) * 1000;
     }

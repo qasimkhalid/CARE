@@ -1,14 +1,9 @@
 package helper;
 
-import graph.Graph;
-import model.CareeCsparqlEngineImpl;
 import model.CareeInfModel;
 import model.PersonController;
-import streamers.EvacuationStreamer;
-import streamers.SpaceSensorsStreamer;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Controller has a set of evacuating algorithms of type IRouteFinder
@@ -26,14 +21,16 @@ import java.util.function.Consumer;
 public class EvacuationController {
     private final long timestep;
     private final List<PersonController> personControllers;
-    private int counter = 0;
+    public static int evacueesCounter;
+    private int iterationCounter = 0;
 
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
 //        this.personControllers = personControllers.subList(2,3); //WheelChair person
-        this.personControllers = personControllers.subList(3,4); // Normal person
+        this.personControllers = personControllers.subList(3,5); // Normal person
 //        this.personControllers = personControllers;
         this.timestep = timestep;
+        evacueesCounter = this.personControllers.size();
     }
 
     public void start() {
@@ -46,12 +43,13 @@ public class EvacuationController {
             pc.evacuate();
         }
 
+//        while (inProgress(evacueesCounter)) {
         while (true) {
             EventTimer.Instance().doTimeStep(this.timestep);
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            //System.out.println("--------------------" + counter + "---------------------------");
+            System.out.println("--------------------" + iterationCounter + "---------------------------");
 
             //for (PersonController pc : personControllers) {
             //    System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
@@ -63,7 +61,7 @@ public class EvacuationController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            counter++;
+            iterationCounter++;
         }
     }
 
@@ -75,4 +73,5 @@ public class EvacuationController {
                 .getQueryResult("data/Queries/sparql/PersonsWhoHaveEvacuated.txt");
         return personsWhoHaveNotEvacuated.size() != totalPersons;
     }
+
 }

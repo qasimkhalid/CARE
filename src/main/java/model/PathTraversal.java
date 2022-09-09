@@ -34,9 +34,17 @@ public abstract class PathTraversal {
 
             timeElapsed += timeStep;
 
-            // insert a logic:
-            // Stop working for a time if the route of the person has been found null.
-            // Because it starts to give the same route to another person after some iterations.
+            /*Todo: Issue 1: The first edge traversal always repeats twice for a person.
+             * Reason: ?
+             */
+
+            /*Todo: Issue 2 : Same route is assigned to all if there are multiple persons.
+             * Reason:
+             *          The shortest paths from one nodes to all other nodes are only updated once.
+             *          They should be updated whenever the Dijkstra algorithm is called.
+             * Otherwise, they return the same value.
+             */
+
 
             if (timeElapsed >= cumulativeEdgeTraversalTime) {
                 onEdgeTraversed(currentEdge.getOrigin(), currentEdge.getDestination());

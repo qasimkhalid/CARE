@@ -20,6 +20,11 @@ public class PersonController implements INodeAccessibility {
             // update destination of this person with new destination where he has landed!
             AutomatedOperations.updatePersonLocationOnSuccessfulPathTraversal(getName(), personOldLocation, personNewLocation);
             person.setLocation(personNewLocation);
+
+            System.out.println(getReadableName() + " Path Traversal: " +
+                    SpaceSensorsStreamer.getSpacesInfo().get(personOldLocation).getReadableName() +
+                    " --> " +
+                    SpaceSensorsStreamer.getSpacesInfo().get(personNewLocation).getReadableName());
         }
 
         @Override
@@ -31,11 +36,16 @@ public class PersonController implements INodeAccessibility {
 
             // Remove listener on path traversal which will stop onTimeStep method calls
             EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
+
+            System.out.println(getReadableName() + " has successfully evacuated.");
         }
 
         @Override
         public void onRouteNotPossible() {
-            EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
+            // Excluding the person from the expected evacuated persons' list.
+            EvacuationController.evacueesCounter -= 1;
+            int x = 0;
+
         }
 
         @Override
@@ -72,7 +82,7 @@ public class PersonController implements INodeAccessibility {
 //            for (String str : route) {
 //                System.out.println(getReadableName() + " in " + person.getLocation().split("#")[1]);
 //            }
-            System.out.println(person.getName() + " has " + Arrays.toString(route.toArray()));
+            System.out.println(getReadableName() + " has " + Arrays.toString(route.toArray()));
         } else {
             System.out.println(getReadableName() + " cannot evacuate the building.");
 
@@ -118,6 +128,7 @@ public class PersonController implements INodeAccessibility {
 
     public void followRoute(List<String> routeAssigned) {
         if (routeAssigned == null) {
+            pathTraversalListener.onRouteNotPossible();
             return;
         }
 
