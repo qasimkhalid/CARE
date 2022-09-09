@@ -4,6 +4,7 @@ import java.util.*;
 
 import graph.INodeAccessibility;
 import helper.AutomatedOperations;
+import helper.EvacuationController;
 import helper.EventTimer;
 import helper.RouteFinder;
 import streamers.SpaceSensorsStreamer;
@@ -11,7 +12,7 @@ import streamers.SpaceSensorsStreamer;
 public class PersonController implements INodeAccessibility {
 
     private final Person person;
-    private float allowedSafetyValue = 0.5f;
+    private float allowedSafetyValue;
 
     private final PathTraversal pathTraversalListener = new PathTraversal() {
         @Override
@@ -29,6 +30,11 @@ public class PersonController implements INodeAccessibility {
             AutomatedOperations.updateModelWhenPersonCompletesPath(getName());
 
             // Remove listener on path traversal which will stop onTimeStep method calls
+            EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
+        }
+
+        @Override
+        public void onRouteNotPossible() {
             EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
         }
 
@@ -63,12 +69,14 @@ public class PersonController implements INodeAccessibility {
         List<String> route = findRoute();
 
         if (route != null) {
-            for (String str : route) {
-                System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
-            }
+//            for (String str : route) {
+//                System.out.println(getReadableName() + " in " + person.getLocation().split("#")[1]);
+//            }
             System.out.println(person.getName() + " has " + Arrays.toString(route.toArray()));
         } else {
-            System.out.println(person.getName() + " has not Route");
+            System.out.println(getReadableName() + " cannot evacuate the building.");
+
+
         }
         this.followRoute(route);
     }
@@ -109,8 +117,9 @@ public class PersonController implements INodeAccessibility {
     }
 
     public void followRoute(List<String> routeAssigned) {
-        if (routeAssigned == null)
+        if (routeAssigned == null) {
             return;
+        }
 
         pathTraversalListener.SetPath(routeAssigned);
         // Adds listener on path traversal for timeStep

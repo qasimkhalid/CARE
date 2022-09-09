@@ -22,6 +22,8 @@ public abstract class PathTraversal {
 
     public abstract void onPathComplete();
 
+    public abstract void onRouteNotPossible();
+
     public TimeStepListener listener = new TimeStepListener() {
 
         @Override
@@ -32,6 +34,10 @@ public abstract class PathTraversal {
 
             timeElapsed += timeStep;
 
+            // insert a logic:
+            // Stop working for a time if the route of the person has been found null.
+            // Because it starts to give the same route to another person after some iterations.
+
             if (timeElapsed >= cumulativeEdgeTraversalTime) {
                 onEdgeTraversed(currentEdge.getOrigin(), currentEdge.getDestination());
 
@@ -39,8 +45,8 @@ public abstract class PathTraversal {
 
                     currentEdge = new Edge(path.get(index), path.get(index + 1));
                     if (!isNodeSafe(currentEdge.getDestination())) {
-                        System.out.println(currentEdge.getDestination()+ " got inaccessible.");
-                        System.out.println(SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getSafetyValue());
+                        System.out.println(currentEdge.getDestination()+ " got inaccessible with Space Safety Value = "
+                                + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getSafetyValue());
                         onPathInterrupt();
                     } else {
                         cumulativeEdgeTraversalTime += currentEdge.getCost();

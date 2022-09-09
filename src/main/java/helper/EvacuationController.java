@@ -30,7 +30,8 @@ public class EvacuationController {
 
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
-        this.personControllers = personControllers.subList(3,4);
+//        this.personControllers = personControllers.subList(2,3); //WheelChair person
+        this.personControllers = personControllers.subList(3,4); // Normal person
 //        this.personControllers = personControllers;
         this.timestep = timestep;
     }

@@ -192,11 +192,14 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 if(sensorValueNumber < 10) sensorValueNumber = 10;
                 else if( sensorValueNumber > 100) sensorValueNumber = 100;
 
-                //applying an equation to get safety value of a space using temperature value
-                safetyVal = (-0.0131 * sensorValueNumber) + 1.3;
-                if(safetyVal < 0 ) space.setSafetyValue(0);
-                else if(safetyVal > 1) space.setSafetyValue(1);
-                else space.setSafetyValue(safetyVal);
+                // Once, the space safety value becomes 0, it can't be changed.
+                if (space.getSafetyValue() != 0) {
+                    //applying an equation to get safety value of a space using temperature value
+                    safetyVal = (-0.0131 * sensorValueNumber) + 1.3;
+                    if (safetyVal < 0) space.setSafetyValue(0);
+                    else if (safetyVal > 1) space.setSafetyValue(1);
+                    else space.setSafetyValue(safetyVal);
+                }
 
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
