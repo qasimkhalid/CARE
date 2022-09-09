@@ -63,6 +63,9 @@ public class PersonController implements INodeAccessibility {
         List<String> route = findRoute();
 
         if (route != null) {
+            for (String str : route) {
+                System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
+            }
             System.out.println(person.getName() + " has " + Arrays.toString(route.toArray()));
         } else {
             System.out.println(person.getName() + " has not Route");
@@ -124,6 +127,10 @@ public class PersonController implements INodeAccessibility {
 
     public float getAllowedSafetyValue() {
         return allowedSafetyValue;
+    }
+
+    public String getReadableName() {
+        return person.getName().split("#")[1];
     }
 
     public void setAllowedSafetyValue(float allowedSafetyValue) {

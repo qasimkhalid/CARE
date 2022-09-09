@@ -6,7 +6,7 @@ import java.util.List;
 public class EventTimer {
     private static EventTimer instance;
     private final List<TimeStepListener> listeners = new ArrayList<>();
-
+    private final List<TimeStepListener> listenersToRemove = new ArrayList<>();
 
     /**
      * Restrict it from creating an instance outside this class scope
@@ -26,12 +26,8 @@ public class EventTimer {
         if (listeners.contains(listener)) {
             return;
         }
-        try {
-            listeners.add(listener);
-        }
-        catch (Exception e) {
 
-        }
+        listeners.add(listener);
     }
 
     public void removeTimeStepListener(TimeStepListener listener) {
@@ -39,7 +35,7 @@ public class EventTimer {
             return;
         }
 
-        listeners.remove(listener);
+        listenersToRemove.add(listener);
     }
 
     public void doTimeStep(long timeStep) {
@@ -47,20 +43,6 @@ public class EventTimer {
 
         for (TimeStepListener listener : listeners) {
             listener.onTimeStep(timeStep);
-            if (listeners.isEmpty()){
-                break;
-            }
-
         }
-    }
-
-    public void doPostTimeStep(long timeStep) {
-        System.out.println("..do post time step.." + timeStep);
-            for (TimeStepListener listener : listeners) {
-                listener.onPostTimeStep(timeStep);
-                if (listeners.isEmpty()){
-                    break;
-                }
-            }
     }
 }

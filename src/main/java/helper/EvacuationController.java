@@ -41,31 +41,27 @@ public class EvacuationController {
         RouteFinder.initializeGraph();
 
         for (PersonController pc : personControllers) {
-            System.out.println("Person " + pc.getName() + " in Room " + pc.getPerson().getLocation());
+            System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
             pc.evacuate();
         }
 
-        while (inProgress(personControllers.size())) {
+        while (true) {
             EventTimer.Instance().doTimeStep(this.timestep);
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            System.out.println("--------------------" + counter + "---------------------------");
+            //System.out.println("--------------------" + counter + "---------------------------");
 
-            for (PersonController pc : personControllers) {
-                System.out.println("Person " + pc.getName() + " in Room " + pc.getPerson().getLocation());
-            }
-            System.out.println("-----------------------------------------------");
+            //for (PersonController pc : personControllers) {
+            //    System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
+            //}
+            //System.out.println("-----------------------------------------------");
 
             try {
                 Thread.sleep(this.timestep);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
-            // Why are we doing PostTimeStep as we are making the thread sleep for a timestep, and doing
-            // doTimeStep again?
-            EventTimer.Instance().doPostTimeStep(this.timestep);
             counter++;
         }
     }

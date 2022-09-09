@@ -97,6 +97,10 @@ public class Space {
         this.type = type;
     }
 
+    public String getReadableName() {
+        return name.split("#")[1];
+    }
+
     public float getArea() {
         return area;
     }
