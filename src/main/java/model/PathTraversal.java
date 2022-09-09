@@ -1,6 +1,7 @@
 package model;
 
 import helper.TimeStepListener;
+import streamers.SpaceSensorsStreamer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public abstract class PathTraversal {
     private float timeElapsed = 0;
     private int index = 0; // index shows current edge's destination node's index A-B-C
 
-    public abstract void onEdgeTraversed(String destination);
+    public abstract void onEdgeTraversed(String origin, String destination);
 
     public abstract boolean isNodeSafe(String string);
 
@@ -32,12 +33,14 @@ public abstract class PathTraversal {
             timeElapsed += timeStep;
 
             if (timeElapsed >= cumulativeEdgeTraversalTime) {
-                onEdgeTraversed(currentEdge.getDestination());
+                onEdgeTraversed(currentEdge.getOrigin(), currentEdge.getDestination());
 
                 if (hasNextNode()) {
 
                     currentEdge = new Edge(path.get(index), path.get(index + 1));
                     if (!isNodeSafe(currentEdge.getDestination())) {
+                        System.out.println(currentEdge.getDestination()+ " got inaccessible.");
+                        System.out.println(SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getSafetyValue());
                         onPathInterrupt();
                     } else {
                         cumulativeEdgeTraversalTime += currentEdge.getCost();

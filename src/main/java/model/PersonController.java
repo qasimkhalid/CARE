@@ -15,10 +15,10 @@ public class PersonController implements INodeAccessibility {
 
     private final PathTraversal pathTraversalListener = new PathTraversal() {
         @Override
-        public void onEdgeTraversed(String newLocation) {
+        public void onEdgeTraversed(String personOldLocation, String personNewLocation) {
             // update destination of this person with new destination where he has landed!
-            person.setLocation(newLocation);
-            AutomatedOperations.updatePersonLocation(getName(), person.getLocation());
+            AutomatedOperations.updatePersonLocationOnSuccessfulPathTraversal(getName(), personOldLocation, personNewLocation);
+            person.setLocation(personNewLocation);
         }
 
         @Override
@@ -34,18 +34,23 @@ public class PersonController implements INodeAccessibility {
 
         @Override
         public void onPathInterrupt() {
-            AutomatedOperations.updatePersonLocation(getName(), person.getLocation());
+            /*
+            * We don't update the location of a person if there is an interruption in the path.
+            * Here we assume that while following the path, if there is an interruption in his path,
+            * The person has to start to follow another path from last node he left.
+            */
+//            AutomatedOperations.updatePersonLocationOnCompletePathTraversal(getName(), origin, destination);
 
             // Remove listener on path traversal which will stop onTimeStep method calls
             EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
 
-            // Evaluate will start path finding from the begining
+            // Evacuation will be started from the previous checkpoint node of the person using a new calculated path.
             evacuate();
         }
 
         @Override
         public boolean isNodeSafe(String node) {
-            return SpaceSensorsStreamer.getSpacesInfo().get(node).getSafetyValue() >= allowedSafetyValue;
+            return SpaceSensorsStreamer.getSpacesInfo().get(node).getSafetyValue() > allowedSafetyValue;
         }
     };
 
@@ -56,12 +61,18 @@ public class PersonController implements INodeAccessibility {
 
     public void evacuate() {
         List<String> route = findRoute();
+
+        if (route != null) {
+            System.out.println(person.getName() + " has " + Arrays.toString(route.toArray()));
+        } else {
+            System.out.println(person.getName() + " has not Route");
+        }
         this.followRoute(route);
     }
 
     @Override
     public boolean isNodeAccessible(String nodeName) {
-        return SpaceSensorsStreamer.getSpacesInfo().get(nodeName).getSafetyValue() >= allowedSafetyValue;
+        return SpaceSensorsStreamer.getSpacesInfo().get(nodeName).getSafetyValue() > allowedSafetyValue;
     }
 
     private List<String> findRoute() {
@@ -86,7 +97,7 @@ public class PersonController implements INodeAccessibility {
 
         // Check every exit in space streamer
         for (String exit : exits) {
-            if (SpaceSensorsStreamer.getSpacesInfo().get(exit).getSafetyValue() >= allowedSafetyValue){
+            if (SpaceSensorsStreamer.getSpacesInfo().get(exit).getSafetyValue() > allowedSafetyValue){
                 availableExits.add(exit);
             }
         }

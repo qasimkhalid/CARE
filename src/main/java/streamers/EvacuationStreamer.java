@@ -39,7 +39,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
 //            // As soon the evacuation has been completed, close the application
 //            closeApplication();
 //        }
-
+        closeApplication();
 
     }
 
@@ -93,9 +93,9 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
         for (int i = 0; i < getAllPersonQueryResult.size() - 2; i += 3) {
             String person = getAllPersonQueryResult.get(i);
             String type = getAllPersonQueryResult.get(i + 1);
-            String personId = getAllPersonQueryResult.get(i + 2);
+            String personLocation = getAllPersonQueryResult.get(i + 2);
             if (!personControllerMap.containsKey(person)) {
-                Person p = new Person(person, personId, type); // Person object is being created
+                Person p = new Person(person, personLocation, type); // Person object is being created
                 PersonController pc = new PersonController(p, 0.0f); // PersonController object is being created using a
                 // Using Person object as a key of personController
                 // *** it might be optimized by just using a String ***

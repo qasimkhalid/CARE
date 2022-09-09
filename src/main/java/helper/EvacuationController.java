@@ -26,14 +26,18 @@ import java.util.function.Consumer;
 public class EvacuationController {
     private final long timestep;
     private final List<PersonController> personControllers;
+    private int counter = 0;
+
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
-        this.personControllers = personControllers.subList(0,1);
+        this.personControllers = personControllers.subList(3,4);
+//        this.personControllers = personControllers;
         this.timestep = timestep;
     }
 
     public void start() {
 
+        // Creating a Graph from the building data
         RouteFinder.initializeGraph();
 
         for (PersonController pc : personControllers) {
@@ -41,12 +45,12 @@ public class EvacuationController {
             pc.evacuate();
         }
 
-        while (true) {
+        while (inProgress(personControllers.size())) {
             EventTimer.Instance().doTimeStep(this.timestep);
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            System.out.println("-----------------------------------------------");
+            System.out.println("--------------------" + counter + "---------------------------");
 
             for (PersonController pc : personControllers) {
                 System.out.println("Person " + pc.getName() + " in Room " + pc.getPerson().getLocation());
@@ -58,7 +62,11 @@ public class EvacuationController {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+            // Why are we doing PostTimeStep as we are making the thread sleep for a timestep, and doing
+            // doTimeStep again?
             EventTimer.Instance().doPostTimeStep(this.timestep);
+            counter++;
         }
     }
 

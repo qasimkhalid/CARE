@@ -31,6 +31,8 @@ public class Person {
         String [] strs = location.split("<");
         this.location = strs.length > 0 ? strs[strs.length-1] : strs[0];
         this.type = type;
+        String[] personSplit = person.split("Person");
+        this.id = personSplit[1];
     }
 
     public String getName() {

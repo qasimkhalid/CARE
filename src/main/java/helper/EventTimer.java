@@ -7,6 +7,7 @@ public class EventTimer {
     private static EventTimer instance;
     private final List<TimeStepListener> listeners = new ArrayList<>();
 
+
     /**
      * Restrict it from creating an instance outside this class scope
      */
@@ -43,15 +44,23 @@ public class EventTimer {
 
     public void doTimeStep(long timeStep) {
         System.out.println("..do time step.." + timeStep);
+
         for (TimeStepListener listener : listeners) {
             listener.onTimeStep(timeStep);
+            if (listeners.isEmpty()){
+                break;
+            }
+
         }
     }
 
     public void doPostTimeStep(long timeStep) {
         System.out.println("..do post time step.." + timeStep);
-        for (TimeStepListener listener : listeners) {
-            listener.onPostTimeStep(timeStep);
-        }
+            for (TimeStepListener listener : listeners) {
+                listener.onPostTimeStep(timeStep);
+                if (listeners.isEmpty()){
+                    break;
+                }
+            }
     }
 }

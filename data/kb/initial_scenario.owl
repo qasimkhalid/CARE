@@ -23,7 +23,7 @@ ex:D1 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:OE3 ;
       sbeo:origin ex:FE2 ;
-      sbeo:hasValue 7 .
+      sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D10
@@ -31,7 +31,7 @@ ex:D10 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:J1 ;
        sbeo:origin ex:OE2 ;
-       sbeo:hasValue 8 .
+       sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D11
@@ -39,7 +39,7 @@ ex:D11 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:OE2 ;
        sbeo:origin ex:RE1 ;
-       sbeo:hasValue 4 .
+       sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D12
@@ -63,7 +63,7 @@ ex:D14 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:OE1 ;
        sbeo:origin ex:J1 ;
-       sbeo:hasValue 10 .
+       sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D15
@@ -71,7 +71,7 @@ ex:D15 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:OpenHall1 ;
        sbeo:origin ex:OE1 ;
-       sbeo:hasValue 5 .
+       sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D16
@@ -79,7 +79,7 @@ ex:D16 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:OE2 ;
        sbeo:origin ex:OpenHall1 ;
-       sbeo:hasValue 15 .
+       sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D17
@@ -87,7 +87,7 @@ ex:D17 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:RE3 ;
        sbeo:origin ex:WC1 ;
-       sbeo:hasValue 14 .
+       sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D18
@@ -95,7 +95,7 @@ ex:D18 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:OE4 ;
        sbeo:origin ex:RE3 ;
-       sbeo:hasValue 7 .
+       sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D19
@@ -103,7 +103,7 @@ ex:D19 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:J2 ;
        sbeo:origin ex:OE4 ;
-       sbeo:hasValue 7 .
+       sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D2
@@ -119,7 +119,7 @@ ex:D3 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:RE2 ;
       sbeo:origin ex:OE3 ;
-      sbeo:hasValue 5 .
+      sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D4
@@ -127,7 +127,7 @@ ex:D4 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:OE4 ;
       sbeo:origin ex:OpenHall2 ;
-      sbeo:hasValue 4 .
+      sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D5
@@ -135,7 +135,7 @@ ex:D5 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:RE2 ;
       sbeo:origin ex:J2 ;
-      sbeo:hasValue 5 .
+      sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D6
@@ -143,7 +143,7 @@ ex:D6 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:RE2 ;
       sbeo:origin ex:Office2 ;
-      sbeo:hasValue 5 .
+      sbeo:hasValue 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D7
@@ -151,7 +151,7 @@ ex:D7 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:Office2 ;
       sbeo:origin ex:Office1 ;
-      sbeo:hasValue 7 .
+      sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D8
@@ -167,7 +167,7 @@ ex:D9 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:J2 ;
       sbeo:origin ex:RE1 ;
-      sbeo:hasValue 4 .
+      sbeo:hasValue 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#FE1

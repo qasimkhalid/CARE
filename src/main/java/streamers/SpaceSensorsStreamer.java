@@ -20,8 +20,6 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     private boolean hazardDetectionFlag;
     private static String streamIRI;
     private static Map<String, Space> allSensorsValueAtSpecificLocationList;
-    private List<Space> normalPeopleInterruptedSpace = new ArrayList<>();
-    private List<Space> handicapPeopleInterruptedSpace = new ArrayList<>();
 
     public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue, int seed) {
         super(iri);
@@ -34,7 +32,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
         return streamIRI;
     }
 
-    public static Map<String, Space> getSpacesInfo(){
+    public synchronized static Map<String, Space> getSpacesInfo(){
         return allSensorsValueAtSpecificLocationList;
     }
 
@@ -154,13 +152,13 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     }
 
     private void InitializeEvacuationStreamer() {
-//        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
-//        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
-//        Thread evacuationStreamThread = new Thread(evacuationStream);
-//        evacuationStreamThread.start();
-        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
-        EvacuationController ec = new EvacuationController(personControllers, timeStep);
-        ec.start();
+        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
+        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
+        Thread evacuationStreamThread = new Thread(evacuationStream);
+        evacuationStreamThread.start();
+//        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
+//        EvacuationController ec = new EvacuationController(personControllers, timeStep);
+//        ec.start();
     }
 
 

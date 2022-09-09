@@ -214,9 +214,11 @@ public class AutomatedOperations {
         }
     }
 
-    public static void updatePersonLocation(String personName, String newLocation) {
+    public static void updatePersonLocationOnSuccessfulPathTraversal(String personName, String personOldLocation, String personNewLocation) {
         Resource personResource = CareeInfModel.Instance().getResource(personName);
-        Resource locationResource = CareeInfModel.Instance().getResource(newLocation);
+        Resource locationResource = CareeInfModel.Instance().getResource(personOldLocation);
+        CareeInfModel.Instance().remove(personResource, HelpingVariables.locatedIn, locationResource);
+        locationResource = CareeInfModel.Instance().getResource(personNewLocation);
         CareeInfModel.Instance().add(personResource, HelpingVariables.locatedIn, locationResource);
     }
 
