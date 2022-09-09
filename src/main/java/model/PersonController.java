@@ -2,17 +2,18 @@ package model;
 
 import java.util.*;
 
+import graph.INodeAccessibility;
 import helper.AutomatedOperations;
 import helper.EventTimer;
 import helper.RouteFinder;
 import streamers.SpaceSensorsStreamer;
 
-public class PersonController {
+public class PersonController implements INodeAccessibility {
 
     private final Person person;
     private float allowedSafetyValue = 0.5f;
 
-    private PathTraversal pathTraversalListener = new PathTraversal() {
+    private final PathTraversal pathTraversalListener = new PathTraversal() {
         @Override
         public void onEdgeTraversed(String newLocation) {
             // update destination of this person with new destination where he has landed!
@@ -33,6 +34,8 @@ public class PersonController {
 
         @Override
         public void onPathInterrupt() {
+            AutomatedOperations.updatePersonLocation(getName(), person.getLocation());
+
             // Remove listener on path traversal which will stop onTimeStep method calls
             EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
 
@@ -42,7 +45,7 @@ public class PersonController {
 
         @Override
         public boolean isNodeSafe(String node) {
-            return false;
+            return SpaceSensorsStreamer.getSpacesInfo().get(node).getSafetyValue() >= allowedSafetyValue;
         }
     };
 
@@ -56,21 +59,25 @@ public class PersonController {
         this.followRoute(route);
     }
 
+    @Override
+    public boolean isNodeAccessible(String nodeName) {
+        return SpaceSensorsStreamer.getSpacesInfo().get(nodeName).getSafetyValue() >= allowedSafetyValue;
+    }
+
     private List<String> findRoute() {
-        // find route, write algorithm that will return a path in the form of
-        // list<string>
+
         String personLocation = person.getLocation();
         List<String> availableExits = getAvailableExits();
 
         Route minRoute = null;
         for (String exit : availableExits) {
-            Route route = RouteFinder.findPath(personLocation, exit);
+            Route route = RouteFinder.findPath(personLocation, exit, this);
             if (minRoute == null || minRoute.getCost() > route.getCost()) {
                 minRoute = route;
             }
         }
 
-        return minRoute.getPath();
+        return minRoute != null ? minRoute.getPath() : null;
     }
 
     private List<String> getAvailableExits() {
@@ -88,6 +95,9 @@ public class PersonController {
     }
 
     public void followRoute(List<String> routeAssigned) {
+        if (routeAssigned == null)
+            return;
+
         pathTraversalListener.SetPath(routeAssigned);
         // Adds listener on path traversal for timeStep
         EventTimer.Instance().addTimeStepListener(this.pathTraversalListener.listener);

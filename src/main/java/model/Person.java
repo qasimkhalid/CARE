@@ -20,9 +20,16 @@ public class Person {
         this.id = id;
     }
 
-    public Person(String person, String id, String type) {
+//    public Person(String person, String id, String type) {
+//        this.person = person;
+//        this.id = id;
+//        this.type = type;
+//    }
+
+    public Person(String person, String location, String type) {
         this.person = person;
-        this.id = id;
+        String [] strs = location.split("<");
+        this.location = strs.length > 0 ? strs[strs.length-1] : strs[0];
         this.type = type;
     }
 

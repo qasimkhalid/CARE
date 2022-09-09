@@ -30,15 +30,15 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
         // Get All Persons
         List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
         EvacuationController ec = new EvacuationController(personControllers, timeStep);
-
-        try {
-            ec.start();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            // As soon the evacuation has been completed, close the application
-            closeApplication();
-        }
+        ec.start();
+//        try {
+//
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } finally {
+//            // As soon the evacuation has been completed, close the application
+//            closeApplication();
+//        }
 
 
     }
@@ -61,34 +61,35 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
     }
 
 
-    private void assignRouteToPersonsWhoAreReadyToMove(List<Route> availableRoutes,
-            Map<String, PersonController> personsMap) {
-        List<String> getEachPersonLocationQueryResult = CareeInfModel.Instance()
-                .getQueryResult("data/queries/sparql/GetPersonsLocationWhoAreStanding(ReadyToMove).txt");
-
-        if (!getEachPersonLocationQueryResult.isEmpty()) {
-
-            for (int i = 0; i < getEachPersonLocationQueryResult.size() - 1; i += 2) {
-                String person = getEachPersonLocationQueryResult.get(i);
-                String location = getEachPersonLocationQueryResult.get(i + 1);
-
-                Optional<Route> r = availableRoutes.stream()
-                        .filter(x -> x.getRoute().get(0).equals(location)).findFirst();
-
-                if (r.isPresent()) {
-                    // todo: add conditional assignment, dont assign if previous route is not
-                    // finished
-                    // personsMap.get(person).assignRoute(r.get().getRoute());
-                } else {
-                    System.out.println("Route Starting from person's location has not been found in RouteMap");
-                }
-            }
-        }
-    }
+//    private void assignRouteToPersonsWhoAreReadyToMove(List<Route> availableRoutes,
+//            Map<String, PersonController> personsMap) {
+//        List<String> getEachPersonLocationQueryResult = CareeInfModel.Instance()
+//                .getQueryResult("data/queries/sparql/GetPersonsLocationWhoAreStanding(ReadyToMove).txt");
+//
+//        if (!getEachPersonLocationQueryResult.isEmpty()) {
+//
+//            for (int i = 0; i < getEachPersonLocationQueryResult.size() - 1; i += 2) {
+//                String person = getEachPersonLocationQueryResult.get(i);
+//                String location = getEachPersonLocationQueryResult.get(i + 1);
+//
+//                Optional<Route> r = availableRoutes.stream()
+//                        .filter(x -> x.getRoute().get(0).equals(location)).findFirst();
+//
+//                if (r.isPresent()) {
+//                    // todo: add conditional assignment, dont assign if previous route is not
+//                    // finished
+//                    // personsMap.get(person).assignRoute(r.get().getRoute());
+//                } else {
+//                    System.out.println("Route Starting from person's location has not been found in RouteMap");
+//                }
+//            }
+//        }
+//    }
 
     public static void SetupPersonsMap(Map<String, PersonController> personControllerMap) {
         List<String> getAllPersonQueryResult = CareeInfModel.Instance()
-                .getQueryResult("data/queries/sparql/GetAllPersons.txt");
+                //.getQueryResult("data/queries/sparql/GetAllPersons.txt");
+                    .getQueryResult("data/queries/sparql/GetAllPersonsWithLocation.txt");
         for (int i = 0; i < getAllPersonQueryResult.size() - 2; i += 3) {
             String person = getAllPersonQueryResult.get(i);
             String type = getAllPersonQueryResult.get(i + 1);
@@ -137,25 +138,25 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
         }
     }
 
-    private void getAvailableAndPresetRoutes(List<Route> routesInformationList) {
-        List<String> getAvailableRoutesQueryResult = CareeInfModel.Instance()
-                .getQueryResult("data/queries/sparql/FindAllRoutesWithTheirElements.txt");
-        Map<String, List<String>> routeMap = new HashMap<>();
-        if (!getAvailableRoutesQueryResult.isEmpty()) {
-            for (int i = 0; i < getAvailableRoutesQueryResult.size() - 2; i += 3) {
-                String routeName = getAvailableRoutesQueryResult.get(i);
-                String routeElementIndex = getAvailableRoutesQueryResult.get(i + 1);
-                String routeElement = getAvailableRoutesQueryResult.get(i + 2);
-                if (!routeMap.containsKey(routeName)) {
-                    routeMap.put(routeName, new ArrayList<>());
-                }
-                routeMap.get(routeName).add(routeElement);
-            }
-        }
-        for (Map.Entry<String, List<String>> entry : routeMap.entrySet()) {
-            routesInformationList.add(new Route(entry.getKey(), entry.getValue()));
-        }
-    }
+//    private void getAvailableAndPresetRoutes(List<Route> routesInformationList) {
+//        List<String> getAvailableRoutesQueryResult = CareeInfModel.Instance()
+//                .getQueryResult("data/queries/sparql/FindAllRoutesWithTheirElements.txt");
+//        Map<String, List<String>> routeMap = new HashMap<>();
+//        if (!getAvailableRoutesQueryResult.isEmpty()) {
+//            for (int i = 0; i < getAvailableRoutesQueryResult.size() - 2; i += 3) {
+//                String routeName = getAvailableRoutesQueryResult.get(i);
+//                String routeElementIndex = getAvailableRoutesQueryResult.get(i + 1);
+//                String routeElement = getAvailableRoutesQueryResult.get(i + 2);
+//                if (!routeMap.containsKey(routeName)) {
+//                    routeMap.put(routeName, new ArrayList<>());
+//                }
+//                routeMap.get(routeName).add(routeElement);
+//            }
+//        }
+//        for (Map.Entry<String, List<String>> entry : routeMap.entrySet()) {
+//            routesInformationList.add(new Route(entry.getKey(), entry.getValue()));
+//        }
+//    }
 
     public void detectPersonLocationUsingIdQuadrupleGenerator() {
         RdfQuadruple q;

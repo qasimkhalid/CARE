@@ -6,12 +6,10 @@ import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 
+import helper.EvacuationController;
 import helper.MathOperations;
 import helper.HelpingVariables;
-import model.CareeCsparqlEngineImpl;
-import model.CareeInfModel;
-import model.Sensor;
-import model.Space;
+import model.*;
 
 public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
@@ -97,7 +95,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
         }
 
         while (keepRunning){
-            System.out.println("Sensors Streamer Time Step No: " +  count);
+            //System.out.println("Sensors Streamer Time Step No: " +  count);
             timeNow = String.valueOf(System.currentTimeMillis());
 
             for (Sensor s: sensorDetailsList) {
@@ -156,10 +154,13 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     }
 
     private void InitializeEvacuationStreamer() {
-        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 2000, true, 1f);
-        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
-        Thread evacuationStreamThread = new Thread(evacuationStream);
-        evacuationStreamThread.start();
+//        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
+//        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
+//        Thread evacuationStreamThread = new Thread(evacuationStream);
+//        evacuationStreamThread.start();
+        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
+        EvacuationController ec = new EvacuationController(personControllers, timeStep);
+        ec.start();
     }
 
 

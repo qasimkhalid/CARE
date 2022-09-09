@@ -10,7 +10,7 @@ public abstract class PathTraversal {
     private List<String> path = new ArrayList<>();
     private Edge currentEdge;
     private long cumulativeEdgeTraversalTime = 0;
-    private long timeElapsed = 0;
+    private float timeElapsed = 0;
     private int index = 0; // index shows current edge's destination node's index A-B-C
 
     public abstract void onEdgeTraversed(String destination);
@@ -26,6 +26,9 @@ public abstract class PathTraversal {
         @Override
         public void onTimeStep(long timeStep) {
 
+            if (currentEdge == null)
+                return;
+
             timeElapsed += timeStep;
 
             if (timeElapsed >= cumulativeEdgeTraversalTime) {
@@ -34,7 +37,7 @@ public abstract class PathTraversal {
                 if (hasNextNode()) {
 
                     currentEdge = new Edge(path.get(index), path.get(index + 1));
-                    if (isNodeSafe(currentEdge.getDestination()) == false) {
+                    if (!isNodeSafe(currentEdge.getDestination())) {
                         onPathInterrupt();
                     } else {
                         cumulativeEdgeTraversalTime += currentEdge.getCost();
@@ -49,6 +52,13 @@ public abstract class PathTraversal {
 
     public void SetPath(List<String> path) {
         this.path = path;
+        index = 0;
+        timeElapsed = 0;
+
+        if (hasNextNode()) {
+            currentEdge = new Edge(path.get(index), path.get(index + 1));
+            cumulativeEdgeTraversalTime = currentEdge.getCost();
+        }
     }
 
     private boolean hasNextNode() {

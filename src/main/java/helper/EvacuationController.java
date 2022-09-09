@@ -1,5 +1,6 @@
 package helper;
 
+import graph.Graph;
 import model.CareeCsparqlEngineImpl;
 import model.CareeInfModel;
 import model.PersonController;
@@ -27,33 +28,39 @@ public class EvacuationController {
     private final List<PersonController> personControllers;
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
-        this.personControllers = personControllers;
+        this.personControllers = personControllers.subList(0,1);
         this.timestep = timestep;
     }
 
-    public void start() throws InterruptedException {
+    public void start() {
 
-        this.personControllers.forEach(p -> p.evacuate());
+        RouteFinder.initializeGraph();
 
-        while (inProgress(personControllers.size())) {
+        for (PersonController pc : personControllers) {
+            System.out.println("Person " + pc.getName() + " in Room " + pc.getPerson().getLocation());
+            pc.evacuate();
+        }
+
+        while (true) {
             EventTimer.Instance().doTimeStep(this.timestep);
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
+            System.out.println("-----------------------------------------------");
 
-            Thread.sleep(this.timestep);
+            for (PersonController pc : personControllers) {
+                System.out.println("Person " + pc.getName() + " in Room " + pc.getPerson().getLocation());
+            }
+            System.out.println("-----------------------------------------------");
+
+            try {
+                Thread.sleep(this.timestep);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             EventTimer.Instance().doPostTimeStep(this.timestep);
         }
     }
-
-//    private Consumer<? super PersonController> initializeEvacuation = new Consumer<PersonController>() {
-//
-//        @Override
-//        public void accept(PersonController t) {
-//            EventTimer.Instance().addTimeStepListener(t.listener);
-//            t.evacuate();
-//        }
-//    };
 
     private boolean inProgress(int totalPersons) {
         // a query that returns all the persons located in the building other than the

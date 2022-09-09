@@ -91,7 +91,7 @@ public class AutomatedOperations {
      * @param personsCount          - Total number of persons.
      * @param personsWithWheelChair - Number of persons having a mobility impairment
      */
-    public static void setPeopleInBuilding(InfModel infModel, int personsCount, int personsWithWheelChair, int seed) {
+    public static void setPeopleInBuilding(InfModel infModel, int personsCount, int personsWithWheelChair) {
         long initialTime = System.currentTimeMillis();
         int personsWithWheelChairCounter = 0;
         Resource personInstance;
@@ -113,7 +113,7 @@ public class AutomatedOperations {
             infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
 
             // Choosing a random space as a person location
-            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size(), seed));
+            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
             spaceInstance = ResourceFactory.createResource(rs);
             infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
             infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
@@ -317,7 +317,6 @@ public class AutomatedOperations {
     }
 
     public static List<String> getExits() {
-        return SparqlFunctions.getSPARQLQueryResult(infModel,
-                "data/queries/sparql/GetExits.txt");
+        return SparqlFunctions.getSPARQLQueryResult(CareeInfModel.Instance().getInfModel(), "data/queries/sparql/GetExits.txt");
     }
 }

@@ -1,5 +1,6 @@
 package model;
 
+import graph.Node;
 import helper.AutomatedOperations;
 
 import java.util.ArrayList;
@@ -11,16 +12,11 @@ public class Route {
     private final int length;
     private long cost;
 
-    public Route(List<String> route) {
-        this.path = route;
-        this.length = route.size();
-
-        for (int i = 0; i < route.size() - 1; i++) {
-            try {
-                this.cost += AutomatedOperations.getODPairCostInSeconds(route.get(i), route.get(i+1));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public Route(List<Node> shortestPath) {
+        this.length = shortestPath.size();
+        this.cost = shortestPath.get(shortestPath.size()-1).getDistance();
+        for (int i = 0; i < shortestPath.size(); i++) {
+            path.add(shortestPath.get(i).getName());
         }
     }
 

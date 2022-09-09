@@ -27,7 +27,7 @@ public class CAREE {
         CareeCsparqlEngineImpl engineInstance = CareeCsparqlEngineImpl.Instance();
 
         // Setting up people in the building for simulation purposes
-        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, 2, SEED);
+        AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), 10, 2);
 
         // C-SPARQL queries.
 
@@ -48,7 +48,7 @@ public class CAREE {
         engineInstance.putStaticNamedModel(HelpingVariables.sbeoPrefix, result);
 
         // Creating the instance of a data stream.
-        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 2000, 0.5, SEED);
+        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 100, 0.5, SEED);
 
         // Injecting the stream in the C-SPARQL engine.
         engineInstance.registerStream(ssStream);
@@ -80,7 +80,7 @@ public class CAREE {
 
         System.out.println("The main thread is going to sleep for long time...");
         try {
-            Thread.sleep(200000);
+            Thread.sleep(1000000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

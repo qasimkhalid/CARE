@@ -6,6 +6,7 @@ import java.util.Random;
 
 final public class MathOperations
 {
+    private static final Random random = new Random(7548);
     public static long getExtraTime(float area, Integer density, float areaPerPerson) {
         return (long) (areaPerPerson * density - area) * 1000;
     }
@@ -20,17 +21,14 @@ final public class MathOperations
 //    }
 
     public static double getRandomNumberInRange(double max, double min, int seed) {
-        Random random = new Random(seed);
         return min + random.nextFloat() * (max - min);
     }
 
     public static boolean getRandomBoolean() {
-        Random random = new Random();
         return random.nextBoolean();
     }
 
-    public static int getRandomNumber(int size, int seed) {
-        Random random = new Random(seed);
+    public static int getRandomNumber(int size) {
         return random.nextInt(size);
     }
 
