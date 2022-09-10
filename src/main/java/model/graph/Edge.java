@@ -1,6 +1,6 @@
-package model;
+package model.graph;
 
-import helper.AutomatedOperations;
+import operations.AutomatedOperations;
 
 public class Edge {
     private final String start;

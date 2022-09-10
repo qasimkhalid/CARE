@@ -1,9 +1,10 @@
 package streamers;
 
+import entities.PersonController;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
-import helper.AutomatedOperations;
-import helper.EvacuationController;
+import operations.AutomatedOperations;
+import entities.EvacuationController;
 import helper.HelpingVariables;
 import model.*;
 
@@ -96,7 +97,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
             String personLocation = getAllPersonQueryResult.get(i + 2);
             if (!personControllerMap.containsKey(person)) {
                 Person p = new Person(person, personLocation, type); // Person object is being created
-                PersonController pc = new PersonController(p, 0.0f); // PersonController object is being created using a
+                PersonController pc = new PersonController(p, 0.3f); // PersonController object is being created using a
                 // Using Person object as a key of personController
                 // *** it might be optimized by just using a String ***
                 personControllerMap.put(person, pc);
@@ -117,46 +118,6 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
         return new ArrayList<>(personsMap.values());
     }
 
-    private void computeTimeRequiredForPersonFromOriginToDestination(List<String> personWithOD,
-            List<PersonMovementInformation> personMovementInformation, Map<String, Integer> spaceOccupancyMap)
-            throws Exception {
-        long timeRequired;
-        for (int i = 0; i < personWithOD.size() - 4; i += 5) {
-            String p = personWithOD.get(i);
-            String[] tokens = personWithOD.get(i + 1).split("\"");
-            String id = tokens[1] + "^^http://www.w3.org/2001/XMLSchema#integer";
-            String origin = personWithOD.get(i + 2);
-            String destination = personWithOD.get(i + 3);
-
-            timeRequired = AutomatedOperations.getODPairCostInSeconds(origin, destination);
-            PersonMovementInformation pti = new PersonMovementInformation(p, timeRequired, 0, origin, destination, id);
-            personMovementInformation.add(pti);
-
-            // *No being used for the moment*
-            // Calculating instantaneous occupancy status of each space.
-            // spaceOccupancyMap.merge(origin, 1, Integer::sum);
-        }
-    }
-
-//    private void getAvailableAndPresetRoutes(List<Route> routesInformationList) {
-//        List<String> getAvailableRoutesQueryResult = CareeInfModel.Instance()
-//                .getQueryResult("data/queries/sparql/FindAllRoutesWithTheirElements.txt");
-//        Map<String, List<String>> routeMap = new HashMap<>();
-//        if (!getAvailableRoutesQueryResult.isEmpty()) {
-//            for (int i = 0; i < getAvailableRoutesQueryResult.size() - 2; i += 3) {
-//                String routeName = getAvailableRoutesQueryResult.get(i);
-//                String routeElementIndex = getAvailableRoutesQueryResult.get(i + 1);
-//                String routeElement = getAvailableRoutesQueryResult.get(i + 2);
-//                if (!routeMap.containsKey(routeName)) {
-//                    routeMap.put(routeName, new ArrayList<>());
-//                }
-//                routeMap.get(routeName).add(routeElement);
-//            }
-//        }
-//        for (Map.Entry<String, List<String>> entry : routeMap.entrySet()) {
-//            routesInformationList.add(new Route(entry.getKey(), entry.getValue()));
-//        }
-//    }
 
     public void detectPersonLocationUsingIdQuadrupleGenerator() {
         RdfQuadruple q;
@@ -237,7 +198,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
  * 7: Once the evacuation process starts.
  * a: Get the location of each person.
  * b: Find a route for each person from his location to the nearest exit using
- * the latest graph composed of only available nodes and edges
+ * the latest model.graph composed of only available nodes and edges
  * c: Shortlist and assign the shortest path to the person.
  * 8: Once the routes have been assigned to people. They must start following
  * those routes.

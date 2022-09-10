@@ -1,16 +1,10 @@
 package model;
 
-import com.hp.hpl.jena.rdf.model.*;
 import eu.larkc.csparql.cep.api.RdfStream;
 import eu.larkc.csparql.core.engine.CsparqlEngineImpl;
 import eu.larkc.csparql.core.engine.CsparqlQueryResultProxy;
-import helper.SparqlFunctions;
-import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.riot.RDFFormat;
 
-import java.io.OutputStream;
 import java.text.ParseException;
-import java.util.List;
 
 public class CareeCsparqlEngineImpl {
     private static CsparqlEngineImpl _cSparqlEngineImpl;

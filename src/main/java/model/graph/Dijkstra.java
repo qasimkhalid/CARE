@@ -1,4 +1,4 @@
-package graph;
+package model.graph;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Dijkstra {
-    public static void calculateShortestPathFromSource(Node source, INodeAccessibility accessibility) {
+    public static void calculateShortestPathFromSource(Node source) {
         source.setDistance(0L);
 
         Set<Node> settledNodes = new HashSet<>();
@@ -20,10 +20,6 @@ public class Dijkstra {
             for (Map.Entry< Node, Long> adjacencyPair: currentNode.getAdjacentNodes().entrySet()) {
                 Node adjacentNode = adjacencyPair.getKey();
                 Long edgeWeight = adjacencyPair.getValue();
-
-                if (!accessibility.isNodeAccessible(adjacentNode.getName()))
-                    continue;
-
                 if (!settledNodes.contains(adjacentNode)) {
                     CalculateMinimumDistance(adjacentNode, edgeWeight, currentNode);
                     unsettledNodes.add(adjacentNode);

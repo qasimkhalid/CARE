@@ -1,4 +1,4 @@
-package helper;
+package operations;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.InfModel;
@@ -7,9 +7,9 @@ import eu.larkc.csparql.common.utils.CsparqlUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SparqlFunctions {
+public class Sparql {
 
-    public SparqlFunctions() {
+    public Sparql() {
     }
 
     public static List<String> getSPARQLQueryResult( InfModel infModel, String path ){

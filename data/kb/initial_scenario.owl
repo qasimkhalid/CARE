@@ -23,7 +23,7 @@ ex:D1 rdf:type owl:NamedIndividual ,
                sbeo:Distance ;
       sbeo:destination ex:OE3 ;
       sbeo:origin ex:FE2 ;
-      sbeo:hasValue 1 .
+      sbeo:hasValue 10 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D10
@@ -103,7 +103,7 @@ ex:D19 rdf:type owl:NamedIndividual ,
                 sbeo:Distance ;
        sbeo:destination ex:J2 ;
        sbeo:origin ex:OE4 ;
-       sbeo:hasValue 1 .
+       sbeo:hasValue 10 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#D2

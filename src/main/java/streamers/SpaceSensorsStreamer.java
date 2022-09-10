@@ -2,12 +2,12 @@ package streamers;
 
 import java.util.*;
 
-import com.hp.hpl.jena.rdf.model.*;
+import entities.PersonController;
 import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 
-import helper.EvacuationController;
-import helper.MathOperations;
+import entities.EvacuationController;
+import operations.MathOperations;
 import helper.HelpingVariables;
 import model.*;
 
@@ -15,17 +15,15 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
     private final long timeStep;
     private static boolean keepRunning = true;
-    private final int SEED;
     private final double evacuationTriggerSafetyValue;
     private boolean hazardDetectionFlag;
     private static String streamIRI;
     private static Map<String, Space> allSensorsValueAtSpecificLocationList;
 
-    public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue, int seed) {
+    public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue) {
         super(iri);
         streamIRI = iri;
         this.timeStep = timeStep;
-        this.SEED = seed;
         this.evacuationTriggerSafetyValue = evacuationTriggerSafetyValue;
     }
     public static String getStreamIRI(){
@@ -117,10 +115,13 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 //This condition only runs once to trigger the evacuation
                 if (s.getSafetyValue() < evacuationTriggerSafetyValue) {
                     if (!hazardDetectionFlag) {
-                        System.out.println(s.getName() + " has Safety Value" +  s.getSafetyValue());
-                        InitializeEvacuationStreamer();
-                        System.out.println("hazardDetectionFlag = true");
+
+                        // *** Testing Block Start ***
                         hazardDetectionFlag = true;
+                        System.out.println(s.getReadableName() + " has Safety Value " +  s.getSafetyValue());
+                        System.out.println("Hazard detection flag = true");
+                        InitializeEvacuationStreamer();
+                        // *** Testing Block End ***
                     }
 //
 //
@@ -152,13 +153,14 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     }
 
     private void InitializeEvacuationStreamer() {
-        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
-        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
-        Thread evacuationStreamThread = new Thread(evacuationStream);
-        evacuationStreamThread.start();
-//        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
-//        EvacuationController ec = new EvacuationController(personControllers, timeStep);
-//        ec.start();
+//        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
+//        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
+//        Thread evacuationStreamThread = new Thread(evacuationStream);
+//        evacuationStreamThread.start();
+//
+        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
+        EvacuationController ec = new EvacuationController(personControllers, timeStep);
+        ec.start();
     }
 
 
@@ -187,7 +189,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 if(sensor.getValue() == null) {
                     sensor.setValue(25);
                 }
-                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 2, (Double) sensor.getValue() - 2, SEED);
+                sensorValueNumber = MathOperations.getRandomNumberInRange((Double) sensor.getValue() + 5, (Double) sensor.getValue() - 2);
 
                 if(sensorValueNumber < 10) sensorValueNumber = 10;
                 else if( sensorValueNumber > 100) sensorValueNumber = 100;
@@ -248,7 +250,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
                         HelpingVariables.sosaPrefix + "hasSimpleResult",
-                        String.valueOf(sensorValueBoolean) + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
+                        sensorValueBoolean + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
                     this.put(q);
 
 
@@ -344,7 +346,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                 q = new RdfQuadruple(
                         sensor.getSensorName() + "_Observation",
                         HelpingVariables.sosaPrefix + "hasSimpleResult",
-                        String.valueOf(sensorValueBoolean) + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
+                        sensorValueBoolean + "^^http://www.w3.org/2001/XMLSchema#boolean", System.currentTimeMillis());
                 this.put(q);
 
 
