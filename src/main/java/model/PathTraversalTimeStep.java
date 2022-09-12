@@ -21,6 +21,13 @@ public class PathTraversalTimeStep implements ITimeStepListener {
     private IAccessibility accessibility;
     private IPathTraversal pathTraversal;
 
+    /**
+     * Set path will assign the route and start the traversal of person on the path.
+     * @param person person who is traversing the path
+     * @param path path the person should follow
+     * @param accessibility accessibility interface for checking accessibility of nodes and edges
+     * @param pathTraversal pathTraversal interface for path related operations
+     */
     public void setPath(Person person, List<String> path, IAccessibility accessibility, IPathTraversal pathTraversal) {
         this.path = path;
         this.accessibility = accessibility;
@@ -96,10 +103,8 @@ public class PathTraversalTimeStep implements ITimeStepListener {
                     pathTraversal.onPathComplete();
                 }
             }
-
             timeElapsed += timeStep; // time stepping for testing purposes.
 //                timeElapsed += System.currentTimeMillis(); //Real time stepping
-
         }
 
     }

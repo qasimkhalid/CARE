@@ -91,7 +91,7 @@ public class PersonController implements IAccessibility, IPathTraversal {
         evacuate();
     }
     /* ----------------------------------- */
-    
+
     public void evacuate() {
         List<String> route = findRoute();
 
