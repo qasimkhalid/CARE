@@ -1,4 +1,4 @@
-package graph;
+package model.graph;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,14 +31,14 @@ import java.util.Map;
  *
  * nodeF.addDestination(nodeE, 5);
  *
- * Graph graph = new Graph();
+ * Graph model.graph = new Graph();
  *
- * graph.addNode(nodeA);
- * graph.addNode(nodeB);
- * graph.addNode(nodeC);
- * graph.addNode(nodeD);
- * graph.addNode(nodeE);
- * graph.addNode(nodeF);
+ * model.graph.addNode(nodeA);
+ * model.graph.addNode(nodeB);
+ * model.graph.addNode(nodeC);
+ * model.graph.addNode(nodeD);
+ * model.graph.addNode(nodeE);
+ * model.graph.addNode(nodeF);
  */
 public class Node {
 
@@ -62,6 +62,11 @@ public class Node {
 
     public Node(String name) {
         this.name = name;
+    }
+
+    public Node(String name, Long distance) {
+        this.name = name;
+        this.distance = distance;
     }
 
     public Long getDistance() {

@@ -1,14 +1,11 @@
-package helper;
+package entities;
 
-import graph.Graph;
+import helper.HelpingVariables;
 import model.CareeCsparqlEngineImpl;
 import model.CareeInfModel;
-import model.PersonController;
-import streamers.EvacuationStreamer;
 import streamers.SpaceSensorsStreamer;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * Controller has a set of evacuating algorithms of type IRouteFinder
@@ -26,52 +23,66 @@ import java.util.function.Consumer;
 public class EvacuationController {
     private final long timestep;
     private final List<PersonController> personControllers;
-    private int counter = 0;
+    public static int evacueesCounter;
+    private int iterationCounter = 0;
 
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
-        this.personControllers = personControllers.subList(3,4);
-//        this.personControllers = personControllers;
+//        this.personControllers = personControllers.subList(1,2); //WheelChair person
+        this.personControllers = personControllers;
         this.timestep = timestep;
+        evacueesCounter = this.personControllers.size();
     }
 
     public void start() {
 
-        // Creating a Graph from the building data
-        RouteFinder.initializeGraph();
-
         for (PersonController pc : personControllers) {
-            System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
+            System.out.println(pc.getPerson().getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
             pc.evacuate();
         }
 
-        while (true) {
+        while (inProgress(evacueesCounter)) {
             EventTimer.Instance().doTimeStep(this.timestep);
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            //System.out.println("--------------------" + counter + "---------------------------");
-
-            //for (PersonController pc : personControllers) {
-            //    System.out.println(pc.getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
-            //}
-            //System.out.println("-----------------------------------------------");
+            System.out.println("--------------------" + iterationCounter + "---------------------------");
 
             try {
                 Thread.sleep(this.timestep);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            counter++;
+            iterationCounter++;
+
+//            if (iterationCounter==25){
+//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE2").setSafetyValue(0.1);
+//            }
+//            if (iterationCounter==47){
+//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE3").setSafetyValue(0.1);
+//            }
+
         }
+        closeApplication();
     }
 
     private boolean inProgress(int totalPersons) {
-        // a query that returns all the persons located in the building other than the
-        // exits
-        /* e.g. return BuildingUtils.hasAnyPerson(); */
+        // a query that returns all the persons located in the building other than the exits
         List<String> personsWhoHaveNotEvacuated = CareeInfModel.Instance()
                 .getQueryResult("data/Queries/sparql/PersonsWhoHaveEvacuated.txt");
         return personsWhoHaveNotEvacuated.size() != totalPersons;
     }
+
+
+    public static void closeApplication() {
+        System.out.println("SpaceSensorsStreamer.stop()");
+        SpaceSensorsStreamer.stop();
+
+        System.out.println("Successfully unregistered Space Sensors Stream from the engine");
+        CareeCsparqlEngineImpl.Instance().unregisterStream(SpaceSensorsStreamer.getStreamIRI());
+
+        System.out.println("About to exit");
+        System.exit(0);
+    }
+
 }

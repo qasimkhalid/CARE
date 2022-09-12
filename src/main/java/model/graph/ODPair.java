@@ -1,4 +1,6 @@
-package model;
+package model.graph;
+
+import model.Space;
 
 public class ODPair {
 

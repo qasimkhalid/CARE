@@ -6,7 +6,7 @@ CAREE: Context-AwaRe Emergency Evacuation Software
 
 import eu.larkc.csparql.common.utils.CsparqlUtils;
 import eu.larkc.csparql.core.engine.CsparqlQueryResultProxy;
-import helper.AutomatedOperations;
+import operations.AutomatedOperations;
 import helper.HelpingVariables;
 import helper.Output;
 import model.CareeCsparqlEngineImpl;
@@ -48,7 +48,7 @@ public class CAREE {
         engineInstance.putStaticNamedModel(HelpingVariables.sbeoPrefix, result);
 
         // Creating the instance of a data stream.
-        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 100, 0.5, SEED);
+        SpaceSensorsStreamer ssStream = new SpaceSensorsStreamer(HelpingVariables.kbIRI, 100, 0.5);
 
         // Injecting the stream in the C-SPARQL engine.
         engineInstance.registerStream(ssStream);
@@ -86,5 +86,8 @@ public class CAREE {
         }
 
     }
+
+
+
 
 }

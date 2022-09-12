@@ -6,8 +6,7 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.reasoner.Reasoner;
 import com.hp.hpl.jena.reasoner.ReasonerRegistry;
 
-import helper.HelpingVariables;
-import helper.SparqlFunctions;
+import operations.Sparql;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
 
@@ -73,7 +72,7 @@ public class CareeInfModel {
 
     public synchronized List<String> getQueryResult(String path) {
         try {
-            return SparqlFunctions.getSPARQLQueryResult(_infModel, path);
+            return Sparql.getSPARQLQueryResult(_infModel, path);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,8 +4,9 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import model.CareeInfModel;
-import model.ODPair;
+import model.graph.ODPair;
 import model.Space;
+import operations.AutomatedOperations;
 
 import java.util.List;
 

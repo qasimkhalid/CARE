@@ -6,6 +6,7 @@ public class Person {
     private String location;
     private String id;
     private String type;
+    private float allowedSafetyValue;
 
     public String getType() {
         return type;
@@ -19,12 +20,6 @@ public class Person {
         this.location = location;
         this.id = id;
     }
-
-//    public Person(String person, String id, String type) {
-//        this.person = person;
-//        this.id = id;
-//        this.type = type;
-//    }
 
     public Person(String person, String location, String type) {
         this.person = person;
@@ -57,5 +52,17 @@ public class Person {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getReadableName() {
+        return person.split("#")[1];
+    }
+
+    public double getAllowedSafetyValue() {
+        return this.allowedSafetyValue;
+    }
+
+    public void setAllowedSafetyValue(float allowedSafetyValue) {
+        this.allowedSafetyValue = allowedSafetyValue;
     }
 }

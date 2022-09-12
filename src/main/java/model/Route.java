@@ -1,22 +1,23 @@
 package model;
 
-import graph.Node;
-import helper.AutomatedOperations;
+import model.graph.Node;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Route {
 
-    private List<String> path = new ArrayList<>();
+    private final List<String> path = new ArrayList<>();
     private final int length;
-    private long cost;
+    private long cost = 0;
 
     public Route(List<Node> shortestPath) {
         this.length = shortestPath.size();
-        this.cost = shortestPath.get(shortestPath.size()-1).getDistance();
-        for (int i = 0; i < shortestPath.size(); i++) {
-            path.add(shortestPath.get(i).getName());
+        if (!shortestPath.isEmpty()) {
+            this.cost = shortestPath.get(shortestPath.size() - 1).getDistance();
+            for (Node node : shortestPath) {
+                path.add(node.getName());
+            }
         }
     }
 
@@ -26,9 +27,5 @@ public class Route {
 
     public long getCost() {
         return cost;
-    }
-
-    public int getLength() {
-        return length;
     }
 }
