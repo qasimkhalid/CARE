@@ -1,10 +1,12 @@
 package entities;
 
+import helper.ConsoleColors;
 import helper.HelpingVariables;
 import model.CareeCsparqlEngineImpl;
 import model.CareeInfModel;
 import streamers.SpaceSensorsStreamer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class EvacuationController {
     private final List<PersonController> personControllers;
     public static int evacueesCounter;
     private int iterationCounter = 0;
+    private String previousScreenBuffer = "";
 
 
     public EvacuationController(List<PersonController> personControllers, long timestep) {
@@ -46,13 +49,14 @@ public class EvacuationController {
 
             // Printing the Location of persons (Fix it)
 //            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            System.out.println("--------------------" + iterationCounter + "---------------------------");
+            //System.out.println("--------------------" + iterationCounter + "---------------------------");
 
             try {
                 Thread.sleep(this.timestep);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+            printPersons();
             iterationCounter++;
 
 //            if (iterationCounter==25){
@@ -64,6 +68,46 @@ public class EvacuationController {
 
         }
         closeApplication();
+    }
+
+    private void printPersons() {
+        StringBuilder newScreenBuffer = new StringBuilder();
+        for (PersonController p : personControllers) {
+            // name
+            newScreenBuffer.append(ConsoleColors.CYAN_BOLD).append(p.getPerson().getReadableName()).append(ConsoleColors.RESET);
+
+            // path
+            newScreenBuffer.append(" => [ ");
+            String location = p.getPerson().getReadableLocation();
+            List<String> route = p.getAssignedRoute();
+            for(int i = 0; i < p.getAssignedRoute().size(); i++) {
+                String l = route.get(i).split("#")[1];
+                if (l.equals(location)) {
+                    newScreenBuffer.append(ConsoleColors.GREEN_BOLD).append(l).append(ConsoleColors.RESET);
+                } else {
+                    newScreenBuffer.append(l).append(ConsoleColors.RESET);
+                }
+
+                if (i == route.size()-1) {
+                    newScreenBuffer.append(" ").append(ConsoleColors.RESET);
+                } else {
+                    newScreenBuffer.append(", ").append(ConsoleColors.RESET);
+                }
+            }
+            newScreenBuffer.append("]");
+
+            // evacuation status
+            if (p.isEvacuated()) {
+                newScreenBuffer.append(" \u2713");
+            }
+
+            newScreenBuffer.append("\n\r");
+        }
+
+        if (!previousScreenBuffer.equals(String.valueOf(newScreenBuffer))) {
+            System.out.println(newScreenBuffer);
+            previousScreenBuffer = String.valueOf(newScreenBuffer);
+        }
     }
 
     private boolean inProgress(int totalPersons) {

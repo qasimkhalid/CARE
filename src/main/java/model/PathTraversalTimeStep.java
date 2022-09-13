@@ -51,11 +51,11 @@ public class PathTraversalTimeStep implements ITimeStepListener {
                 cumulativeEdgeTraversalTime = currentEdge.getCost();
 
                 // *** Testing Block Start ***
-                System.out.println(person.getReadableName()
-                        + " Traversing from "
-                        + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
-                        + " to "
-                        + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getReadableName());
+//                System.out.println(person.getReadableName()
+//                        + " Traversing from "
+//                        + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
+//                        + " to "
+//                        + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getReadableName());
                 // *** Testing Block End ***
 
             } else { // if the person is already located at one of the exits.
@@ -90,11 +90,11 @@ public class PathTraversalTimeStep implements ITimeStepListener {
                     //                    } else {
 
                     // *** Testing Block Start ***
-                    System.out.println(person.getReadableName()
-                            + " Traversing from "
-                            + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
-                            + " to "
-                            + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getReadableName());
+//                    System.out.println(person.getReadableName()
+//                            + " Traversing from "
+//                            + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
+//                            + " to "
+//                            + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getDestination()).getReadableName());
                     // *** Testing Block End ***
 
                     cumulativeEdgeTraversalTime += currentEdge.getCost();

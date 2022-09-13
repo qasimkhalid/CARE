@@ -14,6 +14,8 @@ public class PersonController implements IAccessibility, IPathTraversal {
     private final Person person;
     private float allowedSafetyValue;
     private final PathTraversalTimeStep pathTraversalTimeStep = new PathTraversalTimeStep();
+    private List<String> assignedRoute;
+    private boolean evacuated = false;
 
     public PersonController(Person person, float allowedSafetyValue) {
         this.person = person;
@@ -50,10 +52,10 @@ public class PersonController implements IAccessibility, IPathTraversal {
         AutomatedOperations.updatePersonLocationOnSuccessfulPathTraversal(person.getName(), personOldLocation, personNewLocation);
         person.setLocation(personNewLocation);
 
-        System.out.println(person.getReadableName() + " Successfully Traversed an Edge from: " +
-                SpaceSensorsStreamer.getSpacesInfo().get(personOldLocation).getReadableName() +
-                " --> " +
-                SpaceSensorsStreamer.getSpacesInfo().get(personNewLocation).getReadableName());
+//        System.out.println(person.getReadableName() + " Successfully Traversed an Edge from: " +
+//                SpaceSensorsStreamer.getSpacesInfo().get(personOldLocation).getReadableName() +
+//                " --> " +
+//                SpaceSensorsStreamer.getSpacesInfo().get(personNewLocation).getReadableName());
     }
 
     @Override
@@ -63,7 +65,8 @@ public class PersonController implements IAccessibility, IPathTraversal {
 
         AutomatedOperations.updateModelWhenPersonCompletesPath(person.getName());
 
-        System.out.println(person.getReadableName() + " has successfully evacuated.");
+        //System.out.println(person.getReadableName() + " has successfully evacuated.");
+        evacuated = true;
     }
 
     @Override
@@ -120,6 +123,7 @@ public class PersonController implements IAccessibility, IPathTraversal {
             EvacuationController.evacueesCounter -= 1;
             return;
         }
+        this.assignedRoute = routeAssigned;
         pathTraversalTimeStep.setPath(person, routeAssigned, this, this);
     }
 
@@ -154,5 +158,13 @@ public class PersonController implements IAccessibility, IPathTraversal {
             }
         }
         return availableExits;
+    }
+
+    public List<String> getAssignedRoute() {
+        return this.assignedRoute;
+    }
+
+    public boolean isEvacuated() {
+        return this.evacuated;
     }
 }

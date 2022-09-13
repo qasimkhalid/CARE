@@ -45,7 +45,7 @@ public class EventTimer {
     }
 
     public void doTimeStep(long timeStep) {
-        System.out.println("..do time step.." + timeStep);
+        //System.out.println("..do time step.." + timeStep);
 
         for (ITimeStepListener listener : listeners) {
             listener.onTimeStep(timeStep);

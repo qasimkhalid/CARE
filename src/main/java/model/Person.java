@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Person {
 
     private String person;
@@ -40,6 +43,10 @@ public class Person {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getReadableLocation(){
+        return location.split("#")[1];
     }
 
     public void setLocation(String location) {
