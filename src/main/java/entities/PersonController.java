@@ -7,15 +7,19 @@ import model.graph.IAccessibility;
 import helper.*;
 import operations.AutomatedOperations;
 import operations.CommonOperations;
+import org.apache.jena.ext.com.google.common.collect.Lists;
 import streamers.SpaceSensorsStreamer;
 
 public class PersonController implements IAccessibility, IPathTraversal {
-
     private final Person person;
     private float allowedSafetyValue;
     private final PathTraversalTimeStep pathTraversalTimeStep = new PathTraversalTimeStep();
     private List<String> assignedRoute;
     private boolean evacuated = false;
+    private String interruptedNode = null;
+    private boolean isStuck = false;
+    private boolean isInterrupt = false;
+    private IEvacuationCallback evacuationCallback;
 
     public PersonController(Person person, float allowedSafetyValue) {
         this.person = person;
@@ -51,21 +55,11 @@ public class PersonController implements IAccessibility, IPathTraversal {
         // update destination of this person with new destination where he has landed!
         AutomatedOperations.updatePersonLocationOnSuccessfulPathTraversal(person.getName(), personOldLocation, personNewLocation);
         person.setLocation(personNewLocation);
-
-//        System.out.println(person.getReadableName() + " Successfully Traversed an Edge from: " +
-//                SpaceSensorsStreamer.getSpacesInfo().get(personOldLocation).getReadableName() +
-//                " --> " +
-//                SpaceSensorsStreamer.getSpacesInfo().get(personNewLocation).getReadableName());
     }
 
     @Override
     public void onPathComplete() {
-        // Remove listener on path traversal which will stop onTimeStep method calls
-        EventTimer.Instance().removeTimeStepListener(pathTraversalTimeStep);
-
         AutomatedOperations.updateModelWhenPersonCompletesPath(person.getName());
-
-        //System.out.println(person.getReadableName() + " has successfully evacuated.");
         evacuated = true;
     }
 
@@ -76,55 +70,33 @@ public class PersonController implements IAccessibility, IPathTraversal {
          * Here we assume that while following the path, if there is an interruption in his path,
          * The person has to start to follow another path from last node he left.
          */
-//            AutomatedOperations.updatePersonLocationOnCompletePathTraversal(getName(), origin, destination);
+        isInterrupt = true;
+        interruptedNode = interruptedSpace.split("#")[1];
 
-        // *** Testing Block Start ***
-        // Printing the Details of the Interrupted Space
-        System.out.println(SpaceSensorsStreamer.getSpacesInfo().get(interruptedSpace).getReadableName()
-                + " got inaccessible for "
-                + person.getReadableName()
-                + " with Space Safety Value = "
-                + SpaceSensorsStreamer.getSpacesInfo().get(interruptedSpace).getSafetyValue());
-        // *** Testing Block End ***
-
-//            // Remove listener on path traversal which will stop onTimeStep method calls
-        EventTimer.Instance().removeTimeStepListener(pathTraversalTimeStep);
-
-        // Evacuation will be started from the previous checkpoint node of the person using a new calculated path.
-        evacuate();
+        if (person.getReadableLocation().equals(interruptedNode)) {
+            isStuck = true;
+            evacuationCallback.evacuationEnded(this);
+        }
     }
     /* ----------------------------------- */
 
-    public void evacuate() {
+    public void evacuate(IEvacuationCallback evacuationCallback) {
+        this.evacuationCallback = evacuationCallback;
+        this.isInterrupt = false;
+
         List<String> route = findRoute();
 
-        // *** Debugging Block Start***
-
         if (route != null) {
-            List<String> routeForDebuggingPurposed = new ArrayList<>();
-            for (String s: route) {
-                routeForDebuggingPurposed.add(s.split("#")[1]);
-            }
-            System.out.println(person.getReadableName() + " Route : " + Arrays.toString(routeForDebuggingPurposed.toArray()));
+            this.followRoute(route);
         } else {
-            System.out.println(person.getReadableName() + " cannot evacuate the building.");
-            // *** Debugging Block End***
-//
-//            // Remove listener on path traversal which will stop onTimeStep method calls
-//            EventTimer.Instance().removeTimeStepListener(pathTraversalListener.listener);
-
+            isStuck = true;
+            evacuationCallback.evacuationEnded(this);
         }
-        this.followRoute(route);
     }
 
     public void followRoute(List<String> routeAssigned) {
-        if (routeAssigned == null) {
-            // Route not possible
-            EvacuationController.evacueesCounter -= 1;
-            return;
-        }
         this.assignedRoute = routeAssigned;
-        pathTraversalTimeStep.setPath(person, routeAssigned, this, this);
+        pathTraversalTimeStep.setPath(routeAssigned, this, this);
     }
 
     private List<String> findRoute() {
@@ -166,5 +138,21 @@ public class PersonController implements IAccessibility, IPathTraversal {
 
     public boolean isEvacuated() {
         return this.evacuated;
+    }
+
+    public String getLastInterrupt() {
+        return this.interruptedNode;
+    }
+
+    public void update(long timeStep) {
+        if (isInterrupt) {
+            evacuate(evacuationCallback);
+            return; // returns the flow and next person is called
+        }
+        pathTraversalTimeStep.onTimeStep(timeStep);
+    }
+
+    public boolean isStuck() {
+        return isStuck;
     }
 }

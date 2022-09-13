@@ -22,10 +22,10 @@ import java.util.List;
  * Generate report
  */
 
-public class EvacuationController {
+public class EvacuationController implements IEvacuationCallback {
     private final long timestep;
     private final List<PersonController> personControllers;
-    public static int evacueesCounter;
+    private static int evacueesCounter;
     private int iterationCounter = 0;
     private String previousScreenBuffer = "";
 
@@ -40,16 +40,17 @@ public class EvacuationController {
     public void start() {
 
         for (PersonController pc : personControllers) {
-            System.out.println(pc.getPerson().getReadableName() + " in " + pc.getPerson().getLocation().split("#")[1]);
-            pc.evacuate();
+            pc.evacuate(this);
         }
 
         while (inProgress(evacueesCounter)) {
-            EventTimer.Instance().doTimeStep(this.timestep);
 
-            // Printing the Location of persons (Fix it)
-//            EvacuationStreamer.detectPersonLocationUsingIdQuadrupleGenerator();
-            //System.out.println("--------------------" + iterationCounter + "---------------------------");
+            for (PersonController pc : personControllers) {
+                if (pc.isStuck() || pc.isEvacuated())
+                    continue;
+
+                pc.update(this.timestep);
+            }
 
             try {
                 Thread.sleep(this.timestep);
@@ -59,13 +60,13 @@ public class EvacuationController {
             printPersons();
             iterationCounter++;
 
-//            if (iterationCounter==25){
-//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE2").setSafetyValue(0.1);
-//            }
-//            if (iterationCounter==47){
-//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE3").setSafetyValue(0.1);
-//            }
-
+            // special case for interrupt generation
+            if (iterationCounter==47){
+                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE3").setSafetyValue(0.1);
+            }
+            if (iterationCounter==60){
+                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"J1").setSafetyValue(0.1);
+            }
         }
         closeApplication();
     }
@@ -75,14 +76,19 @@ public class EvacuationController {
         for (PersonController p : personControllers) {
             // name
             newScreenBuffer.append(ConsoleColors.CYAN_BOLD).append(p.getPerson().getReadableName()).append(ConsoleColors.RESET);
+            String location = p.getPerson().getReadableLocation();
+            String interrupt = p.getLastInterrupt();
 
             // path
             newScreenBuffer.append(" => [ ");
-            String location = p.getPerson().getReadableLocation();
+
             List<String> route = p.getAssignedRoute();
-            for(int i = 0; i < p.getAssignedRoute().size(); i++) {
+            for(int i = 0; i < route.size(); i++) {
                 String l = route.get(i).split("#")[1];
-                if (l.equals(location)) {
+
+                if (l.equals(interrupt)) {
+                    newScreenBuffer.append(ConsoleColors.RED_BOLD).append(l).append(ConsoleColors.RESET);
+                } else if (l.equals(location)) {
                     newScreenBuffer.append(ConsoleColors.GREEN_BOLD).append(l).append(ConsoleColors.RESET);
                 } else {
                     newScreenBuffer.append(l).append(ConsoleColors.RESET);
@@ -98,7 +104,9 @@ public class EvacuationController {
 
             // evacuation status
             if (p.isEvacuated()) {
-                newScreenBuffer.append(" \u2713");
+                newScreenBuffer.append(ConsoleColors.GREEN_BOLD).append(" \u2713").append(ConsoleColors.RESET);
+            } else if (p.isStuck()) {
+                newScreenBuffer.append(ConsoleColors.RED_BOLD).append(" \u2715").append(ConsoleColors.RESET);
             }
 
             newScreenBuffer.append("\n\r");
@@ -117,7 +125,6 @@ public class EvacuationController {
         return personsWhoHaveNotEvacuated.size() != totalPersons;
     }
 
-
     public static void closeApplication() {
         System.out.println("SpaceSensorsStreamer.stop()");
         SpaceSensorsStreamer.stop();
@@ -129,4 +136,8 @@ public class EvacuationController {
         System.exit(0);
     }
 
+    @Override
+    public void evacuationEnded(PersonController personController) {
+        evacueesCounter -= 1;
+    }
 }

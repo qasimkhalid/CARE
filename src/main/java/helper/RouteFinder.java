@@ -29,7 +29,6 @@ public class RouteFinder {
         return new Route(shortestPath);
     }
 
-
     public static List<Node> getShortestPathToSourceFromNode(String personLocation, String exit, IAccessibility accessibility) {
         List<Node> path = new ArrayList<>();
 
