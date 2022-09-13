@@ -69,9 +69,9 @@ public class CAREE {
         //Adding the observers to the instances of the listeners
 //        edge.addObserver(new Output("data/output/_m/edges.txt", "streamQueryEdge"));
 //        edgeExcludedForPerson.addObserver(new Output("data/output/_m/edges_not_apt_for_evacuation.txt", "streamQueryEdgeExcludedForPerson"));
-        node.addObserver(new Output("data/output/_m/nodes.txt", "streamQueryNode"));
-        personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
-        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons.txt", "streamQueryEdgePlusExcludedForPerson"));
+//        node.addObserver(new Output("data/output/_m/nodes.txt", "streamQueryNode"));
+//        personAtNode.addObserver(new Output("data/output/_m/location_of_each_person.txt", "streamQueryPersonAtNode"));
+//        edgePlusExcludedForPerson.addObserver(new Output("data/output/_m/edges_details_plus_excluded_persons.txt", "streamQueryEdgePlusExcludedForPerson"));
 
         //Starting all Space Sensor Streaming thread
         System.out.println("About to start Space Sensor Streaming thread...");

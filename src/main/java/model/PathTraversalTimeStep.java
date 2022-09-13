@@ -43,7 +43,7 @@ public class PathTraversalTimeStep implements ITimeStepListener {
         if (!path.isEmpty()) {
 
             // *** Testing Block Start ***
-            System.out.println(person + " started to follow the provided route" );
+            System.out.println(person.getReadableName() + " started to follow the provided route.");
             // *** Testing Block End ***
 
             if (hasNextNode()) {
@@ -51,7 +51,7 @@ public class PathTraversalTimeStep implements ITimeStepListener {
                 cumulativeEdgeTraversalTime = currentEdge.getCost();
 
                 // *** Testing Block Start ***
-                System.out.println(person
+                System.out.println(person.getReadableName()
                         + " Traversing from "
                         + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
                         + " to "
@@ -90,7 +90,7 @@ public class PathTraversalTimeStep implements ITimeStepListener {
                     //                    } else {
 
                     // *** Testing Block Start ***
-                    System.out.println(person
+                    System.out.println(person.getReadableName()
                             + " Traversing from "
                             + SpaceSensorsStreamer.getSpacesInfo().get(currentEdge.getOrigin()).getReadableName()
                             + " to "

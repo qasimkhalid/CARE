@@ -118,8 +118,12 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                         // *** Testing Block Start ***
                         hazardDetectionFlag = true;
-                        System.out.println(s.getReadableName() + " has Safety Value " +  s.getSafetyValue());
+
+                        System.out.println("************");
+                        System.out.print("HAZARD DETECTED on ");
+                        System.out.println(s.getReadableName() + " and its safety value has become " +  s.getSafetyValue());
                         System.out.println("Hazard detection flag = true");
+                        System.out.println("************");
                         InitializeEvacuationStreamer();
                         // *** Testing Block End ***
                     }
