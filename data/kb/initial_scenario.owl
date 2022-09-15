@@ -1,4 +1,4 @@
-@prefix : <https://w3id.org/sbeo/example/officescenario#> .
+
 @prefix ex: <https://w3id.org/sbeo/example/officescenario#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -9,6 +9,7 @@
 @prefix sbeo: <https://w3id.org/sbeo#> .
 @prefix seas: <https://w3id.org/seas/> .
 @prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix olo: <http://purl.org/ontology/olo/core#> .
 @base <https://w3id.org/sbeo/example/officescenario> .
 
 <https://w3id.org/sbeo/example/officescenario> rdf:type owl:Ontology ;
@@ -175,7 +176,7 @@ ex:FE1 rdf:type owl:NamedIndividual ,
                 sbeo:FloorExit ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 15.
+       sbeo:id 15 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#FE1_HumanDetection_Sensor
@@ -219,8 +220,7 @@ ex:FE2 rdf:type owl:NamedIndividual ,
        sbeo:connectedTo ex:OE3 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-sbeo:id 1.
-
+       sbeo:id 1 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#FE2_HumanDetection_Sensor
@@ -276,7 +276,7 @@ ex:J1 rdf:type owl:NamedIndividual ,
                        ex:POI1 ;
       sbeo:accommodationCapacity 2 ;
       sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 16.
+      sbeo:id 16 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#J1_FE1
@@ -453,7 +453,7 @@ ex:J2 rdf:type owl:NamedIndividual ,
                        ex:RE1 ;
       sbeo:accommodationCapacity 2 ;
       sbeo:area "2.0"^^xsd:float ;
-      sbeo:id 6.
+      sbeo:id 6 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#J2_HumanDetection_Sensor
@@ -541,7 +541,7 @@ ex:OE1 rdf:type owl:NamedIndividual ,
        sbeo:connectedTo ex:OpenHall1 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 14.
+       sbeo:id 14 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OE1_HumanDetection_Sensor
@@ -587,7 +587,7 @@ ex:OE2 rdf:type owl:NamedIndividual ,
                         ex:RE1 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 13.
+       sbeo:id 13 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OE2_HumanDetection_Sensor
@@ -676,7 +676,7 @@ ex:OE3 rdf:type owl:NamedIndividual ,
                         ex:RE2 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-       sbeo:id 2.
+       sbeo:id 2 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OE3_FE2
@@ -763,7 +763,7 @@ ex:OE4 rdf:type owl:NamedIndividual ,
                 sbeo:OpenAreaExit ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 9.
+       sbeo:id 9 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OE4_HumanDetection_Sensor
@@ -850,7 +850,7 @@ ex:Office1 rdf:type owl:NamedIndividual ,
                     seas:Office ;
            sbeo:accommodationCapacity 5 ;
            sbeo:area "6.0"^^xsd:float ;
-           sbeo:id 7.
+           sbeo:id 7 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#Office1_HumanDetection_Sensor
@@ -983,7 +983,7 @@ ex:Office2 rdf:type owl:NamedIndividual ,
                             ex:RE2 ;
            sbeo:accommodationCapacity 5 ;
            sbeo:area "5.0"^^xsd:float ;
-           sbeo:id 5.
+           sbeo:id 5 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#Office2_HumanDetection_Sensor
@@ -1070,7 +1070,7 @@ ex:OpenHall1 rdf:type owl:NamedIndividual ,
                       seas:Hall ;
              sbeo:accommodationCapacity 5 ;
              sbeo:area "5.0"^^xsd:float ;
-        sbeo:id 12.
+             sbeo:id 12 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OpenHall1_HumanDetection_Sensor
@@ -1202,7 +1202,7 @@ ex:OpenHall2 rdf:type owl:NamedIndividual ,
              sbeo:connectedTo ex:OE4 ;
              sbeo:accommodationCapacity 5 ;
              sbeo:area "5.0"^^xsd:float ;
-             sbeo:id 4.
+             sbeo:id 4 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#OpenHall2_HumanDetection_Sensor
@@ -1334,7 +1334,7 @@ ex:POI1 rdf:type owl:NamedIndividual ,
         sbeo:connectedTo ex:J1 ;
         sbeo:accommodationCapacity 1 ;
         sbeo:area "5.0"^^xsd:float ;
-        sbeo:id 17.
+        sbeo:id 17 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#POI1_HumanDetection_Sensor
@@ -1422,7 +1422,7 @@ ex:RE1 rdf:type owl:NamedIndividual ,
        sbeo:connectedTo ex:Office1 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 8.
+       sbeo:id 8 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#RE1_HumanDetection_Sensor
@@ -1510,7 +1510,7 @@ ex:RE2 rdf:type owl:NamedIndividual ,
        sbeo:connectedTo ex:J2 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-       sbeo:id 3.
+       sbeo:id 3 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#RE2_HumanDetection_Sensor
@@ -1643,7 +1643,7 @@ ex:RE3 rdf:type owl:NamedIndividual ,
                         ex:WC1 ;
        sbeo:accommodationCapacity 2 ;
        sbeo:area "2.0"^^xsd:float ;
-        sbeo:id 10.
+       sbeo:id 10 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#RE3_HumanDetection_Sensor
@@ -1701,7 +1701,7 @@ ex:WC1 rdf:type owl:NamedIndividual ,
                 seas:Bathroom ;
        sbeo:accommodationCapacity 5 ;
        sbeo:area "5.0"^^xsd:float ;
-        sbeo:id 11.
+       sbeo:id 11 .
 
 
 ###  https://w3id.org/sbeo/example/officescenario#WC1_HumanDetection_Sensor

@@ -7,7 +7,6 @@ import model.graph.IAccessibility;
 import helper.*;
 import operations.AutomatedOperations;
 import operations.CommonOperations;
-import org.apache.jena.ext.com.google.common.collect.Lists;
 import streamers.SpaceSensorsStreamer;
 
 public class PersonController implements IAccessibility, IPathTraversal {
@@ -53,7 +52,7 @@ public class PersonController implements IAccessibility, IPathTraversal {
     @Override
     public void onEdgeTraversed(String personOldLocation, String personNewLocation) {
         // update destination of this person with new destination where he has landed!
-        AutomatedOperations.updatePersonLocationOnSuccessfulPathTraversal(person.getName(), personOldLocation, personNewLocation);
+        AutomatedOperations.updateModelWhenPersonTraversesPathSuccessfully(person.getName(), personOldLocation, personNewLocation);
         person.setLocation(personNewLocation);
     }
 
@@ -92,6 +91,9 @@ public class PersonController implements IAccessibility, IPathTraversal {
             isStuck = true;
             evacuationCallback.evacuationEnded(this);
         }
+
+
+        AutomatedOperations.updateModelWhenARouteIsAssignedToPerson(person.getName(), route);
     }
 
     public void followRoute(List<String> routeAssigned) {

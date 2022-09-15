@@ -1,5 +1,6 @@
 package model;
 
+import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.*;
@@ -66,6 +67,10 @@ public class CareeInfModel {
         _infModel.add(resource1, property, resource2);
     }
 
+    public synchronized void addStatement(Statement s) {
+        _infModel.add(s);
+    }
+
     public synchronized void addLiteral(Resource resource1, Property property, double literal) {
         _infModel.addLiteral(resource1, property, literal);
     }
@@ -80,6 +85,7 @@ public class CareeInfModel {
     }
 
     public synchronized Resource getResource(String key) {
+//        return _infModel.getResource(key);
         return _infModel.getResource(key);
     }
 
@@ -91,9 +97,34 @@ public class CareeInfModel {
         return _infModel.getProperty(key);
     }
 
+    public synchronized RDFNode getRDFNode(Node n) {
+        return _infModel.getRDFNode(n);
+    }
+
+    public NodeIterator listObjectsOfProperty(Resource s, Property p){
+        return _infModel.listObjectsOfProperty(s, p);
+    }
+
     public synchronized boolean contains(Resource resource, Property property) {
         return _infModel.contains(resource, property);
     }
+
+    public synchronized boolean contains(Resource resource, Property property, String object) {
+        return _infModel.contains(resource, property, object);
+    }
+
+    public synchronized boolean contains(Resource resource, Property property, RDFNode object) {
+        return _infModel.contains(resource, property, object);
+    }
+
+    public synchronized boolean contains(Statement s) {
+        return _infModel.contains(s);
+    }
+
+    public synchronized Statement createStatement(Resource r, Property p, RDFNode o) {
+        return _infModel.createStatement(r, p, o);
+    }
+
 
     public synchronized InfModel getInfModel() {
         return _infModel;

@@ -1,14 +1,14 @@
 package operations;
 
-import com.hp.hpl.jena.rdf.model.InfModel;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
+import com.hp.hpl.jena.rdf.model.*;
 import helper.HelpingVariables;
 import model.CareeInfModel;
 import model.graph.ODPair;
 import model.Space;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -162,7 +162,119 @@ public class AutomatedOperations {
 //        }
 //    }
 
-    public static void updatePersonLocationOnSuccessfulPathTraversal(String personName, String personOldLocation, String personNewLocation) {
+//        public static void updateModelWhenARouteIsAssignedToPerson(String<List> route) {
+//            String r = route.get(0) + "_" + route.get(route.size() - 1);
+//            Resource RouteResource = CareeInfModel.Instance().getResource(route);
+//            boolean x  = CareeInfModel.Instance().contains(RouteResource, null);
+//            int y = 0;
+//        }
+
+
+    /**
+     * This method updates/assigns the assigned route to the person in the model.
+     * If the route already exists in the model, compare it with the existing one (size, slots with their order).
+     * Otherwise, create a new route.
+     * While creating a route, check for the existing slots in the model, so that the slot names won't be repeated.
+     * Assign the newly created route to the person.
+     * @param personName - URI of the person to whom the route will be assigned.
+     * @param newRoute - list of spaces.
+     */
+    public static void updateModelWhenARouteIsAssignedToPerson(String personName, List<String> newRoute) {
+        Resource routeResource = null;
+        if (newRoute != null) {
+            String r = newRoute.get(0) + "_" + "To_" + newRoute.get(newRoute.size() - 1).split("#")[1] + "_Route";
+            routeResource = CareeInfModel.Instance().getResource(r);
+            boolean routeAlreadyExistsInModel = CareeInfModel.Instance().contains(routeResource, null);
+            boolean bothRoutesSame = false;
+
+            if (routeAlreadyExistsInModel) {
+                bothRoutesSame = areBothRoutesSame(routeResource, newRoute);
+            }
+
+            if (!routeAlreadyExistsInModel || !bothRoutesSame) {
+                // Create a new route and put it in the model.
+                CareeInfModel.Instance().add(routeResource, HelpingVariables.rdfType, HelpingVariables.ExitRouteClass);
+                CareeInfModel.Instance().addLiteral(routeResource, HelpingVariables.lengthOlo, newRoute.size());
+                for (int i = 0; i < newRoute.size(); i++) {
+                    int counter = 1;
+                    Resource slotToAdd = createSlot(HelpingVariables.exPrefix + "slot", counter, i);
+                    CareeInfModel.Instance().add(routeResource, HelpingVariables.slot, slotToAdd);
+                    CareeInfModel.Instance().addStatement(CareeInfModel.Instance().createStatement(slotToAdd, HelpingVariables.item, HelpingVariables.SlotClass));
+                    CareeInfModel.Instance().addLiteral(slotToAdd, HelpingVariables.index, i);
+                }
+            }
+        } 
+        
+        Resource personResource = CareeInfModel.Instance().getResource(personName);
+        // Removing the assigned path of a person, if any.
+        if (CareeInfModel.Instance().contains(personResource, HelpingVariables.assignedRoute)){
+            Statement currentAssignedRoute = CareeInfModel.Instance().getRequiredProperty(personResource, HelpingVariables.assignedRoute);
+            CareeInfModel.Instance().remove(currentAssignedRoute);
+        }
+
+        if (routeResource!= null) {
+            // Assigning a new path to the person.
+            CareeInfModel.Instance().add(personResource, HelpingVariables.assignedRoute, routeResource);
+        }
+    }
+
+    /**
+     * Create a new slot if a slot with similar URI already exists in the model
+     * Otherwise, returns the same one (which is rare)
+     * Associated with {@link #updateModelWhenARouteIsAssignedToPerson(String personName, List newRoute)}
+     * @param slot slot URI
+     * @param incrementer an int to add as a suffix to the slot if a slot with the exisiting URI already exists in the model.
+     * @param index index of the slot in the route.
+     * @return a slot as resource.
+     */
+        private static Resource createSlot(String slot, int incrementer, int index) {
+            String currentSlot = slot;
+            Resource slotResource = CareeInfModel.Instance().getResource(currentSlot);
+            Statement slotStatement = CareeInfModel.Instance().createStatement(slotResource, HelpingVariables.rdfType, HelpingVariables.SlotClass);
+            if (CareeInfModel.Instance().contains(slotStatement)) {
+                Statement slotIndexTriple = CareeInfModel.Instance().getRequiredProperty(slotResource, HelpingVariables.index);
+                Statement slotItemTriple = CareeInfModel.Instance().getRequiredProperty(slotResource, HelpingVariables.item);
+                if (slotIndexTriple.getLiteral().getInt() != index && !slotItemTriple.getObject().toString().equals(currentSlot)) ;
+                    currentSlot = currentSlot.split("_")[0] + "_" + incrementer;
+                    incrementer++;
+                    slotResource = createSlot(currentSlot, incrementer, index);
+                }
+            return slotResource;
+        }
+
+    /**
+     * Compare (size, slots, and order of the slots of)  the exiting route in the model with the new route.
+     * Associated with {@link #updateModelWhenARouteIsAssignedToPerson(String personName, List newRoute)}
+     * @param routeResource Existing route in the model
+     * @param newRoute list of spaces.
+     * @return a boolean if they are same or not
+     */
+    private static boolean areBothRoutesSame(Resource routeResource, List<String> newRoute) {
+        NodeIterator ni = CareeInfModel.Instance().listObjectsOfProperty(routeResource, HelpingVariables.slot);
+        List<RDFNode> objects = new ArrayList<>();
+        while (ni.hasNext()) {
+            RDFNode node = ni.next();
+            objects.add(node);
+        }
+        String[] existingRouteInModel = new String[objects.size()];
+        for (RDFNode o : objects){
+            NodeIterator itemIterator = CareeInfModel.Instance().listObjectsOfProperty(o.asResource(), HelpingVariables.item);
+            NodeIterator indexIterator = CareeInfModel.Instance().listObjectsOfProperty(o.asResource(), HelpingVariables.index);
+            while (itemIterator.hasNext()) {
+                RDFNode item = itemIterator.next();
+                RDFNode index = indexIterator.next();
+                existingRouteInModel[index.asLiteral().getInt()] = item.toString();
+            }
+        }
+        if (existingRouteInModel.length != newRoute.size()){
+            return false;
+        }
+
+        return Arrays.asList(existingRouteInModel).equals(newRoute);
+    }
+
+
+    public static void updateModelWhenPersonTraversesPathSuccessfully(String personName, String personOldLocation, String personNewLocation) {
         Resource personResource = CareeInfModel.Instance().getResource(personName);
         Resource locationResource = CareeInfModel.Instance().getResource(personOldLocation);
         CareeInfModel.Instance().remove(personResource, HelpingVariables.locatedIn, locationResource);
@@ -198,3 +310,5 @@ public class AutomatedOperations {
         return Sparql.getSPARQLQueryResult(CareeInfModel.Instance().getInfModel(), "data/queries/sparql/GetExits.txt");
     }
 }
+
+
