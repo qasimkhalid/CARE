@@ -16,6 +16,9 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
     private float areaPerPersonM2 = 1f;
     private final boolean freeFlow;
 
+    // Just for testing purpose. Delete it in future:
+    int referenceCounter = 0;
+
     public EvacuationStreamer(final String iri, long timeStep, boolean freeFlow, float areaPerPersonM2) {
         super(iri);
         this.timeStep = timeStep;
@@ -30,7 +33,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
 
         // Get All Persons
         List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
-        EvacuationController ec = new EvacuationController(personControllers, timeStep);
+        EvacuationController ec = new EvacuationController(personControllers, timeStep, 15);
         ec.start();
 //        try {
 //
@@ -106,6 +109,7 @@ public class EvacuationStreamer extends RdfStream implements Runnable {
             // associated with a person mobility impairment
             // updating the type of the person
             else if (type.equals("https://w3id.org/sbeo#NonMotorisedWheelchairPerson")) {
+                personControllerMap.get(person).getPerson().setAllowedSafetyValue(0.5f);
                 personControllerMap.get(person).getPerson().setType(type);
                 personControllerMap.get(person).setAllowedSafetyValue(0.5f);
             }

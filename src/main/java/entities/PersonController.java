@@ -23,6 +23,7 @@ public class PersonController implements IAccessibility, IPathTraversal {
     public PersonController(Person person, float allowedSafetyValue) {
         this.person = person;
         this.person.setAllowedSafetyValue(allowedSafetyValue);
+        this.allowedSafetyValue = allowedSafetyValue;
     }
 
     public void setAllowedSafetyValue(float allowedSafetyValue) {

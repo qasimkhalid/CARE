@@ -85,6 +85,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                     generateSensorValue(sensor, timeNow, allSensorsValueAtSpecificLocationList.get(locationName));
                 }
             }
+            count = count + 1;
             Thread.sleep(timeStep);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,13 +119,13 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
                         // *** Testing Block Start ***
                         hazardDetectionFlag = true;
-
                         System.out.println("************");
                         System.out.print("HAZARD DETECTED on ");
                         System.out.println(s.getReadableName() + " and its safety value has become " +  s.getSafetyValue());
                         System.out.println("Hazard detection flag = true");
+                        System.out.println("At Reference time = " + count);
                         System.out.println("************");
-                        InitializeEvacuationStreamer();
+                        InitializeEvacuationStreamer(count);
                         // *** Testing Block End ***
                     }
 //
@@ -156,14 +157,14 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
     }
 
-    private void InitializeEvacuationStreamer() {
+    private void InitializeEvacuationStreamer(int count) {
 //        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
 //        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
 //        Thread evacuationStreamThread = new Thread(evacuationStream);
 //        evacuationStreamThread.start();
 //
         List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
-        EvacuationController ec = new EvacuationController(personControllers, timeStep);
+        EvacuationController ec = new EvacuationController(personControllers, timeStep, count);
         ec.start();
     }
 

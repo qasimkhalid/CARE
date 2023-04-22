@@ -27,14 +27,17 @@ public class EvacuationController implements IEvacuationCallback {
     private final List<PersonController> personControllers;
     private static int evacueesCounter;
     private int iterationCounter = 0;
+    private int referenceSavedForThisScenario = 0;
     private String previousScreenBuffer = "";
 
 
-    public EvacuationController(List<PersonController> personControllers, long timestep) {
+    public EvacuationController(List<PersonController> personControllers, long timestep, int referenceTimeAlreadyPassed) {
 //        this.personControllers = personControllers.subList(1,2); //WheelChair person
         this.personControllers = personControllers;
         this.timestep = timestep;
         evacueesCounter = this.personControllers.size();
+        this.iterationCounter = referenceTimeAlreadyPassed;
+        this.referenceSavedForThisScenario = referenceTimeAlreadyPassed;
     }
 
     public void start() {
@@ -59,12 +62,12 @@ public class EvacuationController implements IEvacuationCallback {
             }
             printPersons();
             iterationCounter++;
-
+            System.out.println("iteration Reference Time= " + iterationCounter);
             // special case for interrupt generation
-            if (iterationCounter==47){
+            if (iterationCounter==referenceSavedForThisScenario+47){
                 SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE3").setSafetyValue(0.1);
             }
-            if (iterationCounter==60){
+            if (iterationCounter==referenceSavedForThisScenario+60){
                 SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"J1").setSafetyValue(0.1);
             }
         }
