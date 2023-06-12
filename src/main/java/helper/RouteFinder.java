@@ -54,14 +54,30 @@ public class RouteFinder {
         } else {
             nodeMap.replaceAll((k, v) -> new Node(k));
         }
-        for (ODPair od : HelpingVariables.odPairList){
-            if (accessibility.isEdgeAccessible(od.getOrigin(), od.getDestination()) && accessibility.isNodeAccessible(od.getDestination())){
-                    nodeMap.get(od.getOrigin()).addDestination(nodeMap.get(od.getDestination()), od.getCost());
+//        for (ODPair od : HelpingVariables.odPairList){
+        for(int i=0; i < HelpingVariables.odPairList.size(); i++){
+            if (accessibility.isEdgeAccessible(HelpingVariables.odPairList.get(i).getOrigin(), HelpingVariables.odPairList.get(i).getDestination()) && accessibility.isNodeAccessible(HelpingVariables.odPairList.get(i).getDestination())){
+//                Debugging
+//                String x = HelpingVariables.odPairList.get(i).getOrigin();
+//                Node y = nodeMap.get(HelpingVariables.odPairList.get(i).getDestination());
+//                long z = HelpingVariables.odPairList.get(i).getCost();
+//                nodeMap.get(x).addDestination(y,z);
+
+
+//                nodeMap.get(HelpingVariables.odPairList.get(i).getOrigin()).addDestination(nodeMap.get(HelpingVariables.odPairList.get(i).getDestination()), HelpingVariables.odPairList.get(i).getCost());
             }
-            if (accessibility.isEdgeAccessible(od.getDestination(), od.getOrigin()) && accessibility.isNodeAccessible(od.getOrigin())){
-                    nodeMap.get(od.getDestination()).addDestination(nodeMap.get(od.getOrigin()), od.getCost());
+            if (accessibility.isEdgeAccessible(HelpingVariables.odPairList.get(i).getDestination(), HelpingVariables.odPairList.get(i).getOrigin()) && accessibility.isNodeAccessible(HelpingVariables.odPairList.get(i).getOrigin())){
+                    nodeMap.get(HelpingVariables.odPairList.get(i).getDestination()).addDestination(nodeMap.get(HelpingVariables.odPairList.get(i).getOrigin()), HelpingVariables.odPairList.get(i).getCost());
             }
+//        if (accessibility.isEdgeAccessible(od.getOrigin(), od.getDestination()) && accessibility.isNodeAccessible(od.getDestination())){
+//                    nodeMap.get(od.getOrigin()).addDestination(nodeMap.get(od.getDestination()), od.getCost());
+//            }
+//            if (accessibility.isEdgeAccessible(od.getDestination(), od.getOrigin()) && accessibility.isNodeAccessible(od.getOrigin())){
+//                    nodeMap.get(od.getDestination()).addDestination(nodeMap.get(od.getOrigin()), od.getCost());
+//            }
         }
+        //Debugging
+        int x = 0;
     }
 }
 

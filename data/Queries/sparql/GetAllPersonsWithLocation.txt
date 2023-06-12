@@ -15,5 +15,9 @@ where {
         {?type rdfs:subClassOf foaf:Person}
         UNION
         {?type rdfs:subClassOf sbeo:NonMotorisedWheelchairPersonClass}
+       UNION
+        {?type rdfs:subClassOf sbeo:MotorisedWheelchairPersonClass}
+       UNION
+        {?type rdfs:subClassOf sbeo:HearingImpairedPersonClass}
       }
 Order By ?person

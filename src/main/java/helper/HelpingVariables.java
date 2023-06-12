@@ -43,6 +43,8 @@ public class HelpingVariables {
 
     public final static Resource personClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.foafPrefix + "Person");
     public final static Resource NonMotorisedWheelchairPersonClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.sbeoPrefix + "NonMotorisedWheelchairPerson");
+    public final static Resource MotorisedWheelchairPersonClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.sbeoPrefix + "MotorisedWheelchairPerson");
+    public final static Resource HearingImpairedPersonClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.sbeoPrefix + "HearingImpairedPerson");
     public final static Resource ExitRouteClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.sbeoPrefix + "ExitRoute");
     public final static Resource SlotClass = CareeInfModel.Instance().getInfModel().getResource(HelpingVariables.oloPrefix + "Slot");
 

@@ -1,16 +1,14 @@
 package operations;
 
 import com.hp.hpl.jena.rdf.model.*;
+import entities.PersonController;
 import helper.HelpingVariables;
 import model.CareeInfModel;
 import model.graph.ODPair;
 import model.Space;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AutomatedOperations {
@@ -41,12 +39,16 @@ public class AutomatedOperations {
                                 && x.getDestination().equals(tokens[0])))
                         .collect(Collectors.toList());
 
-                if (!odPairMatchedList.isEmpty() && odPairList.size() != 2) {
-                    for (ODPair odPair : odPairMatchedList) {
-                        odPair.setSpace(s);
+                if (!odPairMatchedList.isEmpty()){
+                    if(odPairList.size() != 2) {
+                        for (ODPair odPair : odPairMatchedList) {
+                            odPair.setSpace(s);
+                        }
+                    } else {
+                        System.out.println("odPairList size is not 2, i.e., " + odPairList.size());
                     }
                 } else {
-                    System.out.println("Origin and Destination not found in odPairList for injecting a common edge");
+                    System.out.println("odPairMatchedList is empty");
                 }
 
                 list.add(s);
@@ -89,35 +91,33 @@ public class AutomatedOperations {
      * moving agents
      *
      * @param infModel              - Inference Model
-     * @param personsCount          - Total number of persons.
-     * @param personsWithWheelChair - Number of persons having a mobility impairment
+     * @param personQuantity       - List of persons of each type
+     * @param personsTypes - List of types of persons
      */
-    public static void setPeopleInBuilding(InfModel infModel, int personsCount, int personsWithWheelChair) {
+    public static void setPeopleInBuilding(InfModel infModel, List<Integer> personQuantity, List<Resource> personsTypes) {
         long initialTime = System.currentTimeMillis();
-        int personsWithWheelChairCounter = 0;
         Resource personInstance;
         Resource spaceInstance;
 
         List<String> availableSpaces = getAvailableNodes(infModel);
+        int personCount = 1;
+        for (int i = 0; i < personQuantity.size(); i++) {
+            for (int j = 1; j <= personQuantity.get(i); j++) {
+                //Debugging
+                //  System.out.println("Person"+personCount+ " "+ personsTypes.get(i)+ "id="+ personCount);
+                personInstance = ResourceFactory.createResource(HelpingVariables.exPrefix + "Person" + personCount);
+                infModel.add(personInstance, HelpingVariables.rdfType, personsTypes.get(i));
 
-        for (int i = 1; i <= personsCount; i++) {
-            personInstance = ResourceFactory.createResource(HelpingVariables.exPrefix + "Person" + i);
+                infModel.addLiteral(personInstance, HelpingVariables.id, personCount);
+                infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
 
-            if (personsWithWheelChairCounter < personsWithWheelChair) {
-                infModel.add(personInstance, HelpingVariables.rdfType,
-                        HelpingVariables.NonMotorisedWheelchairPersonClass);
-                personsWithWheelChairCounter++;
-            } else {
-                infModel.add(personInstance, HelpingVariables.rdfType, HelpingVariables.personClass);
+                // Choosing a random space as a person location
+                String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
+                spaceInstance = ResourceFactory.createResource(rs);
+                infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
+                infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
+                personCount++;
             }
-            infModel.addLiteral(personInstance, HelpingVariables.id, i);
-            infModel.add(personInstance, HelpingVariables.motionState, HelpingVariables.motionStateResting);
-
-            // Choosing a random space as a person location
-            String rs = availableSpaces.get(MathOperations.getRandomNumber(availableSpaces.size()));
-            spaceInstance = ResourceFactory.createResource(rs);
-            infModel.add(personInstance, HelpingVariables.locatedIn, spaceInstance);
-            infModel.addLiteral(personInstance, HelpingVariables.atTime, initialTime);
         }
     }
 
@@ -295,12 +295,16 @@ public class AutomatedOperations {
         CareeInfModel.Instance().add(personResource, HelpingVariables.motionState, HelpingVariables.motionStateResting);
     }
 
+    //Todo: It is supposed to be synchronized with the speed factor and timestep. Right now it is just in seconds.
     public static long getODPairCostInSeconds(String origin, String destination) throws Exception {
         Optional<ODPair> odPair = HelpingVariables.odPairList.stream()
                 .filter(x -> x.getOrigin().equals(origin) && x.getDestination().equals(destination)).findFirst();
 
         if (odPair.isPresent()) {
-            return odPair.get().getCost() * 1000;
+            //update for some checks and for an application scenario
+            return odPair.get().getCost() * 100;
+            //Before it was seconds
+//            return odPair.get().getCost() * 1000;
         } else {
             throw new Exception("Origin and Destination not found in odPairList");
         }
@@ -309,6 +313,36 @@ public class AutomatedOperations {
     public static List<String> getExits() {
         return Sparql.getSPARQLQueryResult(CareeInfModel.Instance().getInfModel(), "data/queries/sparql/GetExits.txt");
     }
+
+    public static void SetupPersonsMap(Map<String, PersonController> personControllerMap) {
+        List<String> getAllPersonQueryResult = CareeInfModel.Instance()
+                //.getQueryResult("data/queries/sparql/GetAllPersons.txt");
+                .getQueryResult("data/queries/sparql/GetAllPersonsWithLocation.txt");
+        for (int i = 0; i < getAllPersonQueryResult.size() - 2; i += 3) {
+            String person = getAllPersonQueryResult.get(i);
+            String type = getAllPersonQueryResult.get(i + 1);
+            String personLocation = getAllPersonQueryResult.get(i + 2);
+            CommonOperations.putPersonInPersonControllerMap(person, type, personLocation, personControllerMap);
+        }
+    }
+
+    public static List<PersonController> GetAllPersonControllers() {
+//        Map<String, PersonController> personsMap = new HashMap<>();
+        Map<String, PersonController> personsMap = new LinkedHashMap<>();
+        SetupPersonsMap(personsMap);
+        Map<String, PersonController> personsMapFixed = sortPersonControllerMap(personsMap);
+        return new ArrayList<>(personsMapFixed.values());
+    }
+
+    public static Map<String, PersonController> sortPersonControllerMap(Map<String, PersonController> unsortedMap) {
+        // sorting the LinkedHashMap by considering the integer value after the string "Person"
+        LinkedHashMap<String, PersonController> sortedMap = new LinkedHashMap<>();
+        unsortedMap.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey().split("#")[1].substring(6))))
+                .forEachOrdered(e -> sortedMap.put(e.getKey(), e.getValue()));
+        return sortedMap;
+    }
+
 }
 
 

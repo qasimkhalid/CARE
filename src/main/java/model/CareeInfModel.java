@@ -37,7 +37,8 @@ public class CareeInfModel {
 //        InputStream in = new FileInputStream("G:\\.shortcut-targets-by-id\\1DQfFtktu-cWZCdp7V2zH4sCOhw49RekS\\Qasim-Shared\\sbeo_paper_evaluation_example_modeling\\data\\kb\\initial_scenario.owl");
             InputStream in = null;
             try {
-                in = new FileInputStream("data/kb/initial_scenario.owl");
+//                in = new FileInputStream("data/kb/initial_scenario.owl");
+                in = new FileInputStream("data/kb/2nd_scenario_shopping_mall.owl");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

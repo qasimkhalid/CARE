@@ -7,6 +7,7 @@ import eu.larkc.csparql.cep.api.RdfQuadruple;
 import eu.larkc.csparql.cep.api.RdfStream;
 
 import entities.EvacuationController;
+import operations.AutomatedOperations;
 import operations.MathOperations;
 import helper.HelpingVariables;
 import model.*;
@@ -19,12 +20,17 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
     private boolean hazardDetectionFlag;
     private static String streamIRI;
     private static Map<String, Space> allSensorsValueAtSpecificLocationList;
+    private final int manualIncidentReferenceTime;
+    private final String manualIncidentLocation
+            ;
 
-    public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue) {
+    public SpaceSensorsStreamer( final String iri, long timeStep, double evacuationTriggerSafetyValue, int manualIncidentReferenceTime, String manualIncidentLocation) {
         super(iri);
         streamIRI = iri;
         this.timeStep = timeStep;
         this.evacuationTriggerSafetyValue = evacuationTriggerSafetyValue;
+        this.manualIncidentReferenceTime = manualIncidentReferenceTime;
+        this.manualIncidentLocation= manualIncidentLocation;
     }
     public static String getStreamIRI(){
         return streamIRI;
@@ -78,7 +84,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         if (space.isPresent()) {
                             allSensorsValueAtSpecificLocationList.put(locationName, space.get());
                         } else {
-                            throw new Exception("Location not found in the spaceInfoList");
+                            throw new Exception("Location " + locationName +  " not found in the spaceInfoList");
                         }
                     }
 
@@ -98,6 +104,24 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
             for (Sensor s: sensorDetailsList) {
                 generateSensorValue(s, timeNow, allSensorsValueAtSpecificLocationList.get(s.getLocation()));
             }
+
+
+            // Manually Trigger for 1st incident
+            if (count==manualIncidentReferenceTime){
+                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+manualIncidentLocation).setSafetyValue(0.49);
+            }
+
+            // special case for interrupt (Incidents) generation
+//            if (count==12){
+//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"REw1").setSafetyValue(0.1);
+//            }
+//            if (iterationCounter==referenceSavedForThisScenario+11){
+//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"OE3").setSafetyValue(0.1);
+//            }
+//            if (iterationCounter==referenceSavedForThisScenario+6){
+//                SpaceSensorsStreamer.getSpacesInfo().get(HelpingVariables.exPrefix+"J1").setSafetyValue(0.1);
+//            }
+
 
             /*
             Iterating all the spaces (i.e., nodes & edges) to get their safety value after each time step.
@@ -125,6 +149,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         System.out.println("Hazard detection flag = true");
                         System.out.println("At Reference time = " + count);
                         System.out.println("************");
+                        System.out.println("Evacuation is about to Start: " + System.currentTimeMillis());
                         InitializeEvacuationStreamer(count);
                         // *** Testing Block End ***
                     }
@@ -163,7 +188,7 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 //        Thread evacuationStreamThread = new Thread(evacuationStream);
 //        evacuationStreamThread.start();
 //
-        List<PersonController> personControllers = EvacuationStreamer.GetAllPersonControllers();
+        List<PersonController> personControllers = AutomatedOperations.GetAllPersonControllers();
         EvacuationController ec = new EvacuationController(personControllers, timeStep, count);
         ec.start();
     }
