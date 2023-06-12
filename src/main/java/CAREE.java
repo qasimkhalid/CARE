@@ -24,27 +24,22 @@ import java.util.*;
 public class CAREE {
 
     private final static long initialTime = System.currentTimeMillis();
-    private final static int SEED = 1546;
-//    private final static int PERSONS_TOTAL = 100;
-//    private final static int PERSONS_MOBILITY_IMPAIRED = 15;
-    private final static int MANUAL_INCIDENT_REFERENCE_TIME = 5;
-    private final static String MANUAL_INCIDENT_LOCATION = "R4";
+    private final static String knowledgeBase = CareeInfModel.setKnowledgeBase("data/kb/initial_scenario.owl");
+    private final static int SEED = 26546;
+    private final static int MANUAL_INCIDENT_REFERENCE_TIME = 2;
+    private final static String MANUAL_INCIDENT_LOCATION = "OE3";
 
     private final static List<Resource> PERSONS_TYPES = Arrays.asList(
-            HelpingVariables.personClass,
-            HelpingVariables.NonMotorisedWheelchairPersonClass,
             HelpingVariables.MotorisedWheelchairPersonClass,
-            HelpingVariables.HearingImpairedPersonClass
+            HelpingVariables.personClass
     );
 
     private final static List<Double> PERSONS_SAFETY_VALUES = Arrays.asList(
-            0.3,
             0.5,
-            0.4,
-            0.35
+            0.3
     );
 
-    private final static List<Integer> PERSONS_QUANTITY = Arrays.asList(85, 5, 5, 5);
+    private final static List<Integer> PERSONS_QUANTITY = Arrays.asList(2, 8);
     public static void main( String[] args ) throws Exception {
 //        BasicConfigurator.configure();
         System.out.println("Engine is about to be initialized: " + System.currentTimeMillis());
@@ -55,6 +50,8 @@ public class CAREE {
 
         // Setting up the SEED value for random numbers used in the application.
         MathOperations.setSeedForRandom(SEED);
+
+
 
         // Setting up people in the building for simulation purposes
         if(PERSONS_TYPES.size()== PERSONS_SAFETY_VALUES.size() && PERSONS_QUANTITY.size()==PERSONS_SAFETY_VALUES.size()) {

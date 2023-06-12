@@ -23,6 +23,8 @@ public class CareeInfModel {
     private static CareeInfModel _instance;
     private final List<String> _emptyList = new ArrayList<>();
 
+    private static String knowledgeBase = "";
+
     private CareeInfModel(InfModel infModel) {
         _infModel = infModel;
     }
@@ -38,7 +40,8 @@ public class CareeInfModel {
             InputStream in = null;
             try {
 //                in = new FileInputStream("data/kb/initial_scenario.owl");
-                in = new FileInputStream("data/kb/2nd_scenario_shopping_mall.owl");
+//                in = new FileInputStream("data/kb/2nd_scenario_shopping_mall.owl");
+                in = new FileInputStream(knowledgeBase);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -129,6 +132,11 @@ public class CareeInfModel {
 
     public synchronized InfModel getInfModel() {
         return _infModel;
+    }
+
+    public static String setKnowledgeBase(String kb) {
+        CareeInfModel.knowledgeBase = kb;
+        return "Knowledge base has been set.";
     }
 
 
