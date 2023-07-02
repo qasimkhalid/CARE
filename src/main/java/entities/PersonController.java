@@ -84,17 +84,23 @@ public class PersonController implements IAccessibility, IPathTraversal {
         this.evacuationCallback = evacuationCallback;
         this.isInterrupt = false;
 
+        long routeFindTime = System.currentTimeMillis();
         List<String> route = findRoute();
+//        System.out.println("Time taken for Route Find for " + person.getReadableName() + ": " + Math.subtractExact(System.currentTimeMillis(),routeFindTime));
 
+        long routeFollowTime = System.currentTimeMillis();
         if (route != null) {
             this.followRoute(route);
         } else {
             isStuck = true;
             evacuationCallback.evacuationEnded(this);
         }
+//        System.out.println("Time taken for Route follow for " + person.getReadableName() + ": " + Math.subtractExact(System.currentTimeMillis(),routeFollowTime));
 
 
+        long routeStoringTimeInModel = System.currentTimeMillis();
         AutomatedOperations.updateModelWhenARouteIsAssignedToPerson(person.getName(), route);
+//        System.out.println("Time taken for updating the Model with route for "+ person.getReadableName() + ": " + Math.subtractExact(System.currentTimeMillis(),routeStoringTimeInModel) );
     }
 
     public void followRoute(List<String> routeAssigned) {
@@ -105,27 +111,36 @@ public class PersonController implements IAccessibility, IPathTraversal {
     private List<String> findRoute() {
 
         String personLocation = person.getLocation();
-        List<String> availableExits = getAvailableExits();
+
+        // Very heavy method - Must be optimized - Done
+        long gettingAvailableExitsTime = System.currentTimeMillis();
+        List<String> availableExits = RouteFinder.availableExitsMap.computeIfAbsent(allowedSafetyValue, k -> getAvailableExits());
+//        System.out.println("Time Taken for find available exits: " + Math.subtractExact(System.currentTimeMillis(), gettingAvailableExitsTime));
 
         Route minRoute = null;
         long timeInitial = System.currentTimeMillis();
-        System.out.println("Route Calculation Started for " + person.getReadableName() + ":" + timeInitial);
         for (String exit : availableExits) {
             // Check if Space Safety of the person's location is greater than the allowed safety value.
             // Otherwise, the route is not provided to the person.
             if(SpaceSensorsStreamer.getSpacesInfo().get(personLocation).getSafetyValue() > allowedSafetyValue){
                 Route route = RouteFinder.findPath(personLocation, exit, this, allowedSafetyValue);
-                if (!route.getPath().isEmpty() && (minRoute == null || minRoute.getCost() > route.getCost())) {
+                if (!route.getPath().isEmpty() &&
+                        (minRoute == null || minRoute.getCost() > route.getCost())
+                ) {
                     minRoute = route;
                 }
             }
         }
-        System.out.println("Route Calculation Ended for " + person.getReadableName() + ":" + Math.subtractExact(System.currentTimeMillis(),timeInitial));
+//        System.out.println("Time Taken for Route Calculation for " + person.getReadableName() + ": " + Math.subtractExact(System.currentTimeMillis(),timeInitial));
         return minRoute != null ? minRoute.getPath() : null;
     }
 
     private List<String> getAvailableExits() {
+
+        long gettingExitsTime = System.currentTimeMillis();
         List<String> exits = AutomatedOperations.getExits();
+//        System.out.println("Time Taken for a sparql query to find all exits: " + Math.subtractExact(System.currentTimeMillis(), gettingExitsTime));
+
         List<String> availableExits = new ArrayList<>();
 
         // Check every exit in space streamer
@@ -152,9 +167,10 @@ public class PersonController implements IAccessibility, IPathTraversal {
     public void update(long timeStep) {
         if (isInterrupt) {
 
-            // If there is an interrupt, i.e., safety value reduces from the allowed safety value of a specific type,
-            // the graph for that type is removed. As a result, a new graph will be created for them.
-            RouteFinder.multipleNodeMaps.remove(allowedSafetyValue);
+            // TODO: Update it -
+//            // If there is an interrupt, i.e., safety value reduces from the allowed safety value of a specific type,
+//            // the graph for that type is removed. As a result, a new graph will be created for them.
+//            RouteFinder.multipleNodeMaps.remove(allowedSafetyValue);
 
             // Evacuation is started again
             evacuate(evacuationCallback);

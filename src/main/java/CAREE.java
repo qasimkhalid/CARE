@@ -25,7 +25,7 @@ public class CAREE {
 
     private final static long initialTime = System.currentTimeMillis();
     private final static int SEED = 1546;
-//    private final static int PERSONS_TOTAL = 100;
+//    private final static int PERSONSOTAL = 100;
 //    private final static int PERSONS_MOBILITY_IMPAIRED = 15;
     private final static int MANUAL_INCIDENT_REFERENCE_TIME = 5;
     private final static String MANUAL_INCIDENT_LOCATION = "R4";
@@ -45,25 +45,29 @@ public class CAREE {
     );
 
     private final static List<Integer> PERSONS_QUANTITY = Arrays.asList(
+//            85,
 //            5,
 //            5,
-//            5,
-            10);
+            10
+    );
     public static void main( String[] args ) throws Exception {
 //        BasicConfigurator.configure();
-        System.out.println("Engine is about to be initialized: " + System.currentTimeMillis());
+        long engineInitializationTime = System.currentTimeMillis();
+        System.out.println("Engine is about to be initialized: " + engineInitializationTime);
         // Initialization C-SPARQL engine instance with timestamp function.
         CareeCsparqlEngineImpl engineInstance = CareeCsparqlEngineImpl.Instance();
-
-        System.out.println("Engine has been initialized: " + System.currentTimeMillis());
+        long engineInitializationEndTime = System.currentTimeMillis();
+        System.out.println("Engine has been initialized: " + Math.subtractExact(engineInitializationEndTime,engineInitializationTime));
 
         // Setting up the SEED value for random numbers used in the application.
         MathOperations.setSeedForRandom(SEED);
 
         // Setting up people in the building for simulation purposes
         if(PERSONS_TYPES.size()== PERSONS_SAFETY_VALUES.size() && PERSONS_QUANTITY.size()==PERSONS_SAFETY_VALUES.size()) {
+            long personsModellingInitializationTime = System.currentTimeMillis();
             AutomatedOperations.setPeopleInBuilding(CareeInfModel.Instance().getInfModel(), PERSONS_QUANTITY, PERSONS_TYPES);
-            System.out.println(PERSONS_QUANTITY.stream().mapToInt(Integer::intValue).sum() + " persons has been modelled: " + System.currentTimeMillis());
+            long personsModellingEndTime = System.currentTimeMillis();
+            System.out.println(PERSONS_QUANTITY.stream().mapToInt(Integer::intValue).sum() + " persons has been modelled: " + Math.subtractExact(personsModellingEndTime,personsModellingInitializationTime));
             CommonOperations.personsQuantity = PERSONS_QUANTITY;
             CommonOperations.personTypes = PERSONS_TYPES;
             CommonOperations.personsSafetyValues = PERSONS_SAFETY_VALUES;

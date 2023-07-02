@@ -12,63 +12,9 @@ import java.util.*;
 public class RouteFinder {
 
     private static final Map<String, Node> nodeMap = new HashMap<>();
-    public static  Map<Float, Map<String, Node>> multipleNodeMaps = new HashMap<>();
+    public static  Map<String, Map<String, Node>> multipleNodeMaps = new HashMap<>();
 
-    public static Route findPath(String personLocation, String exit, IAccessibility accessibility, float personAllowedSafetyValue) {
-        List<Node> shortestPath = getShortestPathToSourceFromNode(personLocation, exit, accessibility, personAllowedSafetyValue);
-        return new Route(shortestPath);
-    }
-
-    public static List<Node> getShortestPathToSourceFromNode(String personLocation, String exit, IAccessibility accessibility, float personAllowedSafetyValue) {
-        List<Node> path = new ArrayList<>();
-        Node personNode;
-        Node exitNode;
-        if(personLocation.equals(exit)){
-            path.add(new Node (exit, 0L));
-        } else {
-            if (multipleNodeMaps.containsKey(personAllowedSafetyValue)) {
-                personNode = multipleNodeMaps.get(personAllowedSafetyValue).get(personLocation);
-                exitNode = multipleNodeMaps.get(personAllowedSafetyValue).get(exit);
-            } else {
-                getCustomizedNodeMap(accessibility);
-                multipleNodeMaps.put(personAllowedSafetyValue, nodeMap);
-                personNode = multipleNodeMaps.get(personAllowedSafetyValue).get(personLocation);
-                exitNode = multipleNodeMaps.get(personAllowedSafetyValue).get(exit);
-                Dijkstra.calculateShortestPathFromSource(exitNode);
-            }
-            path = personNode.getShortestPath();
-            if (!path.isEmpty() && !path.contains(personNode)) {
-                path.add(personNode);
-            }
-        }
-//            getCustomizedNodeMap(accessibility);
-//            Node personNode = nodeMap.get(personLocation);
-//            Node exitNode = nodeMap.get(exit);
-//            Dijkstra.calculateShortestPathFromSource(exitNode);
-//
-//
-//            if (!multipleNodeMaps.containsKey(personAllowedSafetyValue)) {
-//                multipleNodeMaps.put(personAllowedSafetyValue, nodeMap);
-//            }
-//            path = personNode.getShortestPath();
-
-        Collections.reverse(path);
-        return path;
-    }
-
-
-    private static void getCustomizedNodeMap(IAccessibility accessibility) {
-        if(nodeMap.isEmpty()){
-            createNodeMapSkeleton();
-        } else {
-            nodeMap.replaceAll((k, v) -> new Node(k));
-        }
-        for(int i=0; i < HelpingVariables.odPairList.size(); i++){
-            if (accessibility.isEdgeAccessible(HelpingVariables.odPairList.get(i).getDestination(), HelpingVariables.odPairList.get(i).getOrigin()) && accessibility.isNodeAccessible(HelpingVariables.odPairList.get(i).getOrigin())){
-                    nodeMap.get(HelpingVariables.odPairList.get(i).getDestination()).addDestination(nodeMap.get(HelpingVariables.odPairList.get(i).getOrigin()), HelpingVariables.odPairList.get(i).getCost());
-            }
-        }
-    }
+    public static Map<Float, List<String>> availableExitsMap = new HashMap<>();
 
     public static void createNodeMapSkeleton() {
         for (Space space : HelpingVariables.spaceInfoList){
@@ -78,4 +24,111 @@ public class RouteFinder {
         }
     }
 
+    public static Route findPath(String personLocation, String exit, IAccessibility accessibility, float personAllowedSafetyValue) {
+        List<Node> shortestPath = getShortestPathToSourceFromNode(personLocation, exit, accessibility, personAllowedSafetyValue);
+        return new Route(shortestPath);
+    }
+
+
+    public static List<Node> getShortestPathToSourceFromNode(String personLocation, String exit, IAccessibility accessibility, float personAllowedSafetyValue) {
+        List<Node> path = new ArrayList<>();
+        Node personNode;
+        String exitAndSafetyVal = exit + personAllowedSafetyValue;
+        if(personLocation.equals(exit)){
+            path.add(new Node (exit, 0L));
+        } else {
+            if(multipleNodeMaps.containsKey(exitAndSafetyVal)) {
+                personNode = multipleNodeMaps.get(exitAndSafetyVal).get(personLocation);
+            } else {
+                getCustomizedNodeMap(accessibility);
+                multipleNodeMaps.put(exitAndSafetyVal, nodeMap);
+                Node exitNode = multipleNodeMaps.get(exitAndSafetyVal).get(exit);
+                Dijkstra.calculateShortestPathFromSource(exitNode);
+                personNode = multipleNodeMaps.get(exitAndSafetyVal).get(personLocation);
+            }
+            path = personNode.getShortestPath();
+            if (!path.isEmpty() && !path.contains(personNode)) {
+                path.add(personNode);
+            }
+        }
+        return path;
+    }
+
+
+
+
+//    public static List<Node> getShortestPathToSourceFromNode(String personLocation, String exit, IAccessibility accessibility) {
+//        List<Node> path = new ArrayList<>();
+//
+//        if(personLocation.equals(exit)){
+//            path.add(new Node (exit, 0L));
+//        } else {
+//            getCustomizedNodeMap(accessibility);
+//            Node personNode = nodeMap.get(personLocation);
+//            Dijkstra.calculateShortestPathFromSource(personNode);
+//            Node n = nodeMap.get(exit);
+//            path = n.getShortestPath();
+//            if (!path.isEmpty() && !path.contains(n)) {
+//                path.add(n);
+//            }
+//        }
+//
+//        return path;
+//    }
+
+    private static void getCustomizedNodeMap(IAccessibility accessibility) {
+        if(nodeMap.isEmpty()){
+            createNodeMapSkeleton();
+        } else {
+            nodeMap.replaceAll((k, v) -> new Node(k));
+        }
+//        for (ODPair od : HelpingVariables.odPairList){
+        for(int i=0; i < HelpingVariables.odPairList.size(); i++){
+            if (accessibility.isEdgeAccessible(HelpingVariables.odPairList.get(i).getOrigin(), HelpingVariables.odPairList.get(i).getDestination()) && accessibility.isNodeAccessible(HelpingVariables.odPairList.get(i).getDestination())){
+//                Debugging
+//                String x = HelpingVariables.odPairList.get(i).getOrigin();
+//                Node y = nodeMap.get(HelpingVariables.odPairList.get(i).getDestination());
+//                long z = HelpingVariables.odPairList.get(i).getCost();
+//                nodeMap.get(x).addDestination(y,z);
+
+
+//                nodeMap.get(HelpingVariables.odPairList.get(i).getOrigin()).addDestination(nodeMap.get(HelpingVariables.odPairList.get(i).getDestination()), HelpingVariables.odPairList.get(i).getCost());
+            }
+            if (accessibility.isEdgeAccessible(HelpingVariables.odPairList.get(i).getDestination(), HelpingVariables.odPairList.get(i).getOrigin()) && accessibility.isNodeAccessible(HelpingVariables.odPairList.get(i).getOrigin())){
+                    nodeMap.get(HelpingVariables.odPairList.get(i).getDestination()).addDestination(nodeMap.get(HelpingVariables.odPairList.get(i).getOrigin()), HelpingVariables.odPairList.get(i).getCost());
+            }
+//        if (accessibility.isEdgeAccessible(od.getOrigin(), od.getDestination()) && accessibility.isNodeAccessible(od.getDestination())){
+//                    nodeMap.get(od.getOrigin()).addDestination(nodeMap.get(od.getDestination()), od.getCost());
+//            }
+//            if (accessibility.isEdgeAccessible(od.getDestination(), od.getOrigin()) && accessibility.isNodeAccessible(od.getOrigin())){
+//                    nodeMap.get(od.getDestination()).addDestination(nodeMap.get(od.getOrigin()), od.getCost());
+//            }
+        }
+        //Debugging
+        int x = 0;
+    }
 }
+
+
+//** Testing Purpose **
+//if (edgeAccessibility.isEdgeAccessible(od.getDestination(), od.getOrigin())){
+//                if ( nodeAccessibility.isNodeAccessible(od.getOrigin())){
+//        nodeMap.get(od.getDestination()).addDestination(nodeMap.get(od.getOrigin()), od.getCost());
+//                } else {
+//                    System.out.println(SpaceSensorsStreamer.getSpacesInfo().get(od.getOrigin()).getReadableName()
+//                            + " is not Accessible from "
+//                            + SpaceSensorsStreamer.getSpacesInfo().get(od.getDestination()).getReadableName()
+//                            + ". Thus, "
+//                            + SpaceSensorsStreamer.getSpacesInfo().get(od.getOrigin()).getReadableName()
+//                            + " has not been added in the node Map. " );
+//                }
+//            }
+//            else {
+//                System.out.println("Edge between "
+//                        + SpaceSensorsStreamer.getSpacesInfo().get(od.getDestination()).getReadableName()
+//                        + " and "
+//                        + SpaceSensorsStreamer.getSpacesInfo().get(od.getOrigin()).getReadableName()
+//                        + " is not accessible. Thus, "
+//                        + SpaceSensorsStreamer.getSpacesInfo().get(od.getOrigin()).getReadableName()
+//                        + " has not been added in the node Map. " );
+//        }

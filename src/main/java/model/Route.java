@@ -3,6 +3,7 @@ package model;
 import model.graph.Node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Route {
@@ -18,6 +19,7 @@ public class Route {
             for (Node node : shortestPath) {
                 path.add(node.getName());
             }
+            Collections.reverse(path);
         }
     }
 

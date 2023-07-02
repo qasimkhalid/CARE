@@ -149,8 +149,9 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
                         System.out.println("Hazard detection flag = true");
                         System.out.println("At Reference time = " + count);
                         System.out.println("************");
-                        System.out.println("Evacuation is about to Start: " + System.currentTimeMillis());
-                        InitializeEvacuationStreamer(count);
+                        long hazardDetectionTime = System.currentTimeMillis();
+                        System.out.println("Hazard Detected and Evacuation is about to Start: " + hazardDetectionTime);
+                        InitializeEvacuationStreamer(hazardDetectionTime, count);
                         // *** Testing Block End ***
                     }
 //
@@ -182,13 +183,14 @@ public class SpaceSensorsStreamer extends RdfStream implements Runnable{
 
     }
 
-    private void InitializeEvacuationStreamer(int count) {
+    private void InitializeEvacuationStreamer(long hazardDetectionTime, int count) {
 //        EvacuationStreamer evacuationStream = new EvacuationStreamer(HelpingVariables.kbIRI, 100, true, 1f);
 //        CareeCsparqlEngineImpl.Instance().registerStream(evacuationStream);
 //        Thread evacuationStreamThread = new Thread(evacuationStream);
 //        evacuationStreamThread.start();
 //
         List<PersonController> personControllers = AutomatedOperations.GetAllPersonControllers();
+        System.out.println("Time taken for getting locations of each person and setting up individual controllers: " + Math.subtractExact(System.currentTimeMillis(), hazardDetectionTime));
         EvacuationController ec = new EvacuationController(personControllers, timeStep, count);
         ec.start();
     }

@@ -45,12 +45,14 @@ public class EvacuationController implements IEvacuationCallback {
     }
 
     public void start() {
-
-        System.out.println("Routes are being calculated: " + System.currentTimeMillis());
+        long routeCalculationStartTimestap = System.currentTimeMillis();
         for (PersonController pc : personControllers) {
+            long pcStartingTime = System.currentTimeMillis();
             pc.evacuate(this);
+            System.out.println("Total Time taken for" + pc.getPerson().getReadableName() + ": " + Math.subtractExact(System.currentTimeMillis(), pcStartingTime) + "\n");
         }
-        System.out.println("Routes have been calculated: " + System.currentTimeMillis());
+        long routeAssignedTimestap = System.currentTimeMillis();
+        System.out.println("Routes Calculation and Assignment took: " + Math.subtractExact(routeAssignedTimestap,routeCalculationStartTimestap));
 
         int count = 0;
         while (inProgress(evacueesCounter)) {
