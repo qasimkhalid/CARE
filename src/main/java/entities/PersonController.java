@@ -108,17 +108,19 @@ public class PersonController implements IAccessibility, IPathTraversal {
         List<String> availableExits = getAvailableExits();
 
         Route minRoute = null;
+        long timeInitial = System.currentTimeMillis();
+        System.out.println("Route Calculation Started for " + person.getReadableName() + ":" + timeInitial);
         for (String exit : availableExits) {
-
             // Check if Space Safety of the person's location is greater than the allowed safety value.
             // Otherwise, the route is not provided to the person.
             if(SpaceSensorsStreamer.getSpacesInfo().get(personLocation).getSafetyValue() > allowedSafetyValue){
-                Route route = RouteFinder.findPath(personLocation, exit, this);
+                Route route = RouteFinder.findPath(personLocation, exit, this, allowedSafetyValue);
                 if (!route.getPath().isEmpty() && (minRoute == null || minRoute.getCost() > route.getCost())) {
                     minRoute = route;
                 }
             }
         }
+        System.out.println("Route Calculation Ended for " + person.getReadableName() + ":" + Math.subtractExact(System.currentTimeMillis(),timeInitial));
         return minRoute != null ? minRoute.getPath() : null;
     }
 
@@ -149,6 +151,12 @@ public class PersonController implements IAccessibility, IPathTraversal {
 
     public void update(long timeStep) {
         if (isInterrupt) {
+
+            // If there is an interrupt, i.e., safety value reduces from the allowed safety value of a specific type,
+            // the graph for that type is removed. As a result, a new graph will be created for them.
+            RouteFinder.multipleNodeMaps.remove(allowedSafetyValue);
+
+            // Evacuation is started again
             evacuate(evacuationCallback);
             return; // returns the flow and next person is called
         }

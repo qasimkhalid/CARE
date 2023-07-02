@@ -490,14 +490,6 @@ ex:Dist_J2_REr1 rdf:type owl:NamedIndividual ,
                 sbeo:hasValue 2 .
 
 
-###  https://w3id.org/sbeo/example/officescenario#Dist_J3_HE11
-ex:Dist_J3_HE11 rdf:type owl:NamedIndividual ,
-                         sbeo:Distance ;
-                sbeo:destination ex:J3 ;
-                sbeo:origin ex:HE11 ;
-                sbeo:hasValue 1 .
-
-
 ###  https://w3id.org/sbeo/example/officescenario#Dist_J3_RE26
 ex:Dist_J3_RE26 rdf:type owl:NamedIndividual ,
                          sbeo:Distance ;

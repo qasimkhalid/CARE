@@ -31,20 +31,24 @@ public class CAREE {
     private final static String MANUAL_INCIDENT_LOCATION = "R4";
 
     private final static List<Resource> PERSONS_TYPES = Arrays.asList(
-            HelpingVariables.personClass,
-            HelpingVariables.NonMotorisedWheelchairPersonClass,
-            HelpingVariables.MotorisedWheelchairPersonClass,
+//            HelpingVariables.personClass,
+//            HelpingVariables.NonMotorisedWheelchairPersonClass,
+//            HelpingVariables.MotorisedWheelchairPersonClass,
             HelpingVariables.HearingImpairedPersonClass
     );
 
     private final static List<Double> PERSONS_SAFETY_VALUES = Arrays.asList(
-            0.3,
-            0.5,
-            0.4,
+//            0.3,
+//            0.5,
+//            0.4,
             0.35
     );
 
-    private final static List<Integer> PERSONS_QUANTITY = Arrays.asList(85, 5, 5, 5);
+    private final static List<Integer> PERSONS_QUANTITY = Arrays.asList(
+//            5,
+//            5,
+//            5,
+            10);
     public static void main( String[] args ) throws Exception {
 //        BasicConfigurator.configure();
         System.out.println("Engine is about to be initialized: " + System.currentTimeMillis());

@@ -86,11 +86,6 @@ public class Node {
     }
 
     public List<Node> getShortestPath() {
-//        if (!shortestPath.contains(this)) {
-//            // add last element as well
-//            shortestPath.add(this);
-//        }
-
         return shortestPath;
     }
 
